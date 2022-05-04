@@ -9,7 +9,7 @@ export const LoginForm = () => {
 
   const dispatch = useDispatch()
 
-  const hadnleEmailChange = useCallback(({ target: { value } }) => {
+  const handleEmailChange = useCallback(({ target: { value } }) => {
     setEmail(value)
   }, [])
 
@@ -17,23 +17,23 @@ export const LoginForm = () => {
     setPassword(value)
   }, [])
 
-  const handleRegistration = useCallback(() => {
+  const handleRegistration = () => {
     dispatch(
       userRegistration({
         email,
         password
       })
     )
-  }, [])
+  }
 
-  const handleLogin = useCallback(() => {
+  const handleLogin = () => {
     dispatch(
       loginUser({
         email,
         password
       })
     )
-  }, [])
+  }
 
   const handleLogout = useCallback(() => dispatch(logoutUser()), [])
 
@@ -41,7 +41,7 @@ export const LoginForm = () => {
     <div className=''>
       <label>
         Email
-        <input value={email} onChange={hadnleEmailChange} />
+        <input value={email} onChange={handleEmailChange} />
       </label>
       <label>
         Password

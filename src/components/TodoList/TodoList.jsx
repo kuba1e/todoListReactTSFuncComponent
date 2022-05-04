@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import './TodoList.scss'
@@ -18,8 +18,6 @@ import {
 } from '../../features/todos'
 import { getFilteredTodosList } from '../../helpers'
 
-import emitter from '../../EventEmitter'
-
 export const TodoList = () => {
   const [isConfirmModalActive, setConfirmModalActive] = useState(false)
   const [editedTodoActive, setEditedTodoActive] = useState(-1)
@@ -36,60 +34,60 @@ export const TodoList = () => {
       dispatch(checkAuth())
     }
     dispatch(fetchTodos())
-
-    emitter.subscribe('MODAL_CLOSE_BTN', onCloseHandler)
-    emitter.subscribe('MODAL_SHOW_BTN', onShowBtnHandler)
-    emitter.subscribe('MODAL_DELETE_TODO', onDeleteTodoHandler)
-    emitter.subscribe('SET_EDITED_TODO_ACTIVE', onEditedTodoActive)
-
-    return () => {
-      emitter.deleteSubscribe('MODAL_CLOSE_BTN', onCloseHandler)
-      emitter.deleteSubscribe('MODAL_SHOW_BTN', onShowBtnHandler)
-      emitter.deleteSubscribe('MODAL_DELETE_TODO', onDeleteTodoHandler)
-      emitter.deleteSubscribe('SET_EDITED_TODO_ACTIVE', onEditedTodoActive)
-    }
   }, [])
 
-  const onCloseHandler = () => {
+  const handleCloseModal = useCallback(() => {
     setConfirmModalActive(false)
-  }
+  }, [])
 
-  const onShowBtnHandler = (id) => {
+  const handleShowModal = useCallback((id) => {
     setConfirmModalActive(true)
     setId(id)
-  }
+  }, [])
 
-  const onDeleteTodoHandler = (id) => {
+  const handleDeleteTodo = useCallback((id) => {
     dispatch(sendToDeleteTodo(id))
-  }
+  }, [])
 
-  const onEditedTodoActive = (editedTodoActive) => {
+  const handleSetEditedTodoActive = useCallback((editedTodoActive) => {
     setEditedTodoActive(editedTodoActive)
-  }
+  }, [])
 
-  const onDismiss = () => {
-    emitter.emit('MODAL_CLOSE_BTN')
-  }
+  const handleConfirmModal = useCallback(({ id }) => {
+    handleDeleteTodo(id)
+    handleCloseModal()
+  }, [])
 
-  const onConfirm = ({ id }) => {
-    emitter.emit('MODAL_DELETE_TODO', id)
-    emitter.emit('MODAL_CLOSE_BTN')
-  }
+  const handleToggleDone = useCallback(
+    (todo) => dispatch(sentToUpdateTodo(todo)),
+    []
+  )
+
+  const handleEditTodo = useCallback(
+    (todo) => dispatch(sentToUpdateTodo(todo)),
+    []
+  )
+
+  const handleAllDoneTodo = useCallback(
+    (done) => dispatch(sentToUpdateAllTodo(done)),
+    []
+  )
 
   const todosForRendering = getFilteredTodosList(filterValue, todosData)
 
   const confirmodal = isConfirmModalActive ? (
-    <ConfirmModal onConfirm={onConfirm} onDismiss={onDismiss} id={id}>
+    <ConfirmModal
+      onConfirm={handleConfirmModal}
+      onDismiss={handleCloseModal}
+      id={id}
+    >
       Do you want to delete?
     </ConfirmModal>
   ) : null
 
   const todosHeader =
     loading === 'succeded' && !error ? (
-      <TodoHeader
-        todos={todosData}
-        toggleAllDoneTodo={(done) => dispatch(sentToUpdateAllTodo(done))}
-      />
+      <TodoHeader todos={todosData} toggleAllDoneTodo={handleAllDoneTodo} />
     ) : null
 
   const todoElements =
@@ -99,9 +97,11 @@ export const TodoList = () => {
             <TodoListItem
               key={todo.id}
               todo={todo}
-              onToggleDone={(todo) => dispatch(sentToUpdateTodo(todo))}
-              onEditTodo={(todo) => dispatch(sentToUpdateTodo(todo))}
+              onToggleDone={handleToggleDone}
+              onEditTodo={handleEditTodo}
               editedTodo={editedTodoActive}
+              onSetEditedTodo={handleSetEditedTodoActive}
+              onShowModal={handleShowModal}
             />
           )
         })

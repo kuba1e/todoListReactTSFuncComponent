@@ -1,48 +1,58 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import './TodoListItem.scss'
 
 import Button from '../UI/Button'
 import Checkbox from '../UI/Checkbox'
-import emitter from '../../EventEmitter'
 
 export const TodoListItem = ({
   todo,
   editedTodo,
   onEditTodo,
-  onToggleDone
+  onSetEditedTodo,
+  onToggleDone,
+  onShowModal
 }) => {
   const [isButtonActive, setButtonActive] = useState(false)
   const [inputValue, setInputValue] = useState(todo.label)
 
-  const onShowModal = () => {
+  const handleSetEditTodoActive = useCallback(() => {
     const { id } = todo
-    emitter.emit('MODAL_SHOW_BTN', id)
-  }
+    onSetEditedTodo(id)
+  }, [])
 
-  const onSubmit = (event) => {
-    event.preventDefault()
-    if (inputValue) {
-      onEditTodo({ ...todo, label: inputValue })
-    } else {
-      setInputValue(todo.label)
-      onShowModal()
-    }
-    emitter.emit('SET_EDITED_TODO_ACTIVE', -1)
-  }
-
-  const onInputChange = ({ target: { value } }) => setInputValue(value)
-
-  const onDoubleClick = () => {
+  const handleShowModal = useCallback(() => {
     const { id } = todo
-    emitter.emit('SET_EDITED_TODO_ACTIVE', id)
-  }
+    onShowModal(id)
+  }, [])
+
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault()
+      if (inputValue) {
+        onEditTodo({ ...todo, label: inputValue })
+      } else {
+        setInputValue(todo.label)
+        onShowModal()
+      }
+      onSetEditedTodo(-1)
+    },
+    [inputValue]
+  )
+
+  const handleInputChange = useCallback(
+    ({ target: { value } }) => setInputValue(value),
+    []
+  )
 
   const onCheckboxChange = () => {
     const { done } = todo
     onToggleDone({ ...todo, done: !done })
   }
+
+  const handleMouseEnter = useCallback(() => setButtonActive(true), [])
+  const handleMouseLeave = useCallback(() => setButtonActive(false), [])
 
   const { id, done } = todo
 
@@ -61,14 +71,14 @@ export const TodoListItem = ({
   const todoEditInput = (
     <form
       className='todo__list-item-edit-form'
-      onSubmit={onSubmit}
-      onBlur={onSubmit}
+      onSubmit={handleSubmit}
+      onBlur={handleSubmit}
     >
       <input
         className='todo__list-item-edit-input'
         autoFocus
         value={inputValue}
-        onChange={onInputChange}
+        onChange={handleInputChange}
       />
     </form>
   )
@@ -78,9 +88,9 @@ export const TodoListItem = ({
   return (
     <li
       className='todo__list-item'
-      onMouseEnter={() => setButtonActive(true)}
-      onMouseLeave={() => setButtonActive(false)}
-      onDoubleClick={onDoubleClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onDoubleClick={handleSetEditTodoActive}
     >
       <Checkbox
         className={isInputActive ? 'checkbox--hide' : ''}
@@ -95,11 +105,11 @@ export const TodoListItem = ({
       >
         <Button
           className={`edit-btn ${isButtonActive ? 'edit-btn--active' : ''}`}
-          onClick={() => emitter.emit('SET_EDITED_TODO_ACTIVE', id)}
+          onClick={handleSetEditTodoActive}
         />
         <Button
           className={`delete-btn ${isButtonActive ? 'delete-btn--active' : ''}`}
-          onClick={onShowModal}
+          onClick={handleShowModal}
         />
       </div>
     </li>
@@ -110,5 +120,7 @@ TodoListItem.propTypes = {
   todo: PropTypes.object,
   onToggleDone: PropTypes.func,
   onEditTodo: PropTypes.func,
-  editedTodo: PropTypes.number
+  onSetEditedTodo: PropTypes.func,
+  editedTodo: PropTypes.number,
+  onShowModal: PropTypes.func
 }
