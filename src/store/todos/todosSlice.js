@@ -61,51 +61,62 @@ const todosSlice = createSlice({
     },
     [fetchTodos.fulfilled]: (state, { payload }) => {
       state.loading = 'succeded'
+      state.error = ''
       state.todosData = payload
     },
     [fetchTodos.rejected]: (state, { payload }) => {
-      //  state.loading = 'failed'
-      // state.error = payload
+      state.loading = 'failed'
+      state.error = payload
     },
     [sendToAddTodo.rejected]: (state, { payload }) => {
-      // state.loading = 'failed'
-      // state.error = payload
+      state.loading = 'failed'
+      state.error = payload
     },
     [sendToAddTodo.fulfilled]: (state, { payload }) => {
-      // state.loading = 'succeded'
-      // state.error = payload
+      state.loading = 'succeded'
+      state.error = ''
+
+      state.error = payload
     },
     [sentToUpdateTodo.rejected]: (state, { payload }) => {
-      //  state.loading = 'failed'
-      // state.error = payload
+      state.loading = 'failed'
+      state.error = payload
     },
     [sentToUpdateTodo.fulfilled]: (state, { payload }) => {
-      //  state.loading = 'succeded'
-      // state.error = payload
+      state.loading = 'succeded'
+      state.error = ''
+
+      state.error = payload
     },
     [sentToUpdateAllTodo.rejected]: (state, { payload }) => {
-      // state.loading = 'failed'
-      // state.error = payload
+      state.loading = 'failed'
+      state.error = payload
     },
     [sentToUpdateAllTodo.fulfilled]: (state, { payload }) => {
-      // state.loading = 'succeded'
-      // state.error = payload
+      state.loading = 'succeded'
+      state.error = ''
+
+      state.error = payload
     },
     [sendToDeleteTodo.rejected]: (state, { payload }) => {
-      //  state.loading = 'failed'
-      // state.error = payload
+      state.loading = 'failed'
+      state.error = payload
     },
     [sendToDeleteTodo.fulfilled]: (state, { payload }) => {
-      //  state.loading = 'succeded'
-      // state.error = payload
+      state.loading = 'succeded'
+      state.error = ''
+
+      state.error = payload
     },
     [sendToDeleteCompletedTodo.rejected]: (state, { payload }) => {
-      // state.loading = 'failed'
-      // state.error = payload
+      state.loading = 'failed'
+      state.error = payload
     },
     [sendToDeleteCompletedTodo.fulfilled]: (state, { payload }) => {
-      //  state.loading = 'succeded'
-      // state.error = payload
+      state.loading = 'succeded'
+      state.error = ''
+
+      state.error = payload
     }
   }
 })
