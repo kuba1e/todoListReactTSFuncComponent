@@ -18,6 +18,13 @@ export const callApi = async ({ method, path, data }) => {
     const response = await fetch(baseUrl + path, options)
 
     const parsedResponse = await response.json()
+
+    if (response.status === 401) {
+      const response = await callApi({ method: 'GET', path: '/refresh' })
+      localStorage.setItem('token', JSON.stringify(response.accessToken))
+      return await callApi({ method, path, data })
+    }
+
     if (!response.ok) {
       throw new Error(parsedResponse.message)
     }

@@ -27,6 +27,9 @@ export const TodoList = () => {
 
   const { todosData, loading, error, filterValue } = useSelector(todosSelector)
 
+  console.log(todosData)
+  console.log(loading)
+
   const dispatch = useDispatch()
 
   useEffect(() => {

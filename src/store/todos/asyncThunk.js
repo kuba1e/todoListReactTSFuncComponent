@@ -46,7 +46,7 @@ export const userRegistration = createAsyncThunk(
       }
       dispatch(setAuthStatus(true))
       dispatch(setUserData(userData.data.user))
-      localStorage.setItem('token', JSON.stringify(userData.data.accessToken))
+      localStorage.setItem('token', JSON.stringify(userData.accessToken))
     } catch (error) {
       return rejectWithValue(error.message)
     }
