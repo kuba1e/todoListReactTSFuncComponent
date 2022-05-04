@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { loginUser, logoutUser, userRegistration } from '../../features/todos'
+import { loginUser, logoutUser, userRegistration } from '../../store/todos'
 
 export const LoginForm = () => {
   const [email, setEmail] = useState('')

@@ -1,14 +1,25 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 
-import apiService from '../../services/apiService'
+import { callApi } from '../../services/apiService'
 
-import { isObjectEmpty } from '../../helpers'
+import { RequestParams, isObjectEmpty } from '../../helpers'
+
+import {
+  setAuthStatus,
+  setUserData,
+  addTodo,
+  editTodo,
+  deleteTodo,
+  toggleAllDoneTodo,
+  clearCompletedTodo
+} from './todosSlice'
 
 export const loginUser = createAsyncThunk(
   'todos/loginUser',
   async (data, { rejectWithValue, dispatch }) => {
     try {
-      const userData = await apiService('POST', '/login', data)
+      const request = new RequestParams('POST', '/login', data)
+      const userData = await callApi(request)
       const isUserDataEmpty = isObjectEmpty(userData)
       if (isUserDataEmpty) {
         throw new Error(userData.message)
@@ -26,7 +37,8 @@ export const userRegistration = createAsyncThunk(
   'todos/userRegistration',
   async (data, { rejectWithValue, dispatch }) => {
     try {
-      const userData = await apiService('POST', '/registration', data)
+      const request = new RequestParams('POST', '/registration', data)
+      const userData = await callApi(request)
 
       const isUserDataEmpty = isObjectEmpty(userData.data)
       if (isUserDataEmpty) {
@@ -45,7 +57,8 @@ export const logoutUser = createAsyncThunk(
   'todos/logoutUser',
   async (_, { rejectWithValue, dispatch }) => {
     try {
-      await apiService('POST', '/logout')
+      const request = new RequestParams('POST', '/logout')
+      await callApi(request)
       dispatch(setAuthStatus(false))
       dispatch(setUserData({}))
 
@@ -60,7 +73,9 @@ export const checkAuth = createAsyncThunk(
   'todos/checkAuth',
   async (_, { rejectWithValue, dispatch }) => {
     try {
-      const response = await apiService('GET', '/refresh')
+      const request = new RequestParams('GET', '/refresh')
+
+      const response = await callApi(request)
       localStorage.setItem('token', JSON.stringify(response.accessToken))
       dispatch(setAuthStatus(true))
       dispatch(setUserData(response.user))
@@ -74,7 +89,9 @@ export const fetchTodos = createAsyncThunk(
   'todos/fetchTodos',
   async (_, { rejectWithValue }) => {
     try {
-      return await apiService('GET', '/todos')
+      const request = new RequestParams('GET', '/todos')
+
+      return await callApi(request)
     } catch (error) {
       return rejectWithValue(error.message)
     }
@@ -86,7 +103,9 @@ export const sendToAddTodo = createAsyncThunk(
   async (label, { rejectWithValue, dispatch }) => {
     try {
       const newTodo = { label, done: false }
-      const todo = await apiService('POST', '/todos', newTodo)
+      const request = new RequestParams('POST', '/todos', newTodo)
+
+      const todo = await callApi(request)
       dispatch(addTodo(todo))
     } catch (error) {
       return rejectWithValue(error.message)
@@ -99,7 +118,9 @@ export const sentToUpdateTodo = createAsyncThunk(
   async (todo, { rejectWithValue, dispatch }) => {
     try {
       const { id, ...todoData } = todo
-      await apiService('PUT', `/todos/${id}`, todoData)
+      const request = new RequestParams('PUT', `/todos/${id}`, todoData)
+
+      await callApi(request)
       dispatch(editTodo(todo))
     } catch (error) {
       return rejectWithValue(error.message)
@@ -111,7 +132,9 @@ export const sentToUpdateAllTodo = createAsyncThunk(
   'todos/sentToUpdateAllTodo',
   async (done, { rejectWithValue, dispatch }) => {
     try {
-      await apiService('PUT', '/todos', { done })
+      const request = new RequestParams('PUT', '/todos', { done })
+
+      await callApi(request)
       dispatch(toggleAllDoneTodo(done))
     } catch (error) {
       return rejectWithValue(error.message)
@@ -123,7 +146,9 @@ export const sendToDeleteTodo = createAsyncThunk(
   'todos/sendToDeleteTodo',
   async (id, { rejectWithValue, dispatch }) => {
     try {
-      await apiService('DELETE', `/todos/${id}`)
+      const request = new RequestParams('DELETE', `/todos/${id}`)
+
+      await callApi(request)
       dispatch(deleteTodo(id))
     } catch (error) {
       return rejectWithValue(error.message)
@@ -141,105 +166,14 @@ export const sendToDeleteCompletedTodo = createAsyncThunk(
       const todosForDeleting = todosData
         .filter((todo) => todo.done)
         .map((todo) => todo.id)
+      const request = new RequestParams('DELETE', '/todos', {
+        todos: todosForDeleting
+      })
 
-      await apiService('DELETE', '/todos', { todos: todosForDeleting })
+      await callApi(request)
       dispatch(clearCompletedTodo())
     } catch (error) {
       return rejectWithValue(error.message)
     }
   }
 )
-
-const initialState = {
-  todosData: [],
-  filterValue: 'all',
-  loading: 'idle',
-  error: null,
-  user: {},
-  isAuth: false
-}
-
-const todosSlice = createSlice({
-  name: 'todos',
-  initialState,
-  reducers: {
-    addTodo: (state, { payload }) => {
-      state.todosData.push(payload)
-    },
-    deleteTodo: (state, { payload }) => {
-      state.todosData = state.todosData.filter((todo) => todo.id !== payload)
-    },
-    toggleAllDoneTodo: (state, { payload }) => {
-      state.todosData = state.todosData.map((todo) => ({
-        ...todo,
-        done: payload
-      }))
-    },
-    clearCompletedTodo: (state) => {
-      state.todosData = state.todosData.filter((todo) => !todo.done)
-    },
-    setFilterValue: (state, { payload }) => {
-      state.filterValue = payload
-    },
-    editTodo: (state, { payload }) => {
-      state.todosData = state.todosData.map((todo) => {
-        if (todo.id === payload.id) {
-          return payload
-        }
-        return todo
-      })
-    },
-    setUserData: (state, { payload }) => {
-      state.user = payload
-    },
-    setAuthStatus: (state, { payload }) => {
-      state.isAuth = payload
-    }
-  },
-  extraReducers: {
-    [fetchTodos.pending]: (state) => {
-      state.loading = 'pending'
-    },
-    [fetchTodos.fulfilled]: (state, { payload }) => {
-      state.loading = 'succeded'
-      state.todosData = payload
-    },
-    [fetchTodos.rejected]: (state, { payload }) => {
-      state.loading = 'failed'
-      state.error = payload
-    },
-    [sendToAddTodo.rejected]: (state, { payload }) => {
-      state.loading = 'failed'
-      state.error = payload
-    },
-    [sentToUpdateTodo.rejected]: (state, { payload }) => {
-      state.loading = 'failed'
-      state.error = payload
-    },
-    [sentToUpdateAllTodo.rejected]: (state, { payload }) => {
-      state.loading = 'failed'
-      state.error = payload
-    },
-    [sendToDeleteTodo.rejected]: (state, { payload }) => {
-      state.loading = 'failed'
-      state.error = payload
-    },
-    [sendToDeleteCompletedTodo.rejected]: (state, { payload }) => {
-      state.loading = 'failed'
-      state.error = payload
-    }
-  }
-})
-
-export const {
-  addTodo,
-  deleteTodo,
-  toggleAllDoneTodo,
-  clearCompletedTodo,
-  setFilterValue,
-  editTodo,
-  setUserData,
-  setAuthStatus
-} = todosSlice.actions
-
-export default todosSlice.reducer

@@ -15,17 +15,17 @@ import {
   sentToUpdateTodo,
   sendToDeleteTodo,
   checkAuth
-} from '../../features/todos'
+} from '../../store/todos'
+
 import { getFilteredTodosList } from '../../helpers'
+import { todosSelector } from '../../store/selectors'
 
 export const TodoList = () => {
   const [isConfirmModalActive, setConfirmModalActive] = useState(false)
   const [editedTodoActive, setEditedTodoActive] = useState(-1)
   const [id, setId] = useState(-1)
 
-  const { todosData, loading, error, filterValue } = useSelector(
-    ({ todos }) => todos
-  )
+  const { todosData, loading, error, filterValue } = useSelector(todosSelector)
 
   const dispatch = useDispatch()
 

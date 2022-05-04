@@ -5,8 +5,11 @@ import './TodoFooter.scss'
 
 import Button from '../UI/Button'
 
-import { setFilterValue, sendToDeleteCompletedTodo } from '../../features/todos'
+import { sendToDeleteCompletedTodo, setFilterValue } from '../../store/todos'
+
 import { getCompletedQuantity, getTodoCount } from '../../helpers'
+
+import { todosSelector } from '../../store/selectors'
 
 const filters = [
   {
@@ -23,7 +26,7 @@ const filters = [
 ]
 
 export const TodoFooter = () => {
-  const { todosData, loading, filterValue } = useSelector(({ todos }) => todos)
+  const { todosData, loading, filterValue } = useSelector(todosSelector)
   const dispatch = useDispatch()
 
   const handleDeleteCompletedTodo = useCallback(

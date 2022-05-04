@@ -5,7 +5,7 @@ import * as yup from 'yup'
 
 import './TodoAddForm.scss'
 
-import { sendToAddTodo } from '../../features/todos'
+import { sendToAddTodo } from '../../store/todos'
 
 export const TodoAddForm = () => {
   const dispatch = useDispatch()

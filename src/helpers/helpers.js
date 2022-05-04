@@ -80,3 +80,11 @@ export const editTodo = (todoForEdit, todos) => {
 export const isObjectEmpty = (data) => {
   return !Object.keys(data).length
 }
+
+export class RequestParams {
+  constructor(method, path, data) {
+    this.method = method
+    this.path = path
+    this.data = data
+  }
+}
