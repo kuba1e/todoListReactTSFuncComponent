@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import './TodoFooter.scss'
@@ -25,6 +25,11 @@ const filters = [
 export const TodoFooter = () => {
   const { todosData, loading, filterValue } = useSelector(({ todos }) => todos)
   const dispatch = useDispatch()
+
+  const handleDeleteCompletedTodo = useCallback(
+    () => dispatch(sendToDeleteCompletedTodo()),
+    []
+  )
 
   if (loading === 'pending' || loading === 'failed') {
     return null
@@ -61,7 +66,7 @@ export const TodoFooter = () => {
         className={`clear-completed-btn ${
           getCompletedQuantity(todosData) ? 'clear-completed-btn--active' : ''
         }`}
-        onClick={() => dispatch(sendToDeleteCompletedTodo())}
+        onClick={handleDeleteCompletedTodo}
       >
         Clear completed
       </Button>

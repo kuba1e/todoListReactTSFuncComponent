@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { Formik, Form } from 'formik'
 import * as yup from 'yup'
@@ -9,7 +9,7 @@ import { sendToAddTodo } from '../../features/todos'
 
 export const TodoAddForm = () => {
   const dispatch = useDispatch()
-  const onSubmitHandler = ({ label }, { resetForm }) => {
+  const handleSubmit = useCallback(({ label }, { resetForm }) => {
     if (label) {
       dispatch(sendToAddTodo(label))
     }
@@ -18,7 +18,7 @@ export const TodoAddForm = () => {
         label: ''
       }
     })
-  }
+  }, [])
 
   const validationSchema = yup.object({
     label: yup.string().min(3, 'Please, write more about todo')
@@ -32,7 +32,7 @@ export const TodoAddForm = () => {
       enableReinitialize
       validateOnBlur={false}
       validationSchema={validationSchema}
-      onSubmit={onSubmitHandler}
+      onSubmit={handleSubmit}
     >
       {({ values, errors, touched, handleChange, handleBlur, submitForm }) => {
         const isChanged = errors.label && touched.label

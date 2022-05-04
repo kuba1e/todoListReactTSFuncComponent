@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import './TodoHeader.scss'
@@ -18,15 +18,17 @@ const TodoHeader = ({ todos, toggleAllDoneTodo }) => {
     toggleAllDoneTodo(isSelected)
   }, [isSelected])
 
+  const handleSelectAll = useCallback(() => {
+    setSelected((isSelected) => !isSelected)
+  }, [])
+
   return (
     <div className='todo__form-container'>
       <Button
         className={`select-all-btn ${
           isSelected ? 'select-all-btn--selected' : ''
         }`}
-        onClick={() => {
-          setSelected((isSelected) => !isSelected)
-        }}
+        onClick={handleSelectAll}
       />
       <TodoAddForm />
     </div>
