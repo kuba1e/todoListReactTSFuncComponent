@@ -1,0 +1,23 @@
+.todo {
+  &__form-container {
+    display: flex;
+    position: relative;
+  }
+}
+
+.select-all-btn {
+  position: absolute;
+  left: 23px;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(90deg);
+  padding: 0;
+  cursor: pointer;
+  &::before {
+    content: '❯';
+    font-size: 22px;
+    color: #e6e6e6;
+  }
+  &--selected::before {
+    color: #737373;
+  }
+}

@@ -1,0 +1,14 @@
+@import '../../../scssStyles/variables';
+
+.title {
+  font-size: 100px;
+  font-weight: 100;
+  color: rgba(175, 47, 47, 0.15);
+  margin: 0;
+  padding: 6px;
+  text-align: center;
+
+  @media only screen and (max-width: $md) {
+    font-size: 80px;
+  }
+}

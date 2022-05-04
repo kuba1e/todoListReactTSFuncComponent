@@ -1,0 +1,13 @@
+.todo {
+  &__list {
+    margin: 0;
+    padding: 0;
+    &--pending {
+      width: 100%;
+      height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

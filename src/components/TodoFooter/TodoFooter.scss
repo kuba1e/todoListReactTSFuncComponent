@@ -1,0 +1,76 @@
+@import '../../scssStyles/variables';
+
+.todo {
+  &__control {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    height: 40px;
+    padding: 10px 15px;
+    background-color: #fff;
+    color: #777;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 20%), 0 8px 0 -3px #f6f6f6,
+      0 9px 1px -3px rgb(0 0 0 / 20%), 0 16px 0 -6px #f6f6f6,
+      0 17px 2px -6px rgb(0 0 0 / 20%);
+
+    @media only screen and (max-width: $md) {
+      justify-items: center;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(3, 1fr);
+      height: 100px;
+    }
+
+    &-count {
+      width: 70px;
+      display: flex;
+      justify-content: space-between;
+      &-info-text {
+        padding: 0 3px;
+      }
+    }
+    &-filter-list {
+      width: 200px;
+      display: flex;
+      justify-content: space-between;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      @media only screen and (max-width: $md) {
+        grid-row-start: 3;
+        grid-row-end: 4;
+      }
+    }
+  }
+}
+
+.filter-btn {
+  margin: 3px;
+  padding: 3px 7px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  &--checked,
+  &:hover {
+    border: 1px solid;
+    border-radius: 3px;
+    border-color: rgba(175, 47, 47, 0.2);
+  }
+}
+.clear-completed-btn {
+  background-color: transparent;
+  border: none;
+  color: #777;
+  opacity: 0;
+  cursor: auto;
+
+  @media only screen and (max-width: $md) {
+    grid-row-start: 2;
+    grid-row-end: 3;
+  }
+  &:hover {
+    text-decoration: underline;
+  }
+  &--active {
+    opacity: 1;
+    cursor: pointer;
+  }
+}

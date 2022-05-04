@@ -1,0 +1,16 @@
+@import '../../scssStyles/variables';
+.error-boundray {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 550px;
+  height: 200px;
+  background-color: rgba(0, 0, 0, 0.003);
+  @media only screen and (max-width: $md) {
+    font-size: 18px;
+    width: $contentWidthMd;
+  }
+  @media only screen and (max-width: $sm) {
+    width: $contentWidthSm;
+  }
+}

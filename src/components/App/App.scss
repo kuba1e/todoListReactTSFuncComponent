@@ -1,0 +1,36 @@
+@import '../../scssStyles/variables';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f5f5f5;
+  color: #4d4d4d;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+#root {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  padding: 0 20px;
+}
+
+.todo {
+  width: 550px;
+  margin-bottom: 50px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%), 0 25px 50px 0 rgb(0 0 0 / 10%);
+  @media only screen and (max-width: $md) {
+    width: $contentWidthMd;
+  }
+
+  @media only screen and (max-width: $sm) {
+    width: $contentWidthSm;
+  }
+}

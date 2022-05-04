@@ -1,0 +1,88 @@
+@import '../../../scssStyles/variables';
+
+.backdrop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  background-color: rgba(245, 245, 245, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
+
+.modal-overlay {
+  width: 600px;
+  height: 300px;
+  position: relative;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  @media only screen and (max-width: $md) {
+    font-size: 18px;
+    width: $contentWidthMd;
+  }
+  @media only screen and (max-width: $sm) {
+    width: $contentWidthSm;
+  }
+
+  &__text {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__control {
+    height: 30%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+}
+
+.confirm-btn,
+.dismiss-btn {
+  width: 100px;
+  height: 35px;
+  border-radius: 3px;
+  @media screen and (max-width: $md) {
+    font-size: 16px;
+    width: 70px;
+  }
+}
+
+.button.confirm-btn {
+  background-color: rgb(112, 176, 155);
+}
+
+.button.dismiss-btn {
+  background-color: rgb(241, 188, 188);
+}
+
+.close-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  opacity: 1;
+  font-size: 40px;
+  text-align: center;
+  color: #cc9a9a;
+  transition: color 0.2s ease-out;
+  @media screen and (max-width: $md) {
+    font-size: 32px;
+  }
+  &::after {
+    content: '×';
+  }
+  &:hover {
+    color: #af5b5e;
+  }
+}
