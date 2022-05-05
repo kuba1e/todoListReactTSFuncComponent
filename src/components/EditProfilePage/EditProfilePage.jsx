@@ -40,7 +40,7 @@ export const EditProfilePage = (props) => {
   )
 
   const initialValues = {
-    email: '',
+    email,
     newPassword: '',
     newPasswordConfirm: '',
     oldPassword: ''
@@ -50,7 +50,6 @@ export const EditProfilePage = (props) => {
     email: yup
       .string()
       .email('Please, enter the correct email')
-      .notOneOf([email], 'This is your an old email')
       .required('Please enter the email'),
     oldPassword: yup
       .string()
@@ -90,7 +89,7 @@ export const EditProfilePage = (props) => {
           <Form className='auth__form'>
             <div className='auth__container'>
               <label className='auth__form-label' htmlFor='email'>
-                New email
+                Email
               </label>
               <input
                 className={`auth__form-input ${

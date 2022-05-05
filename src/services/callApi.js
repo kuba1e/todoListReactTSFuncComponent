@@ -1,4 +1,4 @@
-export const callApi = async ({ method, path, data }) => {
+export const callApi = async (method, path, data) => {
   try {
     const baseUrl = 'http://localhost:4000'
     const token = localStorage.getItem('token')?.slice(1, -1) ?? ''
@@ -20,9 +20,9 @@ export const callApi = async ({ method, path, data }) => {
     const parsedResponse = await response.json()
 
     if (response.status === 401) {
-      const response = await callApi({ method: 'GET', path: '/refresh' })
+      const response = await callApi('GET', '/refresh')
       localStorage.setItem('token', JSON.stringify(response.accessToken))
-      return await callApi({ method, path, data })
+      return await callApi(method, path, data)
     }
 
     if (!response.ok) {

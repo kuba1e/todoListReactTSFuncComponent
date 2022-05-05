@@ -2,20 +2,20 @@ import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
-import PropTypes from 'prop-types'
 import * as yup from 'yup'
 
-import './AuthForm.scss'
+import './LoginForm.scss'
 
+import { loginUser } from '../../store/todos'
 import { todosSelector } from '../../store/selectors'
 
-export const AuthForm = ({ onSubmit, btnLabel }) => {
+export const LoginForm = () => {
   const { isAuth, error } = useSelector(todosSelector)
   const dispatch = useDispatch()
 
   const handleSubmit = useCallback(({ email, password }, { resetForm }) => {
     dispatch(
-      onSubmit({
+      loginUser({
         email,
         password
       })
@@ -105,15 +105,10 @@ export const AuthForm = ({ onSubmit, btnLabel }) => {
                 {error ? 'Password or email is wrong' : ''}
               </p>
             </div>
-            <button className='auth__form-sbmt-btn'>{btnLabel}</button>
+            <button className='auth__form-sbmt-btn'>Sign in</button>
           </Form>
         )}
       </Formik>
     </div>
   )
-}
-
-AuthForm.propTypes = {
-  onSubmit: PropTypes.func,
-  btnLabel: PropTypes.string
 }

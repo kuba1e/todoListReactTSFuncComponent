@@ -2,8 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import { callApi } from '../../services/callApi'
 
-import { RequestParams, isObjectEmpty } from '../../helpers'
-
 import {
   setAuthStatus,
   setUserData,
@@ -18,8 +16,7 @@ export const loginUser = createAsyncThunk(
   'todos/loginUser',
   async (data, { rejectWithValue, dispatch }) => {
     try {
-      const request = new RequestParams('POST', '/login', data)
-      const userData = await callApi(request)
+      const userData = await callApi('POST', '/login', data)
       localStorage.setItem('token', JSON.stringify(userData.accessToken))
       dispatch(setUserData(userData.user))
       dispatch(setAuthStatus(true))
@@ -34,8 +31,7 @@ export const updateUserProfile = createAsyncThunk(
   async (data, { rejectWithValue, dispatch }) => {
     try {
       const { id } = data
-      const request = new RequestParams('PUT', `/profile/${id}`, data)
-      const userData = await callApi(request)
+      const userData = await callApi('PUT', `/profile/${id}`, data)
 
       dispatch(setAuthStatus(true))
       dispatch(setUserData(userData.user))
@@ -50,8 +46,7 @@ export const userRegistration = createAsyncThunk(
   'todos/userRegistration',
   async (data, { rejectWithValue, dispatch }) => {
     try {
-      const request = new RequestParams('POST', '/registration', data)
-      const userData = await callApi(request)
+      const userData = await callApi('POST', '/registration', data)
       dispatch(setAuthStatus(true))
       dispatch(setUserData(userData.user))
       localStorage.setItem('token', JSON.stringify(userData.accessToken))
@@ -65,8 +60,7 @@ export const logoutUser = createAsyncThunk(
   'todos/logoutUser',
   async (_, { rejectWithValue, dispatch }) => {
     try {
-      const request = new RequestParams('POST', '/logout')
-      await callApi(request)
+      await callApi('POST', '/logout')
       dispatch(setAuthStatus(false))
       dispatch(setUserData({}))
 
@@ -81,9 +75,7 @@ export const checkAuth = createAsyncThunk(
   'todos/checkAuth',
   async (_, { rejectWithValue, dispatch }) => {
     try {
-      const request = new RequestParams('GET', '/refresh')
-
-      const response = await callApi(request)
+      const response = await callApi('GET', '/refresh')
       localStorage.setItem('token', JSON.stringify(response.accessToken))
       dispatch(setAuthStatus(true))
       dispatch(setUserData(response.user))
@@ -97,9 +89,7 @@ export const fetchTodos = createAsyncThunk(
   'todos/fetchTodos',
   async (_, { rejectWithValue }) => {
     try {
-      const request = new RequestParams('GET', '/todos')
-
-      return await callApi(request)
+      return await callApi('GET', '/todos')
     } catch (error) {
       return rejectWithValue(error.message)
     }
@@ -111,9 +101,7 @@ export const sendToAddTodo = createAsyncThunk(
   async (label, { rejectWithValue, dispatch }) => {
     try {
       const newTodo = { label, done: false }
-      const request = new RequestParams('POST', '/todos', newTodo)
-
-      const todo = await callApi(request)
+      const todo = await callApi('POST', '/todos', newTodo)
       dispatch(addTodo(todo))
     } catch (error) {
       return rejectWithValue(error.message)
@@ -126,9 +114,7 @@ export const sentToUpdateTodo = createAsyncThunk(
   async (todo, { rejectWithValue, dispatch }) => {
     try {
       const { id, ...todoData } = todo
-      const request = new RequestParams('PUT', `/todos/${id}`, todoData)
-
-      await callApi(request)
+      await callApi('PUT', `/todos/${id}`, todoData)
       dispatch(editTodo(todo))
     } catch (error) {
       return rejectWithValue(error.message)
@@ -140,9 +126,7 @@ export const sentToUpdateAllTodo = createAsyncThunk(
   'todos/sentToUpdateAllTodo',
   async (done, { rejectWithValue, dispatch }) => {
     try {
-      const request = new RequestParams('PUT', '/todos', { done })
-
-      await callApi(request)
+      await callApi('PUT', '/todos', { done })
       dispatch(toggleAllDoneTodo(done))
     } catch (error) {
       return rejectWithValue(error.message)
@@ -154,9 +138,7 @@ export const sendToDeleteTodo = createAsyncThunk(
   'todos/sendToDeleteTodo',
   async (id, { rejectWithValue, dispatch }) => {
     try {
-      const request = new RequestParams('DELETE', `/todos/${id}`)
-
-      await callApi(request)
+      await callApi('DELETE', `/todos/${id}`)
       dispatch(deleteTodo(id))
     } catch (error) {
       return rejectWithValue(error.message)
@@ -174,11 +156,10 @@ export const sendToDeleteCompletedTodo = createAsyncThunk(
       const todosForDeleting = todosData
         .filter((todo) => todo.done)
         .map((todo) => todo.id)
-      const request = new RequestParams('DELETE', '/todos', {
+
+      await callApi('DELETE', '/todos', {
         todos: todosForDeleting
       })
-
-      await callApi(request)
       dispatch(clearCompletedTodo())
     } catch (error) {
       return rejectWithValue(error.message)
