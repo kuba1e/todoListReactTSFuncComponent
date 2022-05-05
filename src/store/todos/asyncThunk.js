@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-import { callApi } from '../../services/apiService'
+import { callApi } from '../../services/callApi'
 
 import { RequestParams, isObjectEmpty } from '../../helpers'
 
@@ -25,8 +25,29 @@ export const loginUser = createAsyncThunk(
         throw new Error(userData.message)
       }
       localStorage.setItem('token', JSON.stringify(userData.accessToken))
+      dispatch(setUserData(userData.user))
+      dispatch(setAuthStatus(true))
+    } catch (error) {
+      return rejectWithValue(error.message)
+    }
+  }
+)
+
+export const updateUserProfile = createAsyncThunk(
+  'todos/updateUserProfile',
+  async (data, { rejectWithValue, dispatch }) => {
+    try {
+      const { id } = data
+      const request = new RequestParams('PUT', `/profile/${id}`, data)
+      const userData = await callApi(request)
+
+      const isUserDataEmpty = isObjectEmpty(userData.data)
+      if (isUserDataEmpty) {
+        throw new Error(userData.message)
+      }
       dispatch(setAuthStatus(true))
       dispatch(setUserData(userData.data.user))
+      localStorage.setItem('token', JSON.stringify(userData.accessToken))
     } catch (error) {
       return rejectWithValue(error.message)
     }

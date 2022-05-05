@@ -1,0 +1,41 @@
+@import '../../scssStyles/variables';
+.auth {
+  flex-grow: 1;
+  height: 100%;
+  width: 550px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  &__container {
+    display: flex;
+    flex-direction: column;
+    padding: 5px 0;
+  }
+  &__form {
+    width: 70%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    &-input {
+      border-radius: 3px;
+      border-color: $mainTextColor;
+      outline: none;
+      padding: 10px;
+      &--error {
+        border-color: red;
+      }
+    }
+
+    &-sbmt-btn {
+      background-color: transparent;
+      border: none;
+      margin: 5px 0;
+      padding: 5px 0;
+      border-radius: 3px;
+      background-color: $success;
+      color: #fff;
+      cursor: pointer;
+    }
+  }
+}

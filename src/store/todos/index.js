@@ -12,6 +12,7 @@ import todoReducer, {
 import {
   loginUser,
   userRegistration,
+  updateUserProfile,
   logoutUser,
   checkAuth,
   fetchTodos,
@@ -36,6 +37,7 @@ export {
 export {
   loginUser,
   userRegistration,
+  updateUserProfile,
   logoutUser,
   checkAuth,
   fetchTodos,

@@ -2,11 +2,14 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import {
   fetchTodos,
+  updateUserProfile,
   sendToAddTodo,
   sentToUpdateTodo,
   sentToUpdateAllTodo,
   sendToDeleteTodo,
-  sendToDeleteCompletedTodo
+  sendToDeleteCompletedTodo,
+  loginUser,
+  userRegistration
 } from './asyncThunk'
 
 const initialState = {
@@ -75,7 +78,6 @@ const todosSlice = createSlice({
     [sendToAddTodo.fulfilled]: (state, { payload }) => {
       state.loading = 'succeded'
       state.error = ''
-
       state.error = payload
     },
     [sentToUpdateTodo.rejected]: (state, { payload }) => {
@@ -85,7 +87,6 @@ const todosSlice = createSlice({
     [sentToUpdateTodo.fulfilled]: (state, { payload }) => {
       state.loading = 'succeded'
       state.error = ''
-
       state.error = payload
     },
     [sentToUpdateAllTodo.rejected]: (state, { payload }) => {
@@ -95,28 +96,47 @@ const todosSlice = createSlice({
     [sentToUpdateAllTodo.fulfilled]: (state, { payload }) => {
       state.loading = 'succeded'
       state.error = ''
-
       state.error = payload
     },
     [sendToDeleteTodo.rejected]: (state, { payload }) => {
       state.loading = 'failed'
       state.error = payload
     },
-    [sendToDeleteTodo.fulfilled]: (state, { payload }) => {
+    [sendToDeleteTodo.fulfilled]: (state) => {
       state.loading = 'succeded'
       state.error = ''
-
-      state.error = payload
     },
     [sendToDeleteCompletedTodo.rejected]: (state, { payload }) => {
       state.loading = 'failed'
       state.error = payload
     },
-    [sendToDeleteCompletedTodo.fulfilled]: (state, { payload }) => {
+    [sendToDeleteCompletedTodo.fulfilled]: (state) => {
       state.loading = 'succeded'
       state.error = ''
-
+    },
+    [loginUser.rejected]: (state, { payload }) => {
+      state.loading = 'failed'
       state.error = payload
+    },
+    [loginUser.fulfilled]: (state) => {
+      state.loading = 'succeded'
+      state.error = ''
+    },
+    [userRegistration.rejected]: (state, { payload }) => {
+      state.loading = 'failed'
+      state.error = payload
+    },
+    [userRegistration.fulfilled]: (state) => {
+      state.loading = 'succeded'
+      state.error = ''
+    },
+    [updateUserProfile.rejected]: (state, { payload }) => {
+      state.loading = 'failed'
+      state.error = payload
+    },
+    [updateUserProfile.fulfilled]: (state) => {
+      state.loading = 'succeded'
+      state.error = ''
     }
   }
 })

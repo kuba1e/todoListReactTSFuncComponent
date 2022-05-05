@@ -5,7 +5,7 @@ import './Title.scss'
 
 export const Title = (props) => {
   const { className = '', children } = props
-  return <h1 className={`title ${className}`}>{children}</h1>
+  return <h4 className={`title ${className}`}>{children}</h4>
 }
 
 Title.propTypes = {
