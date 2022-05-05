@@ -21,8 +21,7 @@ export const EditProfilePage = (props) => {
       dispatch(
         updateUserProfile({
           email,
-          newPassword,
-          newPasswordConfirm,
+          ...(newPassword ? { newPassword } : {}),
           oldPassword,
           id
         })
@@ -63,12 +62,10 @@ export const EditProfilePage = (props) => {
       .matches(
         /^([a-zA-Z]+|\d+){6}$/,
         'Please, enter the password longer then 6 symbols'
-      )
-      .required('Please, enter the password'),
+      ),
     newPasswordConfirm: yup
       .string()
       .oneOf([yup.ref('newPassword'), null], 'Password must match')
-      .required('Please, enter the password')
   })
 
   return (
@@ -106,7 +103,7 @@ export const EditProfilePage = (props) => {
             </div>
             <div className='auth__container'>
               <label className='auth__form-label' htmlFor='oldPassword'>
-                Old password
+                Current password
               </label>
               <input
                 className={`auth__form-input ${

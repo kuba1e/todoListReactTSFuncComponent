@@ -1,3 +1,5 @@
+@import '../../scssStyles/variables';
+
 @keyframes ldio-wkwfpwn9uan {
   0% {
     transform: rotate(0deg);
@@ -15,7 +17,7 @@
   left: 30px;
   width: 140px;
   height: 140px;
-  background: #f5f5f5;
+  background: $mainPageColor;
 }
 .ldio-wkwfpwn9uan > div > div:nth-child(2) {
   top: 39.800000000000004px;

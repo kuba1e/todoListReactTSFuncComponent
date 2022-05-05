@@ -6,7 +6,7 @@
   display: flex;
   padding: 0 80px;
   justify-content: space-between;
-  background-color: rgb(235, 216, 216);
+  background-color: $mainPageColor;
   color: $mainTextColor;
   &__logo {
     height: 100%;

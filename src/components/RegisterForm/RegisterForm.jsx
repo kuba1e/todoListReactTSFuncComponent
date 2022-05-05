@@ -8,7 +8,7 @@ import { userRegistration } from '../../store/todos'
 import { todosSelector } from '../../store/selectors'
 
 export const RegisterForm = () => {
-  const { isAuth, error } = useSelector(todosSelector)
+  const { error } = useSelector(todosSelector)
   const dispatch = useDispatch()
 
   const handleSubmit = useCallback(({ email, password }, { resetForm }) => {
@@ -44,10 +44,6 @@ export const RegisterForm = () => {
       )
       .required('Please, enter the password')
   })
-
-  if (isAuth) {
-    return <Navigate to='/' replace />
-  }
 
   return (
     <div className='auth'>

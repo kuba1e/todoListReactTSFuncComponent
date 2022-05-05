@@ -13,8 +13,7 @@ import {
   sentToUpdateAllTodo,
   fetchTodos,
   sentToUpdateTodo,
-  sendToDeleteTodo,
-  checkAuth
+  sendToDeleteTodo
 } from '../../store/todos'
 
 import { getFilteredTodosList } from '../../helpers'

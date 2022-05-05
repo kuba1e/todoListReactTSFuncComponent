@@ -44,13 +44,12 @@ export const updateUserProfile = createAsyncThunk(
 
 export const userRegistration = createAsyncThunk(
   'todos/userRegistration',
-  async (data, { rejectWithValue, dispatch }) => {
+  async (data, { rejectWithValue }) => {
     try {
       const userData = await callApi('POST', '/registration', data)
-      dispatch(setAuthStatus(true))
-      dispatch(setUserData(userData.user))
-      localStorage.setItem('token', JSON.stringify(userData.accessToken))
+      // localStorage.setItem('token', JSON.stringify(userData.accessToken))
     } catch (error) {
+      console.log(error)
       return rejectWithValue(error.message)
     }
   }

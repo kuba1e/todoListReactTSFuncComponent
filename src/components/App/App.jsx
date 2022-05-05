@@ -22,7 +22,14 @@ export function App() {
         <Route path='/' element={<HomePage />} />
         <Route path='/login' element={<LoginForm />} />
         <Route path='/registration' element={<RegisterForm />} />
-        <Route path='/profile' element={<EditProfilePage />} />
+        <Route
+          path='/profile'
+          element={
+            <ProtectedRoute redirectPath='/'>
+              <EditProfilePage />
+            </ProtectedRoute>
+          }
+        />
         <Route element={<ProtectedRoute redirectPath='/' />}>
           <Route
             path='/todos'
