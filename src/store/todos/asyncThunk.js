@@ -20,10 +20,6 @@ export const loginUser = createAsyncThunk(
     try {
       const request = new RequestParams('POST', '/login', data)
       const userData = await callApi(request)
-      const isUserDataEmpty = isObjectEmpty(userData)
-      if (isUserDataEmpty) {
-        throw new Error(userData.message)
-      }
       localStorage.setItem('token', JSON.stringify(userData.accessToken))
       dispatch(setUserData(userData.user))
       dispatch(setAuthStatus(true))
@@ -41,12 +37,8 @@ export const updateUserProfile = createAsyncThunk(
       const request = new RequestParams('PUT', `/profile/${id}`, data)
       const userData = await callApi(request)
 
-      const isUserDataEmpty = isObjectEmpty(userData.data)
-      if (isUserDataEmpty) {
-        throw new Error(userData.message)
-      }
       dispatch(setAuthStatus(true))
-      dispatch(setUserData(userData.data.user))
+      dispatch(setUserData(userData.user))
       localStorage.setItem('token', JSON.stringify(userData.accessToken))
     } catch (error) {
       return rejectWithValue(error.message)
@@ -60,13 +52,8 @@ export const userRegistration = createAsyncThunk(
     try {
       const request = new RequestParams('POST', '/registration', data)
       const userData = await callApi(request)
-
-      const isUserDataEmpty = isObjectEmpty(userData.data)
-      if (isUserDataEmpty) {
-        throw new Error(userData.message)
-      }
       dispatch(setAuthStatus(true))
-      dispatch(setUserData(userData.data.user))
+      dispatch(setUserData(userData.user))
       localStorage.setItem('token', JSON.stringify(userData.accessToken))
     } catch (error) {
       return rejectWithValue(error.message)

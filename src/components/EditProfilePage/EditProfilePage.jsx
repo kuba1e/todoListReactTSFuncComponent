@@ -10,26 +10,34 @@ export const EditProfilePage = (props) => {
   const dispatch = useDispatch()
   const {
     error,
-    user: { id }
+    user: { id, email }
   } = useSelector(todosSelector)
 
-  const handleSubmit = useCallback(({ email, password }, { resetForm }) => {
-    dispatch(
-      updateUserProfile({
-        email,
-        password,
-        id
+  const handleSubmit = useCallback(
+    (
+      { email, newPassword, newPasswordConfirm, oldPassword },
+      { resetForm }
+    ) => {
+      dispatch(
+        updateUserProfile({
+          email,
+          newPassword,
+          newPasswordConfirm,
+          oldPassword,
+          id
+        })
+      )
+      resetForm({
+        values: {
+          email: '',
+          newPassword: '',
+          newPasswordConfirm: '',
+          oldPassword: ''
+        }
       })
-    )
-    resetForm({
-      values: {
-        email: '',
-        newPassword: '',
-        newPasswordConfirm: '',
-        oldPassword: ''
-      }
-    })
-  }, [])
+    },
+    []
+  )
 
   const initialValues = {
     email: '',
@@ -42,6 +50,7 @@ export const EditProfilePage = (props) => {
     email: yup
       .string()
       .email('Please, enter the correct email')
+      .notOneOf([email], 'This is your an old email')
       .required('Please enter the email'),
     oldPassword: yup
       .string()
@@ -60,6 +69,7 @@ export const EditProfilePage = (props) => {
     newPasswordConfirm: yup
       .string()
       .oneOf([yup.ref('newPassword'), null], 'Password must match')
+      .required('Please, enter the password')
   })
 
   return (
