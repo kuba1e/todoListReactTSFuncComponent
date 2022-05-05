@@ -96,7 +96,7 @@ export const RegisterForm = () => {
               />
               <p className='auth__form-input-helper'>
                 {errors.password && touched.password ? errors.password : ''}
-                {error ? 'Password or email is wrong' : ''}
+                {error || ''}
               </p>
             </div>
             <button className='auth__form-sbmt-btn'>Sign up</button>
