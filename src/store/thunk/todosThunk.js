@@ -10,7 +10,7 @@ import {
   deleteTodo,
   toggleAllDoneTodo,
   clearCompletedTodo
-} from './todosSlice'
+} from '../todos/todosSlice'
 
 export const loginUser = createAsyncThunk(
   'todos/loginUser',

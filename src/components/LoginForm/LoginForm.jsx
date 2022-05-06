@@ -6,6 +6,7 @@ import * as yup from 'yup'
 
 import './LoginForm.scss'
 
+// import { loginUser } from '../../store/thunk'
 import { loginUser } from '../../store/todos'
 import { todosSelector } from '../../store/selectors'
 
@@ -20,12 +21,14 @@ export const LoginForm = () => {
         password
       })
     )
+    /*
     resetForm({
       values: {
         email: '',
         password: ''
       }
     })
+    */
   }, [])
 
   const initialValues = {
@@ -102,9 +105,9 @@ export const LoginForm = () => {
               />
               <p className='auth__form-input-helper'>
                 {errors.password && touched.password ? errors.password : ''}
-                {error ? 'Password or email is wrong' : ''}
               </p>
             </div>
+            <p className='auth__form-input-error'>{error || ''}</p>
             <button className='auth__form-sbmt-btn'>Sign in</button>
           </Form>
         )}

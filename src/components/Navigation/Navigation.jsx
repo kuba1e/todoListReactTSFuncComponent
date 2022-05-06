@@ -8,6 +8,7 @@ import Button from '../UI/Button'
 
 import { todosSelector } from '../../store/selectors'
 import { logoutUser } from '../../store/todos'
+// import { logoutUser } from '../../store/thunk'
 
 export const Navigation = () => {
   const dispatch = useDispatch()

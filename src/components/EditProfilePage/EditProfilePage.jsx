@@ -5,6 +5,7 @@ import * as yup from 'yup'
 
 import { todosSelector } from '../../store/selectors'
 import { updateUserProfile } from '../../store/todos'
+// import { updateUserProfile } from '../../store/thunk'
 
 export const EditProfilePage = (props) => {
   const dispatch = useDispatch()

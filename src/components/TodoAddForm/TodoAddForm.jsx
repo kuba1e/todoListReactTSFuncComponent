@@ -5,6 +5,7 @@ import * as yup from 'yup'
 
 import './TodoAddForm.scss'
 
+// import { sendToAddTodo } from '../../store/thunk'
 import { sendToAddTodo } from '../../store/todos'
 
 export const TodoAddForm = () => {

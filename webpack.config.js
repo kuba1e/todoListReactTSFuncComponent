@@ -2,6 +2,7 @@ const path = require('path')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const Dotenv = require('dotenv-webpack')
 
 module.exports = (env = {}) => {
   const mode = env.production ? 'production' : 'development'
@@ -28,7 +29,8 @@ module.exports = (env = {}) => {
         title: 'Todos',
         template: './public/index.html'
       }),
-      new CleanWebpackPlugin()
+      new CleanWebpackPlugin(),
+      new Dotenv()
     ]
 
     if (mode === 'production') {
@@ -52,7 +54,8 @@ module.exports = (env = {}) => {
     devServer: {
       watchFiles: ['./public/*.html'],
       open: true,
-      port: 3000
+      port: 3000,
+      historyApiFallback: true
     },
     plugins: getPlugins(),
     module: {

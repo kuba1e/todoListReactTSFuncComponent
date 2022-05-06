@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import * as yup from 'yup'
 
+// import { userRegistration } from '../../store/thunk'
 import { userRegistration } from '../../store/todos'
 import { todosSelector } from '../../store/selectors'
 
@@ -99,6 +100,7 @@ export const RegisterForm = () => {
                 {error || ''}
               </p>
             </div>
+            <p className='auth__form-input-error'>{error || ''}</p>
             <button className='auth__form-sbmt-btn'>Sign up</button>
           </Form>
         )}

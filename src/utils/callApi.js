@@ -1,6 +1,6 @@
 export const callApi = async (method, path, data) => {
   try {
-    const baseUrl = 'http://localhost:4000'
+    const baseUrl = process.env.BASE_URL
     const token = localStorage.getItem('token')?.slice(1, -1) ?? ''
     const options = {
       method,

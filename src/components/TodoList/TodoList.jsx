@@ -15,6 +15,14 @@ import {
   sentToUpdateTodo,
   sendToDeleteTodo
 } from '../../store/todos'
+/*
+import {
+  sentToUpdateAllTodo,
+  fetchTodos,
+  sentToUpdateTodo,
+  sendToDeleteTodo
+} from '../../store/thunk'
+*/
 
 import { getFilteredTodosList } from '../../helpers'
 import { todosSelector } from '../../store/selectors'

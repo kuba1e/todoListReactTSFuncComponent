@@ -1,15 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 import {
-  fetchTodos,
+  loginUser,
+  userRegistration,
   updateUserProfile,
+  logoutUser,
+  checkAuth,
+  fetchTodos,
   sendToAddTodo,
   sentToUpdateTodo,
   sentToUpdateAllTodo,
   sendToDeleteTodo,
-  sendToDeleteCompletedTodo,
-  loginUser,
-  userRegistration
+  sendToDeleteCompletedTodo
 } from './asyncThunk'
 
 const initialState = {

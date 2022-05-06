@@ -6,6 +6,8 @@ import './TodoFooter.scss'
 import Button from '../UI/Button'
 
 import { sendToDeleteCompletedTodo, setFilterValue } from '../../store/todos'
+// import { sendToDeleteCompletedTodo } from '../../store/thunk'
+// import { setFilterValue } from '../../store/todos'
 
 import { getCompletedQuantity, getTodoCount } from '../../helpers'
 

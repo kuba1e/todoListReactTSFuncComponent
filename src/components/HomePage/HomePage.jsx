@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import Title from '../UI/Title'
 
+// import { checkAuth } from '../../store/thunk'
 import { checkAuth } from '../../store/todos'
 import { todosSelector } from '../../store/selectors'
 
