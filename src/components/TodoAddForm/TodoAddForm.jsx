@@ -5,12 +5,13 @@ import * as yup from 'yup'
 
 import './TodoAddForm.scss'
 
-// import { sendToAddTodo } from '../../store/thunk'
-import { sendToAddTodo } from '../../store/todos'
+import { sendToAddTodo } from '../../store/actions/todos'
 
 export const TodoAddForm = () => {
   const dispatch = useDispatch()
-  const handleSubmit = useCallback(({ label }, { resetForm }) => {
+  const handleSubmit = useCallback((values, formikApi) => {
+    const { label } = values
+    const { resetForm } = formikApi
     if (label) {
       dispatch(sendToAddTodo(label))
     }

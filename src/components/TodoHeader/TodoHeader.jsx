@@ -18,6 +18,10 @@ const TodoHeader = ({ todos, toggleAllDoneTodo }) => {
     toggleAllDoneTodo(isSelected)
   }, [isSelected])
 
+  useEffect(() => {
+    setSelected(areAllCompleted(todos))
+  }, [todos])
+
   const handleSelectAll = useCallback(() => {
     setSelected((isSelected) => !isSelected)
   }, [])

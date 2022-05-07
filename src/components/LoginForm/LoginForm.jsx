@@ -6,29 +6,21 @@ import * as yup from 'yup'
 
 import './LoginForm.scss'
 
-// import { loginUser } from '../../store/thunk'
-import { loginUser } from '../../store/todos'
-import { todosSelector } from '../../store/selectors'
+import { loginUser } from '../../store/actions/user'
+import { userSelector } from '../../store/selectors'
 
 export const LoginForm = () => {
-  const { isAuth, error } = useSelector(todosSelector)
+  const { isAuth, error } = useSelector(userSelector)
   const dispatch = useDispatch()
 
-  const handleSubmit = useCallback(({ email, password }, { resetForm }) => {
+  const handleSubmit = useCallback((values) => {
+    const { email, password } = values
     dispatch(
       loginUser({
         email,
         password
       })
     )
-    /*
-    resetForm({
-      values: {
-        email: '',
-        password: ''
-      }
-    })
-    */
   }, [])
 
   const initialValues = {

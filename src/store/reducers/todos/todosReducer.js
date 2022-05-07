@@ -29,7 +29,15 @@ const initialState = {
   error: ''
 }
 
-export const todosReducer = (state = initialState, { type, payload }) => {
+export const todosReducer = (state, { type, payload }) => {
+  if (state === undefined) {
+    return {
+      todosData: [],
+      filterValue: 'all',
+      loading: 'idle',
+      error: ''
+    }
+  }
 
   switch (type) {
     case ACTION_ADD_TO_DO:

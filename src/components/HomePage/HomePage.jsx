@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import Title from '../UI/Title'
 
-// import { checkAuth } from '../../store/thunk'
-import { checkAuth } from '../../store/todos'
+import { checkAuth } from '../../store/actions/user'
 import { todosSelector } from '../../store/selectors'
 
 export const HomePage = () => {
