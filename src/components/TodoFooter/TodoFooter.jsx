@@ -5,9 +5,10 @@ import './TodoFooter.scss'
 
 import Button from '../UI/Button'
 
-import { sendToDeleteCompletedTodo, setFilterValue } from '../../store/todos'
-// import { sendToDeleteCompletedTodo } from '../../store/thunk'
-// import { setFilterValue } from '../../store/todos'
+import {
+  sendToDeleteCompletedTodos,
+  setFilterValue
+} from '../../store/actions/todos'
 
 import { getCompletedQuantity, getTodoCount } from '../../helpers'
 
@@ -32,7 +33,7 @@ export const TodoFooter = () => {
   const dispatch = useDispatch()
 
   const handleDeleteCompletedTodo = useCallback(
-    () => dispatch(sendToDeleteCompletedTodo()),
+    () => dispatch(sendToDeleteCompletedTodos(todosData)),
     []
   )
 

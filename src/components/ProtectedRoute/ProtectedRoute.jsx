@@ -4,10 +4,10 @@ import PropTypes from 'prop-types'
 
 import { Navigate, Outlet } from 'react-router-dom'
 
-import { todosSelector } from '../../store/selectors'
+import { userSelector } from '../../store/selectors'
 
 export const ProtectedRoute = ({ children, redirectPath }) => {
-  const { isAuth } = useSelector(todosSelector)
+  const { isAuth } = useSelector(userSelector)
 
   if (!isAuth) {
     return <Navigate to={redirectPath} replace />

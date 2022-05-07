@@ -1,3 +1,3 @@
-import { todosSelector } from './selectors'
+import { todosSelector, userSelector } from './selectors'
 
-export { todosSelector }
+export { todosSelector, userSelector }

@@ -6,15 +6,13 @@ import './Navigation.scss'
 
 import Button from '../UI/Button'
 
-import { todosSelector } from '../../store/selectors'
-import { logoutUser } from '../../store/todos'
-// import { logoutUser } from '../../store/thunk'
+import { userSelector } from '../../store/selectors'
+import { logoutUser } from '../../store/actions/user'
 
 export const Navigation = () => {
   const dispatch = useDispatch()
-
-  const { isAuth, user } = useSelector(todosSelector)
-  const { email } = user
+  const { isAuth, userData } = useSelector(userSelector)
+  const { email } = userData
 
   const handleLogoutUser = useCallback(() => {
     dispatch(logoutUser())

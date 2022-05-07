@@ -3,24 +3,20 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form } from 'formik'
 import * as yup from 'yup'
 
-import { todosSelector } from '../../store/selectors'
-import { updateUserProfile } from '../../store/todos'
-// import { updateUserProfile } from '../../store/thunk'
+import { userSelector } from '../../store/selectors'
+import { updateUser } from '../../store/actions/user'
 
 export const EditProfilePage = (props) => {
   const dispatch = useDispatch()
   const {
     error,
-    user: { id, email }
-  } = useSelector(todosSelector)
+    userData: { id, email }
+  } = useSelector(userSelector)
 
   const handleSubmit = useCallback(
-    (
-      { email, newPassword, newPasswordConfirm, oldPassword },
-      { resetForm }
-    ) => {
+    ({ email, newPassword, oldPassword }, { resetForm }) => {
       dispatch(
-        updateUserProfile({
+        updateUser({
           email,
           ...(newPassword ? { newPassword } : {}),
           oldPassword,

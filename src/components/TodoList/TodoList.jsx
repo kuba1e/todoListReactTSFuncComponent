@@ -10,19 +10,11 @@ import TodoHeader from '../TodoHeader'
 import ErrorIndicator from '../ErrorIndicator'
 
 import {
-  sentToUpdateAllTodo,
+  sendToUpdateAllTodo,
   fetchTodos,
-  sentToUpdateTodo,
+  sendToUpdateTodo,
   sendToDeleteTodo
-} from '../../store/todos'
-/*
-import {
-  sentToUpdateAllTodo,
-  fetchTodos,
-  sentToUpdateTodo,
-  sendToDeleteTodo
-} from '../../store/thunk'
-*/
+} from '../../store/actions/todos'
 
 import { getFilteredTodosList } from '../../helpers'
 import { todosSelector } from '../../store/selectors'
@@ -62,20 +54,17 @@ export const TodoList = () => {
     handleCloseModal()
   }, [])
 
-  const handleToggleDone = useCallback(
-    (todo) => dispatch(sentToUpdateTodo(todo)),
-    []
-  )
+  const handleToggleDone = useCallback((todo) => {
+    dispatch(sendToUpdateTodo(todo))
+  }, [])
 
-  const handleEditTodo = useCallback(
-    (todo) => dispatch(sentToUpdateTodo(todo)),
-    []
-  )
+  const handleEditTodo = useCallback((todo) => {
+    dispatch(sendToUpdateTodo(todo))
+  }, [])
 
-  const handleAllDoneTodo = useCallback(
-    (done) => dispatch(sentToUpdateAllTodo(done)),
-    []
-  )
+  const handleAllDoneTodo = useCallback((done) => {
+    dispatch(sendToUpdateAllTodo(done))
+  }, [])
 
   const todosForRendering = getFilteredTodosList(filterValue, todosData)
 

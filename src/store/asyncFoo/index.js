@@ -1,26 +1,26 @@
 import {
+  fetchTodos,
   loginUser,
   userRegistration,
-  updateUserProfile,
   logoutUser,
+  updateUserProfile,
   checkAuth,
-  fetchTodos,
   sendToAddTodo,
-  sentToUpdateTodo,
+  sendToUpdateTodo,
   sentToUpdateAllTodo,
   sendToDeleteTodo,
   sendToDeleteCompletedTodo
-} from './todosThunk'
+} from './asyncFoo'
 
 export {
+  fetchTodos,
   loginUser,
   userRegistration,
-  updateUserProfile,
   logoutUser,
+  updateUserProfile,
   checkAuth,
-  fetchTodos,
   sendToAddTodo,
-  sentToUpdateTodo,
+  sendToUpdateTodo,
   sentToUpdateAllTodo,
   sendToDeleteTodo,
   sendToDeleteCompletedTodo
