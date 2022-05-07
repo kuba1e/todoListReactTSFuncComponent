@@ -9,7 +9,8 @@ import {
   ACTION_FAILED_TO_UPDATE_USER,
   ACTION_SET_USER_DATA,
   ACTION_SET_AUTH_STATUS,
-  ACTION_SET_REGISTRATION_USER
+  ACTION_SET_REGISTRATION_USER,
+  ACTION_RESET_USERS_ERROR
 } from '../../actions/user'
 
 const initialState = {
@@ -82,6 +83,14 @@ export const userReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         isRegistered: payload
+      }
+    case ACTION_RESET_USERS_ERROR:
+      return {
+        ...state,
+        loginError: '',
+        registrError: '',
+        updateError: '',
+        logoutError: ''
       }
 
     default:

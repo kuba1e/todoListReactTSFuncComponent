@@ -34,7 +34,7 @@ export const TodoFooter = () => {
 
   const handleDeleteCompletedTodo = useCallback(
     () => dispatch(sendToDeleteCompletedTodos(todosData)),
-    []
+    [todosData]
   )
 
   if (loading === 'pending' || loading === 'failed') {

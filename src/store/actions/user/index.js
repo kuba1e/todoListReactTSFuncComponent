@@ -11,6 +11,7 @@ import {
   ACTION_SET_AUTH_STATUS,
   ACTION_CHECK_AUTH,
   ACTION_SET_REGISTRATION_USER,
+  ACTION_RESET_USERS_ERROR,
   checkAuth,
   loginUser,
   updateUser,
@@ -22,7 +23,8 @@ import {
   failedToUpdateUser,
   setUserData,
   setAuthStatus,
-  setRegistrationUser
+  setRegistrationUser,
+  resetUserErrors
 } from './usersActions'
 
 export {
@@ -37,7 +39,8 @@ export {
   setUserData,
   setAuthStatus,
   checkAuth,
-  setRegistrationUser
+  setRegistrationUser,
+  resetUserErrors
 }
 
 export {
@@ -52,5 +55,6 @@ export {
   ACTION_SET_USER_DATA,
   ACTION_SET_AUTH_STATUS,
   ACTION_CHECK_AUTH,
-  ACTION_SET_REGISTRATION_USER
+  ACTION_SET_REGISTRATION_USER,
+  ACTION_RESET_USERS_ERROR
 }

@@ -1,6 +1,7 @@
-export const callApi = async (method, path, data) => {
+export const callApi = async (path, params = {}) => {
   try {
     const baseUrl = process.env.BASE_URL
+    const { method = 'GET', data, ...otherOptions } = params
     const token = localStorage.getItem('token')?.slice(1, -1) ?? ''
     const options = {
       method,
@@ -8,7 +9,8 @@ export const callApi = async (method, path, data) => {
         'Content-Type': 'application/json',
         ...(token ? { Authorization: `Bearer ${token}` } : {})
       },
-      ...(token ? { credentials: 'include' } : {})
+      ...(token ? { credentials: 'include' } : {}),
+      ...otherOptions
     }
 
     if (method !== 'GET' && data) {
@@ -20,9 +22,9 @@ export const callApi = async (method, path, data) => {
     const parsedResponse = await response.json()
 
     if (response.status === 401) {
-      const response = await callApi('GET', '/refresh')
+      const response = await callApi('/refresh')
       localStorage.setItem('token', JSON.stringify(response.accessToken))
-      return await callApi(method, path, data)
+      return await callApi(path, params)
     }
 
     if (!response.ok) {

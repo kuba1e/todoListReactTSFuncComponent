@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
@@ -6,12 +6,14 @@ import * as yup from 'yup'
 
 import './LoginForm.scss'
 
-import { loginUser } from '../../store/actions/user'
+import { loginUser, resetUserErrors } from '../../store/actions/user'
 import { userSelector } from '../../store/selectors'
 
 export const LoginForm = () => {
   const { isAuth, loginError } = useSelector(userSelector)
   const dispatch = useDispatch()
+
+  useEffect(() => () => dispatch(resetUserErrors()), [])
 
   const handleSubmit = useCallback((values) => {
     const { email, password } = values

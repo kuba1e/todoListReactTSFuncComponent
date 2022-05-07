@@ -67,3 +67,8 @@ export const ACTION_CHECK_AUTH = 'ACTION_CHECK_AUTH'
 export const checkAuth = () => ({
   type: ACTION_CHECK_AUTH
 })
+
+export const ACTION_RESET_USERS_ERROR = 'ACTION_RESET_USERS_ERROR'
+export const resetUserErrors = () => ({
+  type: ACTION_RESET_USERS_ERROR
+})

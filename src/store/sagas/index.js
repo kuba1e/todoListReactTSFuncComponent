@@ -1,3 +1,10 @@
-import rootSaga from './todosSaga'
+import { spawn, all } from 'redux-saga/effects'
 
-export default rootSaga
+import todosSaga from './todoSaga'
+
+import userSaga from './userSaga'
+
+export default function* rootSaga() {
+  const sagas = [todosSaga, userSaga]
+  yield all(sagas.map((saga) => spawn(saga)))
+}

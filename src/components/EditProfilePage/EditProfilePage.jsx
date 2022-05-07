@@ -1,17 +1,19 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form } from 'formik'
 import * as yup from 'yup'
 
 import { userSelector } from '../../store/selectors'
-import { updateUser } from '../../store/actions/user'
+import { updateUser, resetUserErrors } from '../../store/actions/user'
 
 export const EditProfilePage = (props) => {
   const dispatch = useDispatch()
   const {
-    error,
+    updateError,
     userData: { id, email }
   } = useSelector(userSelector)
+
+  useEffect(() => () => dispatch(resetUserErrors()), [])
 
   const handleSubmit = useCallback(
     ({ email, newPassword, oldPassword }, { resetForm }) => {
@@ -162,7 +164,7 @@ export const EditProfilePage = (props) => {
                 {errors.newPasswordConfirm && touched.newPasswordConfirm
                   ? errors.newPasswordConfirm
                   : ''}
-                {error ? 'Password or email is wrong' : ''}
+                {updateError ? 'Password or email is wrong' : ''}
               </p>
             </div>
             <button className='auth__form-sbmt-btn'>Save</button>

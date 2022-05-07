@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form } from 'formik'
 import * as yup from 'yup'
 
-import { userRegistration } from '../../store/actions/user'
+import { userRegistration, resetUserErrors } from '../../store/actions/user'
 import { userSelector } from '../../store/selectors'
 
 export const RegisterForm = () => {
@@ -12,13 +12,14 @@ export const RegisterForm = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  useEffect(() => () => dispatch(resetUserErrors()), [])
+
   if (isRegistered) {
     navigate('/login', { replace: true })
   }
 
-  const handleSubmit = useCallback((values, formikApi) => {
+  const handleSubmit = useCallback((values) => {
     const { email, password } = values
-    const { resetForm } = formikApi
     dispatch(
       userRegistration({
         email,
