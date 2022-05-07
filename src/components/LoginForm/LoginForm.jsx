@@ -10,7 +10,7 @@ import { loginUser } from '../../store/actions/user'
 import { userSelector } from '../../store/selectors'
 
 export const LoginForm = () => {
-  const { isAuth, error } = useSelector(userSelector)
+  const { isAuth, loginError } = useSelector(userSelector)
   const dispatch = useDispatch()
 
   const handleSubmit = useCallback((values) => {
@@ -99,7 +99,7 @@ export const LoginForm = () => {
                 {errors.password && touched.password ? errors.password : ''}
               </p>
             </div>
-            <p className='auth__form-input-error'>{error || ''}</p>
+            <p className='auth__form-input-error'>{loginError || ''}</p>
             <button className='auth__form-sbmt-btn'>Sign in</button>
           </Form>
         )}

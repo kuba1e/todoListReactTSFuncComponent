@@ -1,4 +1,4 @@
-import { put, call, takeEvery, takeLatest } from 'redux-saga/effects'
+import { put, call, takeEvery, take, cancel, fork } from 'redux-saga/effects'
 
 import {
   fetchTodos,
@@ -42,6 +42,7 @@ import {
   failedToUpdateUser,
   setUserData,
   setAuthStatus,
+  setRegistrationUser,
   ACTION_LOGIN_USER,
   ACTION_CHECK_AUTH,
   ACTION_LOGOUT_USER,
@@ -81,6 +82,7 @@ function* logoutUserWorker() {
 function* userRegistrationWorker(action) {
   try {
     yield call(userRegistration, action.payload)
+    yield put(setRegistrationUser(true))
   } catch (error) {
     yield put(failedToRegisterUser(error.message))
   }
@@ -151,7 +153,7 @@ function* sendToDeleteCompletedTodoWorker(action) {
 }
 
 export default function* rootSaga() {
-  yield takeLatest(ACTION_FETCH_TODOS, fetchTodosWorker)
+  yield takeEvery(ACTION_FETCH_TODOS, fetchTodosWorker)
   yield takeEvery(ACTION_LOGIN_USER, loginUserWorker)
   yield takeEvery(ACTION_CHECK_AUTH, checkAuthWorker)
   yield takeEvery(ACTION_LOGOUT_USER, logoutUserWorker)

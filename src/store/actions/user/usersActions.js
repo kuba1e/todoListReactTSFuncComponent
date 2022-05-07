@@ -51,6 +51,12 @@ export const setUserData = (userData) => ({
   payload: userData
 })
 
+export const ACTION_SET_REGISTRATION_USER = 'ACTION_SET_REGISTRATION_USER'
+export const setRegistrationUser = (userData) => ({
+  type: ACTION_SET_REGISTRATION_USER,
+  payload: userData
+})
+
 export const ACTION_SET_AUTH_STATUS = 'ACTION_SET_AUTH_STATUS'
 export const setAuthStatus = (status) => ({
   type: ACTION_SET_AUTH_STATUS,

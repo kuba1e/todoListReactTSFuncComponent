@@ -1,11 +1,9 @@
-import todosReducer from './todos'
-import userReducer from './user'
+import { combineReducers } from 'redux'
 
-export const rootReducer = (state, action) => {
-  console.log(action.type)
-  console.log(state)
-  return {
-    todos: todosReducer(state, action),
-    user: userReducer(state, action)
-  }
-}
+import todos from './todos'
+import user from './user'
+
+export default combineReducers({
+  todos,
+  user
+})

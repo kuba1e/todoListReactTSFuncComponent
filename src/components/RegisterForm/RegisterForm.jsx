@@ -1,29 +1,30 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Navigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import * as yup from 'yup'
 
 import { userRegistration } from '../../store/actions/user'
-import { todosSelector } from '../../store/selectors'
+import { userSelector } from '../../store/selectors'
 
 export const RegisterForm = () => {
-  const { error } = useSelector(todosSelector)
+  const { registrError, isRegistered } = useSelector(userSelector)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const handleSubmit = useCallback(({ email, password }, { resetForm }) => {
+  if (isRegistered) {
+    navigate('/login', { replace: true })
+  }
+
+  const handleSubmit = useCallback((values, formikApi) => {
+    const { email, password } = values
+    const { resetForm } = formikApi
     dispatch(
       userRegistration({
         email,
         password
       })
     )
-    resetForm({
-      values: {
-        email: '',
-        password: ''
-      }
-    })
   }, [])
 
   const initialValues = {
@@ -96,10 +97,9 @@ export const RegisterForm = () => {
               />
               <p className='auth__form-input-helper'>
                 {errors.password && touched.password ? errors.password : ''}
-                {error || ''}
               </p>
             </div>
-            <p className='auth__form-input-error'>{error || ''}</p>
+            <p className='auth__form-input-error'>{registrError || ''}</p>
             <button className='auth__form-sbmt-btn'>Sign up</button>
           </Form>
         )}
