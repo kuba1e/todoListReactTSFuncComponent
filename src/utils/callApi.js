@@ -9,7 +9,7 @@ export const callApi = async (path, params = {}) => {
         'Content-Type': 'application/json',
         ...(token ? { Authorization: `Bearer ${token}` } : {})
       },
-      ...(token ? { credentials: 'include' } : {}),
+      credentials: 'include',
       ...otherOptions
     }
 

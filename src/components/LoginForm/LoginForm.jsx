@@ -102,7 +102,9 @@ export const LoginForm = () => {
               </p>
             </div>
             <p className='auth__form-input-error'>{loginError || ''}</p>
-            <button className='auth__form-sbmt-btn'>Sign in</button>
+            <button className='auth__form-sbmt-btn' type='sumit'>
+              Sign in
+            </button>
           </Form>
         )}
       </Formik>

@@ -167,7 +167,9 @@ export const EditProfilePage = (props) => {
                 {updateError ? 'Password or email is wrong' : ''}
               </p>
             </div>
-            <button className='auth__form-sbmt-btn'>Save</button>
+            <button className='auth__form-sbmt-btn' type='sumit'>
+              Save
+            </button>
           </Form>
         )}
       </Formik>

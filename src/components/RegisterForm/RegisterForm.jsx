@@ -101,7 +101,9 @@ export const RegisterForm = () => {
               </p>
             </div>
             <p className='auth__form-input-error'>{registrError || ''}</p>
-            <button className='auth__form-sbmt-btn'>Sign up</button>
+            <button className='auth__form-sbmt-btn' type='sumit'>
+              Sign up
+            </button>
           </Form>
         )}
       </Formik>
