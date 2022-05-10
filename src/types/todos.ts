@@ -22,95 +22,95 @@ export enum TodosActionType {
   ACTION_FAILED_TO_DELETE_COMPLETED_TODOS = 'ACTION_FAILED_TO_DELETE_COMPLETED_TODOS'
 }
 
-interface AddTodoAction {
+interface IAddTodoAction {
   type: TodosActionType.ACTION_ADD_TO_DO
   payload: ITodo
 }
 
-interface DeleteTodoAction {
+interface IDeleteTodoAction {
   type: TodosActionType.ACTION_DELETE_TO_DO
   payload: number
 }
 
-interface ToggleDoneAllTodoAction {
+interface IToggleDoneAllTodoAction {
   type: TodosActionType.ACTION_TOGGLE_DONE_ALL_TO_DO
   payload: boolean
 }
 
-interface ClearCompletedTodoAction {
+interface IClearCompletedTodoAction {
   type: TodosActionType.ACTION_CLEAR_COMPLETED_TO_DO
 }
 
-interface SetFilterValueAction {
+interface ISetFilterValueAction {
   type: TodosActionType.ACTION_SET_FILTER_VALUE
   payload: string
 }
 
-interface EditTodoAction {
+interface IEditTodoAction {
   type: TodosActionType.ACTION_EDIT_TO_DO
   payload: ITodo
 }
 
-interface FetchTodosAction {
+interface IFetchTodosAction {
   type: TodosActionType.ACTION_FETCH_TODOS
 }
 
-interface SuccessfulFetchedTodos {
+interface ISuccessfulFetchedTodos {
   type: TodosActionType.ACTION_SUCCESSFUL_FETCHED_TODOS
   payload: ITodo[]
 }
 
-interface FailedToFetchTodosAction {
+interface IFailedToFetchTodosAction {
   type: TodosActionType.ACTION_FAILED_TO_FETCH_TODOS
   payload: string
 }
 
-export interface SendToUpdateTodo {
+export interface ISendToUpdateTodo {
   type: TodosActionType.ACTION_SEND_TO_UPDATE_TODO
   payload: ITodo
 }
 
-interface FailedToUpdateTodosAction {
+interface IFailedToUpdateTodosAction {
   type: TodosActionType.ACTION_FAILED_TO_UPDATE_TODO
   payload: string
 }
 
-export interface SendToAddTodo {
+export interface ISendToAddTodo {
   type: TodosActionType.ACTION_SEND_TO_ADD_TODO
   payload: string
 }
 
-interface FailedToSendToAddTodoAction {
+interface IFailedToSendToAddTodoAction {
   type: TodosActionType.ACTION_FAILED_TO_SEND_TO_ADD_TODO
   payload: string
 }
 
-export interface sendToUpdateAllTodo {
+export interface ISendToUpdateAllTodo {
   type: TodosActionType.ACTION_SEND_TO_UPDATED_ALL_TODO
   payload: boolean
 }
 
-interface FailedToUpdateAllTodoAction {
+interface IFailedToUpdateAllTodoAction {
   type: TodosActionType.ACTION_FAILED_TO_UPDATE_ALL_TODO
   payload: string
 }
 
-export interface SendToDelete {
+export interface ISendToDelete {
   type: TodosActionType.ACTION_SEND_TO_DELETE_TODO
   payload: number
 }
 
-interface FailedToDeleteTodoAction {
+interface IFailedToDeleteTodoAction {
   type: TodosActionType.ACTION_FAILED_TO_DELETE_TODO
   payload: string
 }
 
-export interface SendToDeleteCompletedTodos {
+export interface ISendToDeleteCompletedTodos {
   type: TodosActionType.ACTION_SEND_TO_DELETE_COMPLETED_TODOS
   payload: ITodo[]
 }
 
-interface FailedToDeleteCompletedTodoAction {
+interface IFailedToDeleteCompletedTodoAction {
   type: TodosActionType.ACTION_FAILED_TO_DELETE_COMPLETED_TODOS
   payload: string
 }
@@ -122,17 +122,17 @@ export interface ITodosReducer {
   error: string
 }
 export type TodosAction =
-  | AddTodoAction
-  | DeleteTodoAction
-  | ToggleDoneAllTodoAction
-  | ClearCompletedTodoAction
-  | SetFilterValueAction
-  | EditTodoAction
-  | FetchTodosAction
-  | SuccessfulFetchedTodos
-  | FailedToFetchTodosAction
-  | FailedToUpdateTodosAction
-  | FailedToSendToAddTodoAction
-  | FailedToUpdateAllTodoAction
-  | FailedToDeleteTodoAction
-  | FailedToDeleteCompletedTodoAction
+  | IAddTodoAction
+  | IDeleteTodoAction
+  | IToggleDoneAllTodoAction
+  | IClearCompletedTodoAction
+  | ISetFilterValueAction
+  | IEditTodoAction
+  | IFetchTodosAction
+  | ISuccessfulFetchedTodos
+  | IFailedToFetchTodosAction
+  | IFailedToUpdateTodosAction
+  | IFailedToSendToAddTodoAction
+  | IFailedToUpdateAllTodoAction
+  | IFailedToDeleteTodoAction
+  | IFailedToDeleteCompletedTodoAction

@@ -26,74 +26,74 @@ export interface IUserReducer {
   logoutError: string
 }
 
-export interface LoginUserAction {
+export interface ILoginUserAction {
   type: UserActionType.ACTION_LOGIN_USER
   payload: ICredentials
 }
 
-interface FailedToLoginAction {
+interface IFailedToLoginAction {
   type: UserActionType.ACTION_FAILED_TO_LOGIN_USER
   payload: string
 }
 
-interface LogoutUserAction {
+interface ILogoutUserAction {
   type: UserActionType.ACTION_LOGOUT_USER
 }
 
-interface FailedToLogoutUserAction {
+interface IFailedToLogoutUserAction {
   type: UserActionType.ACTION_FAILED_TO_LOGOUT_USER
   payload: string
 }
 
-export interface UserRegistrationAction {
+export interface IUserRegistrationAction {
   type: UserActionType.ACTION_USER_REGISTRATION
   payload: ICredentials
 }
 
-interface FailedToRegisterUser {
+interface IFailedToRegisterUser {
   type: UserActionType.ACTION_FAILED_TO_REGISTER_USER
   payload: string
 }
 
-export interface UpdateUserAction {
+export interface IUpdateUserAction {
   type: UserActionType.ACTION_UPDATE_USER
   payload: IUserToUpdate
 }
 
-interface FailedToUpdateUserAction {
+interface IFailedToUpdateUserAction {
   type: UserActionType.ACTION_FAILED_TO_UPDATE_USER
   payload: string
 }
 
-interface SetUserDataAction {
+interface ISetUserDataAction {
   type: UserActionType.ACTION_SET_USER_DATA
   payload: IUserData
 }
 
-interface SetAuthStatusAction {
+interface ISetAuthStatusAction {
   type: UserActionType.ACTION_SET_AUTH_STATUS
   payload: boolean
 }
 
-interface SetRegistrationUserAction {
+interface ISetRegistrationUserAction {
   type: UserActionType.ACTION_SET_REGISTRATION_USER
   payload: boolean
 }
 
-interface ResetErrorsAction {
+interface IResetErrorsAction {
   type: UserActionType.ACTION_RESET_USERS_ERROR
 }
 
 export type UserAction =
-  | LoginUserAction
-  | FailedToLoginAction
-  | LogoutUserAction
-  | FailedToLogoutUserAction
-  | UserRegistrationAction
-  | FailedToRegisterUser
-  | UpdateUserAction
-  | FailedToUpdateUserAction
-  | SetUserDataAction
-  | SetAuthStatusAction
-  | SetRegistrationUserAction
-  | ResetErrorsAction
+  | ILoginUserAction
+  | IFailedToLoginAction
+  | ILogoutUserAction
+  | IFailedToLogoutUserAction
+  | IUserRegistrationAction
+  | IFailedToRegisterUser
+  | IUpdateUserAction
+  | IFailedToUpdateUserAction
+  | ISetUserDataAction
+  | ISetAuthStatusAction
+  | ISetRegistrationUserAction
+  | IResetErrorsAction

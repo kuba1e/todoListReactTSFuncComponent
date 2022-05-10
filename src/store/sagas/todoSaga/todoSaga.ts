@@ -41,11 +41,11 @@ import {
 } from '../../actions/todos'
 
 import {
-  SendToAddTodo,
-  SendToUpdateTodo,
-  sendToUpdateAllTodo,
-  SendToDelete,
-  SendToDeleteCompletedTodos
+  ISendToAddTodo,
+  ISendToUpdateTodo,
+  ISendToUpdateAllTodo,
+  ISendToDelete,
+  ISendToDeleteCompletedTodos
 } from '../../../types/todos'
 
 import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
@@ -68,7 +68,7 @@ function* fetchTodosWorker(signal: AbortSignal) {
   }
 }
 
-function* sendToAddTodoWorker(action: SendToAddTodo) {
+function* sendToAddTodoWorker(action: ISendToAddTodo) {
   try {
     const newTodo: NewTodo = yield call(sendToAddTodo, action.payload)
     yield put(addTodo(newTodo))
@@ -82,7 +82,7 @@ function* sendToAddTodoWorker(action: SendToAddTodo) {
   }
 }
 
-function* sendToUpdateTodoWorker(action: SendToUpdateTodo) {
+function* sendToUpdateTodoWorker(action: ISendToUpdateTodo) {
   try {
     console.log(action.payload)
 
@@ -101,7 +101,7 @@ function* sendToUpdateTodoWorker(action: SendToUpdateTodo) {
   }
 }
 
-function* sendToUpdateAllTodoWorker(action: sendToUpdateAllTodo) {
+function* sendToUpdateAllTodoWorker(action: ISendToUpdateAllTodo) {
   try {
     yield call(sentToUpdateAllTodo, action.payload)
     yield put(toggleAllDoneTodo(action.payload))
@@ -115,7 +115,7 @@ function* sendToUpdateAllTodoWorker(action: sendToUpdateAllTodo) {
   }
 }
 
-function* sendToDeleteTodoWorker(action: SendToDelete) {
+function* sendToDeleteTodoWorker(action: ISendToDelete) {
   try {
     yield call(sendToDeleteTodo, action.payload)
     yield put(deleteTodo(action.payload))
@@ -129,7 +129,7 @@ function* sendToDeleteTodoWorker(action: SendToDelete) {
   }
 }
 
-function* sendToDeleteCompletedTodoWorker(action: SendToDeleteCompletedTodos) {
+function* sendToDeleteCompletedTodoWorker(action: ISendToDeleteCompletedTodos) {
   try {
     yield call(sendToDeleteCompletedTodo, action.payload)
     yield put(clearCompleted())
@@ -158,11 +158,11 @@ function* fetchTodosWatcher(): Generator<StrictEffect, any, Task> {
 }
 
 function* updateTodoWatcher() {
-  const channel: ActionPattern<SendToUpdateTodo> = yield actionChannel(
+  const channel: ActionPattern<ISendToUpdateTodo> = yield actionChannel(
     TodosActionType.ACTION_SEND_TO_UPDATE_TODO
   )
   while (true) {
-    const action: SendToUpdateTodo = yield take(channel)
+    const action: ISendToUpdateTodo = yield take(channel)
     yield call(sendToUpdateTodoWorker, action)
   }
 }

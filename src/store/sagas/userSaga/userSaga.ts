@@ -26,10 +26,10 @@ import {
 } from '../../actions/user'
 
 import {
-  UpdateUserAction,
+  IUpdateUserAction,
   UserActionType,
-  UserRegistrationAction,
-  LoginUserAction
+  IUserRegistrationAction,
+  ILoginUserAction
 } from '../../../types/user'
 
 import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
@@ -37,7 +37,7 @@ import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
 type UserData = SagaReturnType<typeof loginUser>
 type UpdatedUser = SagaReturnType<typeof updateUserProfile>
 
-function* loginUserWorker(action: LoginUserAction) {
+function* loginUserWorker(action: ILoginUserAction) {
   try {
     const userData: UserData = yield call(loginUser, action.payload)
     yield put(setUserData(userData.user))
@@ -68,7 +68,7 @@ function* logoutUserWorker() {
   }
 }
 
-function* userRegistrationWorker(action: UserRegistrationAction) {
+function* userRegistrationWorker(action: IUserRegistrationAction) {
   try {
     yield call(userRegistration, action.payload)
     yield put(setRegistrationUser(true))
@@ -82,7 +82,7 @@ function* userRegistrationWorker(action: UserRegistrationAction) {
   }
 }
 
-function* updateUserProfileWorker(action: UpdateUserAction) {
+function* updateUserProfileWorker(action: IUpdateUserAction) {
   try {
     const updatedUser: UpdatedUser = yield call(
       updateUserProfile,
