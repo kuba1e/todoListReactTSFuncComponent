@@ -84,6 +84,8 @@ function* sendToAddTodoWorker(action: SendToAddTodo) {
 
 function* sendToUpdateTodoWorker(action: SendToUpdateTodo) {
   try {
+    console.log(action.payload)
+
     const updatedTodo: UpdatedTodo = yield call(
       sendToUpdateTodo,
       action.payload
@@ -152,7 +154,6 @@ function* fetchTodosWatcher(): Generator<StrictEffect, any, Task> {
       abortController = new AbortController()
     }
     task = yield fork(fetchTodosWorker, abortController.signal)
-    console.log(TodosActionType.ACTION_FETCH_TODOS)
   }
 }
 
@@ -161,8 +162,8 @@ function* updateTodoWatcher() {
     TodosActionType.ACTION_SEND_TO_UPDATE_TODO
   )
   while (true) {
-    const { payload } = yield take(channel)
-    yield call(sendToUpdateTodoWorker, payload)
+    const action: SendToUpdateTodo = yield take(channel)
+    yield call(sendToUpdateTodoWorker, action)
   }
 }
 

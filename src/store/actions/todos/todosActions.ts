@@ -36,7 +36,7 @@ export const failedToSendToAddTodo = (error: string) =>
   action(TodosActionType.ACTION_FAILED_TO_SEND_TO_ADD_TODO, error)
 
 export const sendToUpdateTodo = (data: ITodo) =>
-  action(TodosActionType.ACTION_SEND_TO_DELETE_TODO, data)
+  action(TodosActionType.ACTION_SEND_TO_UPDATE_TODO, data)
 
 export const failedToUpdateTodo = (error: string) =>
   action(TodosActionType.ACTION_FAILED_TO_UPDATE_TODO, error)

@@ -35,7 +35,6 @@ export async function callApi<T>(path: string, params?: Params): Promise<T> {
     }
 
     const response: Response = await fetch(baseUrl + path, options)
-    console.log(response)
 
     const parsedResponse: ParsedResponse = await response.json()
 

@@ -57,7 +57,8 @@ export const TodoListItem: FC<TodoListItem> = ({
     []
   )
 
-  const onCheckboxChange = () => {
+  const onCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.stopPropagation()
     const { done } = todo
     onToggleDone({ ...todo, done: !done })
   }
