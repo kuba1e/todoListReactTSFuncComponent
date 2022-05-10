@@ -13,7 +13,6 @@ import { useTypedSelector } from '../../hooks/useTypedSelector'
 export const Navigation: FC = () => {
   const dispatch = useDispatch()
   const { isAuth, userData } = useTypedSelector(userSelector)
-  console.log(userData)
   const { email } = userData ?? {}
 
   const handleLogoutUser = useCallback(() => {

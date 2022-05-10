@@ -20,5 +20,5 @@ export const ProtectedRoute: FC<ProtectedRouteProps & RouteProps> = ({
     return <Navigate to={redirectPath} replace />
   }
 
-  return children
+  return children ?? null
 }
