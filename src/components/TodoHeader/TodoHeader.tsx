@@ -6,7 +6,7 @@ import Button from '../UI/Button'
 import TodoAddForm from '../TodoAddForm'
 
 import { areAllCompleted } from '../../helpers'
-import { ITodo } from '../../types'
+import { ITodo } from '../../types/generalTypes'
 
 interface TodoHeader {
   todos: ITodo[]

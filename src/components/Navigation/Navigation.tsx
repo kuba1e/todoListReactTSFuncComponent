@@ -8,10 +8,11 @@ import Button from '../UI/Button'
 
 import { userSelector } from '../../store/selectors'
 import { logoutUser } from '../../store/actions/user'
+import { useTypedSelector } from '../../hooks/useTypedSelector'
 
 export const Navigation: FC = () => {
   const dispatch = useDispatch()
-  const { isAuth, userData } = useSelector(userSelector)
+  const { isAuth, userData } = useTypedSelector(userSelector)
   const { email } = userData
 
   const handleLogoutUser = useCallback(() => {

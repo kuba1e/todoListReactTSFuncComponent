@@ -2,26 +2,17 @@ import {
   put,
   call,
   takeEvery,
-  take,
-  cancel,
-  fork,
-  actionChannel,
   all,
-  spawn
+  spawn,
+  SagaReturnType
 } from 'redux-saga/effects'
 
 import {
-  fetchTodos,
   loginUser,
   logoutUser,
   userRegistration,
   updateUserProfile,
-  checkAuth,
-  sendToAddTodo,
-  sendToUpdateTodo,
-  sentToUpdateAllTodo,
-  sendToDeleteTodo,
-  sendToDeleteCompletedTodo
+  checkAuth
 } from '../../asyncFoo'
 
 import {
@@ -31,17 +22,23 @@ import {
   failedToUpdateUser,
   setUserData,
   setAuthStatus,
-  setRegistrationUser,
-  ACTION_LOGIN_USER,
-  ACTION_CHECK_AUTH,
-  ACTION_LOGOUT_USER,
-  ACTION_USER_REGISTRATION,
-  ACTION_UPDATE_USER
+  setRegistrationUser
 } from '../../actions/user'
 
-function* loginUserWorker(action) {
+import {
+  UpdateUserAction,
+  UserActionType,
+  UserRegistrationAction
+} from '../../../types/user'
+
+import { LoginUserAction } from '../../../types/user'
+
+type UserData = SagaReturnType<typeof loginUser>
+type UpdatedUser = SagaReturnType<typeof updateUserProfile>
+
+function* loginUserWorker(action: LoginUserAction) {
   try {
-    const userData = yield call(loginUser, action.payload)
+    const userData: UserData = yield call(loginUser, action.payload)
     yield put(setUserData(userData.user))
     yield put(setAuthStatus(true))
   } catch (error) {
@@ -53,13 +50,13 @@ function* logoutUserWorker() {
   try {
     yield call(logoutUser)
     yield put(setAuthStatus(false))
-    yield put(setUserData({}))
+    yield put(setUserData({ id: '', email: '', isActivated: false }))
   } catch (error) {
     yield put(failedToLogoutUser(error.message))
   }
 }
 
-function* userRegistrationWorker(action) {
+function* userRegistrationWorker(action: UserRegistrationAction) {
   try {
     yield call(userRegistration, action.payload)
     yield put(setRegistrationUser(true))
@@ -68,9 +65,12 @@ function* userRegistrationWorker(action) {
   }
 }
 
-function* updateUserProfileWorker(action) {
+function* updateUserProfileWorker(action: UpdateUserAction) {
   try {
-    const updatedUser = yield call(updateUserProfile, action.payload)
+    const updatedUser: UpdatedUser = yield call(
+      updateUserProfile,
+      action.payload
+    )
     yield put(setUserData(updatedUser))
   } catch (error) {
     yield put(failedToUpdateUser(error.message))
@@ -79,7 +79,7 @@ function* updateUserProfileWorker(action) {
 
 function* checkAuthWorker() {
   try {
-    const userData = yield call(checkAuth)
+    const userData: UserData = yield call(checkAuth)
     yield put(setUserData(userData.user))
     yield put(setAuthStatus(true))
   } catch (error) {
@@ -88,23 +88,26 @@ function* checkAuthWorker() {
 }
 
 function* loginUserWatcher() {
-  yield takeEvery(ACTION_LOGIN_USER, loginUserWorker)
+  yield takeEvery(UserActionType.ACTION_LOGIN_USER, loginUserWorker)
 }
 
 function* checkAuthWatcher() {
-  yield takeEvery(ACTION_CHECK_AUTH, checkAuthWorker)
+  yield takeEvery(UserActionType.ACTION_CHECK_AUTH, checkAuthWorker)
 }
 
 function* logoutUserWatcher() {
-  yield takeEvery(ACTION_LOGOUT_USER, logoutUserWorker)
+  yield takeEvery(UserActionType.ACTION_LOGOUT_USER, logoutUserWorker)
 }
 
 function* userRegistrationWatcher() {
-  yield takeEvery(ACTION_USER_REGISTRATION, userRegistrationWorker)
+  yield takeEvery(
+    UserActionType.ACTION_USER_REGISTRATION,
+    userRegistrationWorker
+  )
 }
 
 function* updateUserProfileWatcher() {
-  yield takeEvery(ACTION_UPDATE_USER, updateUserProfileWorker)
+  yield takeEvery(UserActionType.ACTION_UPDATE_USER, updateUserProfileWorker)
 }
 
 export default function* userSaga() {

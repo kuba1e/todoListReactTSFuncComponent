@@ -1,4 +1,4 @@
-export const callApi = async (path, params = {}) => {
+export const callApi = async (path: string, params = {}) => {
   try {
     const baseUrl = process.env.BASE_URL
     const { method = 'GET', data, ...otherOptions } = params
@@ -30,6 +30,17 @@ export const callApi = async (path, params = {}) => {
     if (!response.ok) {
       throw new Error(parsedResponse.message)
     }
+
+    if (response.status === 400) {
+      new DbConcurrencyError(response.data, response.status)
+    }
+
+    if (response.status === 500) {
+      new InternalServerError(response.data, response.status)
+    }
+
+    // Generic Error Response
+    return new ErrorResponse(response.data, response.status)
 
     return parsedResponse.data
   } catch (error) {

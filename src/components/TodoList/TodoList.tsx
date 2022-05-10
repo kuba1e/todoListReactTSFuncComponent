@@ -19,7 +19,7 @@ import {
 import { getFilteredTodosList } from '../../helpers'
 import { todosSelector } from '../../store/selectors'
 
-import { ITodo } from '../../types/types'
+import { ITodo } from '../../types/generalTypes'
 
 export const TodoList: FC = () => {
   const [isConfirmModalActive, setConfirmModalActive] = useState(false)
@@ -34,40 +34,37 @@ export const TodoList: FC = () => {
     dispatch(fetchTodos())
   }, [])
 
-  const handleCloseModal = useCallback((): void => {
+  const handleCloseModal = useCallback(() => {
     setConfirmModalActive(false)
   }, [])
 
-  const handleShowModal = useCallback((id: number): void => {
+  const handleShowModal = useCallback((id: number) => {
     setConfirmModalActive(true)
     setId(id)
   }, [])
 
-  const handleDeleteTodo = useCallback((id: number): void => {
+  const handleDeleteTodo = useCallback((id: number) => {
     dispatch(sendToDeleteTodo(id))
   }, [])
 
-  const handleSetEditedTodoActive = useCallback(
-    (editedTodoActive: number): void => {
-      setEditedTodoActive(editedTodoActive)
-    },
-    []
-  )
+  const handleSetEditedTodoActive = useCallback((editedTodoActive: number) => {
+    setEditedTodoActive(editedTodoActive)
+  }, [])
 
   const handleConfirmModal = useCallback((id: number) => {
     handleDeleteTodo(id)
     handleCloseModal()
   }, [])
 
-  const handleToggleDone = useCallback((todo: ITodo): void => {
+  const handleToggleDone = useCallback((todo: ITodo) => {
     dispatch(sendToUpdateTodo(todo))
   }, [])
 
-  const handleEditTodo = useCallback((todo: ITodo): void => {
+  const handleEditTodo = useCallback((todo: ITodo) => {
     dispatch(sendToUpdateTodo(todo))
   }, [])
 
-  const handleAllDoneTodo = useCallback((done: boolean): void => {
+  const handleAllDoneTodo = useCallback((done: boolean) => {
     dispatch(sendToUpdateAllTodo(done))
   }, [])
 

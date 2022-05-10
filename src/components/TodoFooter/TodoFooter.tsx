@@ -1,5 +1,5 @@
 import React, { useCallback, FC } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import './TodoFooter.scss'
 
@@ -13,6 +13,7 @@ import {
 import { getCompletedQuantity, getTodoCount } from '../../helpers'
 
 import { todosSelector } from '../../store/selectors'
+import { useTypedSelector } from '../../hooks/useTypedSelector'
 
 const filters = [
   {
@@ -29,7 +30,7 @@ const filters = [
 ]
 
 export const TodoFooter: FC = () => {
-  const { todosData, loading, filterValue } = useSelector(todosSelector)
+  const { todosData, loading, filterValue } = useTypedSelector(todosSelector)
   const dispatch = useDispatch()
 
   const handleDeleteCompletedTodo = useCallback(

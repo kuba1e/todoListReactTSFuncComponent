@@ -5,7 +5,7 @@ import './TodoListItem.scss'
 import Button from '../UI/Button'
 import Checkbox from '../UI/Checkbox'
 
-import { ITodo } from '../../types/types'
+import { ITodo } from '../../types/generalTypes'
 
 interface TodoListItem {
   todo: ITodo
@@ -27,18 +27,18 @@ export const TodoListItem: FC<TodoListItem> = ({
   const [isButtonActive, setButtonActive] = useState(false)
   const [inputValue, setInputValue] = useState(todo.label)
 
-  const handleSetEditTodoActive = useCallback((): void => {
+  const handleSetEditTodoActive = useCallback(() => {
     const { id } = todo
     onSetEditedTodo(id)
   }, [])
 
-  const handleShowModal = useCallback((): void => {
+  const handleShowModal = useCallback(() => {
     const { id } = todo
     onShowModal(id)
   }, [])
 
   const handleSubmit = useCallback(
-    (event: React.FormEvent<HTMLFormElement>): void => {
+    (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault()
       if (inputValue) {
         onEditTodo({ ...todo, label: inputValue })

@@ -1,8 +1,13 @@
 import { callApi } from '../../utils/callApi'
 
-import { IUser, ITodo, ICredetnials, UserProfile } from '../../types'
+import {
+  IUser,
+  ITodo,
+  ICredentials,
+  IUserToUpdate
+} from '../../types/generalTypes'
 
-export const loginUser = async (data: ICredetnials) => {
+export const loginUser = async (data: ICredentials) => {
   try {
     const response: IUser = await callApi('/login', {
       method: 'POST',
@@ -15,7 +20,7 @@ export const loginUser = async (data: ICredetnials) => {
   }
 }
 
-export const userRegistration = async (data: ICredetnials) => {
+export const userRegistration = async (data: ICredentials) => {
   try {
     const response: IUser = await callApi('/registration', {
       method: 'POST',
@@ -30,7 +35,7 @@ export const userRegistration = async (data: ICredetnials) => {
   }
 }
 
-export const updateUserProfile = async (data: UserProfile) => {
+export const updateUserProfile = async (data: IUserToUpdate) => {
   try {
     const { id } = data
     const response: IUser = await callApi(`/profile/${id}`, {

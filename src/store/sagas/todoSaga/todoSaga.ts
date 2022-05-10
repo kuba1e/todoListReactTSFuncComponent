@@ -7,8 +7,11 @@ import {
   fork,
   actionChannel,
   all,
-  spawn
+  spawn,
+  SagaReturnType
 } from 'redux-saga/effects'
+
+import { TodosActionType } from '../../../types/todos'
 
 import {
   fetchTodos,
@@ -31,43 +34,53 @@ import {
   failedToSendToAddTodo,
   failedToUpdateAllTodo,
   failedToDeleteTodo,
-  failedToDeleteCompletedTodos,
-  ACTION_FETCH_TODOS,
-  ACTION_SEND_TO_ADD_TODO,
-  ACTION_SEND_TO_UPDATE_TODO,
-  ACTION_SEND_TO_UPDATED_ALL_TODO,
-  ACTION_SEND_TO_DELETE_TODO,
-  ACTION_SEND_TO_DELETE_COMPLETED_TODOS
+  failedToDeleteCompletedTodos
 } from '../../actions/todos'
 
-function* fetchTodosWorker(signal) {
+import {
+  SendToAddTodo,
+  SendToUpdateTodo,
+  sendToUpdateAllTodo,
+  SendToDelete,
+  SendToDeleteCompletedTodos
+} from '../../../types/todos'
+
+type Todos = SagaReturnType<typeof fetchTodos>
+type NewTodo = SagaReturnType<typeof sendToAddTodo>
+type UpdatedTodo = SagaReturnType<typeof sendToUpdateTodo>
+type TodosTask = SagaReturnType<typeof fetchTodosWorker>
+
+function* fetchTodosWorker(signal: AbortSignal) {
   try {
-    const todos = yield call(fetchTodos, signal)
+    const todos: Todos = yield call(fetchTodos, signal)
     yield put(successfulFetchedTodos(todos))
   } catch (error) {
     yield put(failedToFetch(error.message))
   }
 }
 
-function* sendToAddTodoWorker(action) {
+function* sendToAddTodoWorker(action: SendToAddTodo) {
   try {
-    const newTodo = yield call(sendToAddTodo, action.payload)
+    const newTodo: NewTodo = yield call(sendToAddTodo, action.payload)
     yield put(addTodo(newTodo))
   } catch (error) {
     yield put(failedToSendToAddTodo(error.message))
   }
 }
 
-function* sendToUpdateTodoWorker(payload) {
+function* sendToUpdateTodoWorker(action: SendToUpdateTodo) {
   try {
-    const updatedTodo = yield call(sendToUpdateTodo, payload)
+    const updatedTodo: UpdatedTodo = yield call(
+      sendToUpdateTodo,
+      action.payload
+    )
     yield put(editTodo(updatedTodo))
   } catch (error) {
     yield put(failedToUpdateTodo(error.message))
   }
 }
 
-function* sendToUpdateAllTodoWorker(action) {
+function* sendToUpdateAllTodoWorker(action: sendToUpdateAllTodo) {
   try {
     yield call(sentToUpdateAllTodo, action.payload)
     yield put(toggleAllDoneTodo(action.payload))
@@ -76,7 +89,7 @@ function* sendToUpdateAllTodoWorker(action) {
   }
 }
 
-function* sendToDeleteTodoWorker(action) {
+function* sendToDeleteTodoWorker(action: SendToDelete) {
   try {
     yield call(sendToDeleteTodo, action.payload)
     yield put(deleteTodo(action.payload))
@@ -85,7 +98,7 @@ function* sendToDeleteTodoWorker(action) {
   }
 }
 
-function* sendToDeleteCompletedTodoWorker(action) {
+function* sendToDeleteCompletedTodoWorker(action: SendToDeleteCompletedTodos) {
   try {
     yield call(sendToDeleteCompletedTodo, action.payload)
     yield put(clearCompleted())
@@ -95,11 +108,11 @@ function* sendToDeleteCompletedTodoWorker(action) {
 }
 
 function* fetchTodosWatcher() {
-  let task
+  let task: TodosTask
   let abortController = new AbortController()
   while (true) {
-    yield take(ACTION_FETCH_TODOS)
-    if (task) {
+    yield take(TodosActionType.ACTION_FETCH_TODOS)
+    if (task !== null) {
       abortController.abort()
       yield cancel(task)
       abortController = new AbortController()
@@ -109,7 +122,9 @@ function* fetchTodosWatcher() {
 }
 
 function* updateTodoWatcher() {
-  const channel = yield actionChannel(ACTION_SEND_TO_UPDATE_TODO)
+  const channel: SendToUpdateTodo = yield actionChannel(
+    TodosActionType.ACTION_SEND_TO_UPDATE_TODO
+  )
   while (true) {
     const { payload } = yield take(channel)
     yield call(sendToUpdateTodoWorker, payload)
@@ -117,20 +132,26 @@ function* updateTodoWatcher() {
 }
 
 function* sendToAddTodoWatcher() {
-  yield takeEvery(ACTION_SEND_TO_ADD_TODO, sendToAddTodoWorker)
+  yield takeEvery(TodosActionType.ACTION_SEND_TO_ADD_TODO, sendToAddTodoWorker)
 }
 
 function* sendToUpdateAllTodoWatcher() {
-  yield takeEvery(ACTION_SEND_TO_UPDATED_ALL_TODO, sendToUpdateAllTodoWorker)
+  yield takeEvery(
+    TodosActionType.ACTION_SEND_TO_UPDATED_ALL_TODO,
+    sendToUpdateAllTodoWorker
+  )
 }
 
 function* sendToDeleteTodoWatcher() {
-  yield takeEvery(ACTION_SEND_TO_DELETE_TODO, sendToDeleteTodoWorker)
+  yield takeEvery(
+    TodosActionType.ACTION_SEND_TO_DELETE_TODO,
+    sendToDeleteTodoWorker
+  )
 }
 
 function* sendToDeleteCompletedTodoWatcher() {
   yield takeEvery(
-    ACTION_SEND_TO_DELETE_COMPLETED_TODOS,
+    TodosActionType.ACTION_SEND_TO_DELETE_COMPLETED_TODOS,
     sendToDeleteCompletedTodoWorker
   )
 }

@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, FC } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Formik, Form } from 'formik'
 import * as yup from 'yup'
 
 import { userRegistration, resetUserErrors } from '../../store/actions/user'
 import { userSelector } from '../../store/selectors'
+import { useTypedSelector } from '../../hooks/useTypedSelector'
 
 interface FormValues {
   email: ''
@@ -13,7 +14,7 @@ interface FormValues {
 }
 
 export const RegisterForm: FC = () => {
-  const { registrError, isRegistered } = useSelector(userSelector)
+  const { registrError, isRegistered } = useTypedSelector(userSelector)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 

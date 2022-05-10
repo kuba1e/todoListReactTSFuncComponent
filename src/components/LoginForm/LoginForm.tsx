@@ -8,6 +8,7 @@ import './LoginForm.scss'
 
 import { loginUser, resetUserErrors } from '../../store/actions/user'
 import { userSelector } from '../../store/selectors'
+import { useTypedSelector } from '../../hooks/useTypedSelector'
 
 interface FormValues {
   email: string
@@ -15,7 +16,7 @@ interface FormValues {
 }
 
 export const LoginForm: FC = () => {
-  const { isAuth, loginError } = useSelector(userSelector)
+  const { isAuth, loginError } = useTypedSelector(userSelector)
   const dispatch = useDispatch()
 
   useEffect(() => {
