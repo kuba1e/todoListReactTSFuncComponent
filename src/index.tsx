@@ -7,10 +7,14 @@ import ErrorBoundary from './components/ErrorBoundary'
 
 import store from './store'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <Provider store={store}>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
-  </Provider>
-)
+const rootElement = document.getElementById('root')
+
+if (rootElement !== null) {
+  ReactDOM.createRoot(rootElement).render(
+    <Provider store={store}>
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    </Provider>
+  )
+}
