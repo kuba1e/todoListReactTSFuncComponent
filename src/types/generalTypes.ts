@@ -32,16 +32,7 @@ interface IUserToUpdate {
   id: string
 }
 
-type MyError = {
-  message: string
-  resolution?: string | undefined
-}
-
 export class ErrorResponse {
-  constructor(public message: string, public status: number) {}
-}
-
-export class DbConcurrencyError implements ErrorResponse {
   constructor(public message: string, public status: number) {}
 }
 

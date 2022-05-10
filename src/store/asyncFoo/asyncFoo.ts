@@ -16,7 +16,7 @@ export const loginUser = async (data: ICredentials) => {
     localStorage.setItem('token', JSON.stringify(response.accessToken))
     return response
   } catch (error) {
-    throw new Error(error.message)
+    throw error
   }
 }
 
@@ -31,7 +31,7 @@ export const userRegistration = async (data: ICredentials) => {
     localStorage.setItem('token', JSON.stringify(response.accessToken))
     return response
   } catch (error) {
-    throw new Error(error.message)
+    throw error
   }
 }
 
@@ -45,7 +45,7 @@ export const updateUserProfile = async (data: IUserToUpdate) => {
     localStorage.setItem('token', JSON.stringify(response.accessToken))
     return response.user
   } catch (error) {
-    throw new Error(error.message)
+    throw error
   }
 }
 
@@ -54,7 +54,7 @@ export const logoutUser = async () => {
     await callApi('/logout', { method: 'POST' })
     localStorage.removeItem('token')
   } catch (error) {
-    throw new Error(error.message)
+    throw error
   }
 }
 
@@ -64,7 +64,7 @@ export const checkAuth = async () => {
     localStorage.setItem('token', JSON.stringify(response.accessToken))
     return response
   } catch (error) {
-    throw new Error(error.message)
+    throw error
   }
 }
 
@@ -73,7 +73,7 @@ export const fetchTodos = async (signal: AbortSignal) => {
     const response: ITodo[] = await callApi('/todos', { signal })
     return response
   } catch (error) {
-    throw new Error(error.message)
+    throw error
   }
 }
 
@@ -86,7 +86,7 @@ export const sendToAddTodo = async (label: string) => {
     })
     return response
   } catch (error) {
-    throw new Error(error.message)
+    throw error
   }
 }
 
@@ -96,7 +96,7 @@ export const sendToUpdateTodo = async (todo: ITodo) => {
     await callApi(`/todos/${id}`, { method: 'PUT', data: todoData })
     return todo
   } catch (error) {
-    throw new Error(error.message)
+    throw error
   }
 }
 
@@ -104,7 +104,7 @@ export const sentToUpdateAllTodo = async (status: boolean) => {
   try {
     await callApi('/todos', { method: 'PUT', data: { done: status } })
   } catch (error) {
-    throw new Error(error.message)
+    throw error
   }
 }
 
@@ -112,7 +112,7 @@ export const sendToDeleteTodo = async (id: number) => {
   try {
     await callApi(`/todos/${id}`, { method: 'DELETE' })
   } catch (error) {
-    throw new Error(error.message)
+    throw error
   }
 }
 
@@ -127,6 +127,6 @@ export const sendToDeleteCompletedTodo = async (todos: ITodo[]) => {
       data: { todos: todosForDeleting }
     })
   } catch (error) {
-    throw new Error(error.message)
+    throw error
   }
 }

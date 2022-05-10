@@ -8,8 +8,11 @@ import {
   actionChannel,
   all,
   spawn,
-  SagaReturnType
+  SagaReturnType,
+  ActionPattern,
+  StrictEffect
 } from 'redux-saga/effects'
+import { Task } from 'redux-saga'
 
 import { TodosActionType } from '../../../types/todos'
 
@@ -45,17 +48,23 @@ import {
   SendToDeleteCompletedTodos
 } from '../../../types/todos'
 
+import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
+
 type Todos = SagaReturnType<typeof fetchTodos>
 type NewTodo = SagaReturnType<typeof sendToAddTodo>
 type UpdatedTodo = SagaReturnType<typeof sendToUpdateTodo>
-type TodosTask = SagaReturnType<typeof fetchTodosWorker>
 
 function* fetchTodosWorker(signal: AbortSignal) {
   try {
     const todos: Todos = yield call(fetchTodos, signal)
     yield put(successfulFetchedTodos(todos))
   } catch (error) {
-    yield put(failedToFetch(error.message))
+    if (
+      error instanceof ErrorResponse ||
+      error instanceof InternalServerError
+    ) {
+      yield put(failedToFetch(error.message))
+    }
   }
 }
 
@@ -64,7 +73,12 @@ function* sendToAddTodoWorker(action: SendToAddTodo) {
     const newTodo: NewTodo = yield call(sendToAddTodo, action.payload)
     yield put(addTodo(newTodo))
   } catch (error) {
-    yield put(failedToSendToAddTodo(error.message))
+    if (
+      error instanceof ErrorResponse ||
+      error instanceof InternalServerError
+    ) {
+      yield put(failedToSendToAddTodo(error.message))
+    }
   }
 }
 
@@ -76,7 +90,12 @@ function* sendToUpdateTodoWorker(action: SendToUpdateTodo) {
     )
     yield put(editTodo(updatedTodo))
   } catch (error) {
-    yield put(failedToUpdateTodo(error.message))
+    if (
+      error instanceof ErrorResponse ||
+      error instanceof InternalServerError
+    ) {
+      yield put(failedToUpdateTodo(error.message))
+    }
   }
 }
 
@@ -85,7 +104,12 @@ function* sendToUpdateAllTodoWorker(action: sendToUpdateAllTodo) {
     yield call(sentToUpdateAllTodo, action.payload)
     yield put(toggleAllDoneTodo(action.payload))
   } catch (error) {
-    yield put(failedToUpdateAllTodo(error.message))
+    if (
+      error instanceof ErrorResponse ||
+      error instanceof InternalServerError
+    ) {
+      yield put(failedToUpdateAllTodo(error.message))
+    }
   }
 }
 
@@ -94,7 +118,12 @@ function* sendToDeleteTodoWorker(action: SendToDelete) {
     yield call(sendToDeleteTodo, action.payload)
     yield put(deleteTodo(action.payload))
   } catch (error) {
-    yield put(failedToDeleteTodo(error.message))
+    if (
+      error instanceof ErrorResponse ||
+      error instanceof InternalServerError
+    ) {
+      yield put(failedToDeleteTodo(error.message))
+    }
   }
 }
 
@@ -103,26 +132,32 @@ function* sendToDeleteCompletedTodoWorker(action: SendToDeleteCompletedTodos) {
     yield call(sendToDeleteCompletedTodo, action.payload)
     yield put(clearCompleted())
   } catch (error) {
-    yield put(failedToDeleteCompletedTodos(error.message))
+    if (
+      error instanceof ErrorResponse ||
+      error instanceof InternalServerError
+    ) {
+      yield put(failedToDeleteCompletedTodos(error.message))
+    }
   }
 }
 
-function* fetchTodosWatcher() {
-  let task: TodosTask
+function* fetchTodosWatcher(): Generator<StrictEffect, any, Task> {
+  let task: Task | undefined
   let abortController = new AbortController()
   while (true) {
     yield take(TodosActionType.ACTION_FETCH_TODOS)
-    if (task !== null) {
+    if (task !== undefined) {
       abortController.abort()
       yield cancel(task)
       abortController = new AbortController()
     }
     task = yield fork(fetchTodosWorker, abortController.signal)
+    console.log(TodosActionType.ACTION_FETCH_TODOS)
   }
 }
 
 function* updateTodoWatcher() {
-  const channel: SendToUpdateTodo = yield actionChannel(
+  const channel: ActionPattern<SendToUpdateTodo> = yield actionChannel(
     TodosActionType.ACTION_SEND_TO_UPDATE_TODO
   )
   while (true) {

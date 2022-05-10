@@ -28,10 +28,11 @@ import {
 import {
   UpdateUserAction,
   UserActionType,
-  UserRegistrationAction
+  UserRegistrationAction,
+  LoginUserAction
 } from '../../../types/user'
 
-import { LoginUserAction } from '../../../types/user'
+import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
 
 type UserData = SagaReturnType<typeof loginUser>
 type UpdatedUser = SagaReturnType<typeof updateUserProfile>
@@ -42,7 +43,13 @@ function* loginUserWorker(action: LoginUserAction) {
     yield put(setUserData(userData.user))
     yield put(setAuthStatus(true))
   } catch (error) {
-    yield put(failedToLoginUser(error.message))
+    if (
+      error instanceof ErrorResponse ||
+      error instanceof InternalServerError
+    ) {
+      console.log(error)
+      yield put(failedToLoginUser(error.message))
+    }
   }
 }
 
@@ -52,7 +59,12 @@ function* logoutUserWorker() {
     yield put(setAuthStatus(false))
     yield put(setUserData({ id: '', email: '', isActivated: false }))
   } catch (error) {
-    yield put(failedToLogoutUser(error.message))
+    if (
+      error instanceof ErrorResponse ||
+      error instanceof InternalServerError
+    ) {
+      yield put(failedToLogoutUser(error.message))
+    }
   }
 }
 
@@ -61,7 +73,12 @@ function* userRegistrationWorker(action: UserRegistrationAction) {
     yield call(userRegistration, action.payload)
     yield put(setRegistrationUser(true))
   } catch (error) {
-    yield put(failedToRegisterUser(error.message))
+    if (
+      error instanceof ErrorResponse ||
+      error instanceof InternalServerError
+    ) {
+      yield put(failedToRegisterUser(error.message))
+    }
   }
 }
 
@@ -73,7 +90,12 @@ function* updateUserProfileWorker(action: UpdateUserAction) {
     )
     yield put(setUserData(updatedUser))
   } catch (error) {
-    yield put(failedToUpdateUser(error.message))
+    if (
+      error instanceof ErrorResponse ||
+      error instanceof InternalServerError
+    ) {
+      yield put(failedToUpdateUser(error.message))
+    }
   }
 }
 
@@ -83,7 +105,12 @@ function* checkAuthWorker() {
     yield put(setUserData(userData.user))
     yield put(setAuthStatus(true))
   } catch (error) {
-    yield put(setAuthStatus(false))
+    if (
+      error instanceof ErrorResponse ||
+      error instanceof InternalServerError
+    ) {
+      yield put(setAuthStatus(false))
+    }
   }
 }
 
