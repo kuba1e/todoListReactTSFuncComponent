@@ -9,8 +9,8 @@ import { userSelector } from '../../store/selectors'
 import { useTypedSelector } from '../../hooks/useTypedSelector'
 
 interface FormValues {
-  email: ''
-  password: ''
+  email: string
+  password: string
 }
 
 export const RegisterForm: FC = () => {

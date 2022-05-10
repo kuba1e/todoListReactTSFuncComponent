@@ -8,7 +8,7 @@ import './TodoAddForm.scss'
 import { sendToAddTodo } from '../../store/actions/todos'
 
 interface FormValues {
-  label: ''
+  label: string
 }
 
 export const TodoAddForm: FC = () => {

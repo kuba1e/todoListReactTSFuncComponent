@@ -22,14 +22,17 @@ export const getFilteredTodosList = (filterValue: string, todos: ITodo[]) => {
   }
 }
 
-const getTheBiggestId = (todos: ITodo[]) => {
-  return (
-    [...todos]
-      .sort((prevTodo, nextTodo) => {
-        return prevTodo.id - nextTodo.id
-      })
-      .at(-1).id + 1
-  )
+const getTheBiggestId = (todos: ITodo[]): number => {
+  if (todos !== undefined) {
+    return (
+      [...todos]
+        .sort((prevTodo, nextTodo) => {
+          return prevTodo.id - nextTodo.id
+        })
+        .at(-1).id + 1
+    )
+  }
+  return 1
 }
 
 const generateId = (todos: ITodo[]) => {
