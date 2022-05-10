@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, FC } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Formik, Form, FormikHelpers } from 'formik'
 import * as yup from 'yup'
 

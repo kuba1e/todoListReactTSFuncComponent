@@ -51,14 +51,16 @@ export const ConfirmModal: FC<ConfirmModalProps> = ({
   onDismiss,
   id
 }) => {
-  return (
-    <>
-      {ReactDOM.createPortal(
-        <ModalOverlay onConfirm={onConfirm} onDismiss={onDismiss} id={id}>
-          {children}
-        </ModalOverlay>,
-        document.getElementById('overlay-root')
-      )}
-    </>
-  )
+  const overlayRoot = document.getElementById('overlay-root')
+
+  if (overlayRoot !== null) {
+    const overlayElement = ReactDOM.createPortal(
+      <ModalOverlay onConfirm={onConfirm} onDismiss={onDismiss} id={id}>
+        {children}
+      </ModalOverlay>,
+      overlayRoot
+    )
+    return <>{overlayElement}</>
+  }
+  return null
 }
