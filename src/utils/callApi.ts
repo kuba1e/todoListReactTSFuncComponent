@@ -4,6 +4,8 @@ import {
   IUser
 } from '../types/generalTypes'
 
+import { getResponseStatus } from '../helpers'
+
 interface Params {
   method?: string
   data?: any
@@ -38,17 +40,19 @@ export async function callApi<T>(path: string, params?: Params): Promise<T> {
 
     const parsedResponse: ParsedResponse = await response.json()
 
+    const responseStatus = getResponseStatus(response.status)
+
     if (response.status === 401) {
       const response: IUser = await callApi('/refresh')
       localStorage.setItem('token', JSON.stringify(response.accessToken))
       return await callApi(path, params)
     }
 
-    if (response.status === 400) {
+    if (responseStatus === 4) {
       throw new ErrorResponse(parsedResponse.message, response.status)
     }
 
-    if (response.status === 500) {
+    if (responseStatus === 5) {
       throw new InternalServerError(parsedResponse.message, response.status)
     }
 

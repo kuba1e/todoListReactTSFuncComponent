@@ -78,3 +78,7 @@ export const editTodo = (todoForEdit: ITodo, todos: ITodo[]) => {
 export function isObjectEmpty<T>(data: T) {
   return !Object.keys(data).length
 }
+
+export const getResponseStatus = (status: number): number => {
+  return Math.trunc(status / 100)
+}
