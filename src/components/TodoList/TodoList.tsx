@@ -75,7 +75,7 @@ export const TodoList: FC = () => {
         if (id === currentDraggable.id) {
           return
         }
-        let order_num: number
+        let order_num: number = -1
 
         const currentDraggableIndex = findIndex(todosData, currentDraggable.id)
         const dropIndex = findIndex(todosData, todo.id)

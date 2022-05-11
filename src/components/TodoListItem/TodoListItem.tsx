@@ -90,6 +90,8 @@ export const TodoListItem: FC<TodoListItem> = ({
 
   const handleDragLeave = useCallback(
     (event: React.DragEvent<HTMLLIElement>) => {
+      event.preventDefault()
+
       setIsDraggable(false)
     },
     []

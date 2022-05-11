@@ -8,6 +8,8 @@
   border-bottom: 1px solid #ededed;
   min-height: 62px;
   font-size: 24px;
+  cursor: grabbing;
+
   &--draggable {
     background-color: $mainPageColor;
     transition: all 0.2 ease-in-out 2;
