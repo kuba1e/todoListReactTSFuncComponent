@@ -9,7 +9,7 @@
   min-height: 62px;
   font-size: 24px;
   &--draggable {
-    background-color: #af5b5e;
+    background-color: $mainPageColor;
     transition: all 0.2 ease-in-out 2;
   }
   @media screen and (max-width: $md) {

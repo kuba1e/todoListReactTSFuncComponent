@@ -1,4 +1,5 @@
 import React, { useCallback, useState, FC } from 'react'
+import clsx from 'clsx'
 
 import './TodoListItem.scss'
 
@@ -87,7 +88,7 @@ export const TodoListItem: FC<TodoListItem> = ({
     []
   )
 
-  const handleDrahLeave = useCallback(
+  const handleDragLeave = useCallback(
     (event: React.DragEvent<HTMLLIElement>) => {
       setIsDraggable(false)
     },
@@ -130,13 +131,13 @@ export const TodoListItem: FC<TodoListItem> = ({
 
   return (
     <li
-      className={`todo__list-item ${
-        isDraggable ? 'todo__list-item--draggable' : ''
-      }`}
+      className={clsx(
+        'todo__list-item',
+        isDraggable && 'todo__list-item--draggable'
+      )}
       draggable={true}
       onDragStart={handleDragStart}
-      onDragEnd={(e) => {}}
-      onDragLeave={handleDrahLeave}
+      onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
       onMouseEnter={handleMouseEnter}
@@ -144,22 +145,23 @@ export const TodoListItem: FC<TodoListItem> = ({
       onDoubleClick={handleSetEditTodoActive}
     >
       <Checkbox
-        className={isInputActive ? 'checkbox--hide' : ''}
+        className={clsx(isInputActive && 'checkbox--hide')}
         onChange={onCheckboxChange}
         checked={done}
       />
       {todoBody}
       <div
-        className={`btns-container ${
-          isInputActive ? 'btns-container--hide' : ''
-        }`}
+        className={clsx(
+          'btns-container',
+          isInputActive && 'btns-container--hide'
+        )}
       >
         <Button
-          className={`edit-btn ${isButtonActive ? 'edit-btn--active' : ''}`}
+          className={clsx('edit-btn', isButtonActive && 'edit-btn--active')}
           onClick={handleSetEditTodoActive}
         />
         <Button
-          className={`delete-btn ${isButtonActive ? 'delete-btn--active' : ''}`}
+          className={clsx('delete-btn', isButtonActive && 'delete-btn--active')}
           onClick={handleShowModal}
         />
       </div>

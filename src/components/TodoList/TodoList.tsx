@@ -69,38 +69,41 @@ export const TodoList: FC = () => {
     dispatch(sendToUpdateAllTodo(done))
   }, [])
 
-  const handleDrop = (todo: ITodo) => {
-    if (currentDraggable !== undefined) {
-      if (id === currentDraggable.id) {
-        return
-      }
-      let order_num: number
-
-      const currentDraggableIndex = findIndex(todosData, currentDraggable.id)
-      const dropIndex = findIndex(todosData, todo.id)
-
-      if (dropIndex === 0) {
-        order_num = todosData[0].order_num / 2
-      }
-      if (dropIndex === todosData.length - 1) {
-        order_num = todosData[todosData.length - 1].order_num + 1
-      }
-      if (dropIndex !== 0 && dropIndex !== todosData.length - 1) {
-        if (currentDraggableIndex > dropIndex) {
-          order_num = (todo.order_num + todosData[dropIndex - 1].order_num) / 2
+  const handleDrop = useCallback(
+    (todo: ITodo) => {
+      if (currentDraggable !== undefined) {
+        if (id === currentDraggable.id) {
+          return
         }
-        if (currentDraggableIndex < dropIndex) {
-          order_num = (todo.order_num + todosData[dropIndex + 1].order_num) / 2
+        let order_num: number
+
+        const currentDraggableIndex = findIndex(todosData, currentDraggable.id)
+        const dropIndex = findIndex(todosData, todo.id)
+
+        if (dropIndex === 0) {
+          order_num = todosData[0].order_num / 2
+        }
+        if (dropIndex === todosData.length - 1) {
+          order_num = todosData[todosData.length - 1].order_num + 1
+        }
+        if (dropIndex !== 0 && dropIndex !== todosData.length - 1) {
+          if (currentDraggableIndex > dropIndex) {
+            order_num =
+              (todo.order_num + todosData[dropIndex - 1].order_num) / 2
+          }
+          if (currentDraggableIndex < dropIndex) {
+            order_num =
+              (todo.order_num + todosData[dropIndex + 1].order_num) / 2
+          }
+        }
+        const updatedTodo = { ...currentDraggable, order_num }
+        if (updatedTodo !== undefined) {
+          dispatch(sendToUpdateTodo(updatedTodo))
         }
       }
-      const updatedTodo = { ...currentDraggable, order_num }
-      if (updatedTodo !== undefined) {
-        dispatch(sendToUpdateTodo(updatedTodo))
-      }
-    }
-  }
-
-  console.log(todosData)
+    },
+    [todosData, currentDraggable]
+  )
 
   const todosForRendering = getFilteredTodosList(filterValue, todosData)
 
