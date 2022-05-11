@@ -16,12 +16,13 @@ import {
   sendToDeleteTodo
 } from '../../store/actions/todos'
 
-import { getFilteredTodosList } from '../../helpers'
+import { getFilteredTodosList, sortHandler, findIndex } from '../../helpers'
 import { todosSelector } from '../../store/selectors'
 
 import { ITodo } from '../../types/generalTypes'
 
 export const TodoList: FC = () => {
+  const [currentDraggable, setCurrentDraggable] = useState<ITodo>()
   const [isConfirmModalActive, setConfirmModalActive] = useState(false)
   const [editedTodoActive, setEditedTodoActive] = useState(-1)
   const [id, setId] = useState(-1)
@@ -68,6 +69,39 @@ export const TodoList: FC = () => {
     dispatch(sendToUpdateAllTodo(done))
   }, [])
 
+  const handleDrop = (todo: ITodo) => {
+    if (currentDraggable !== undefined) {
+      if (id === currentDraggable.id) {
+        return
+      }
+      let order_num: number
+
+      const currentDraggableIndex = findIndex(todosData, currentDraggable.id)
+      const dropIndex = findIndex(todosData, todo.id)
+
+      if (dropIndex === 0) {
+        order_num = todosData[0].order_num / 2
+      }
+      if (dropIndex === todosData.length - 1) {
+        order_num = todosData[todosData.length - 1].order_num + 1
+      }
+      if (dropIndex !== 0 && dropIndex !== todosData.length - 1) {
+        if (currentDraggableIndex > dropIndex) {
+          order_num = (todo.order_num + todosData[dropIndex - 1].order_num) / 2
+        }
+        if (currentDraggableIndex < dropIndex) {
+          order_num = (todo.order_num + todosData[dropIndex + 1].order_num) / 2
+        }
+      }
+      const updatedTodo = { ...currentDraggable, order_num }
+      if (updatedTodo !== undefined) {
+        dispatch(sendToUpdateTodo(updatedTodo))
+      }
+    }
+  }
+
+  console.log(todosData)
+
   const todosForRendering = getFilteredTodosList(filterValue, todosData)
 
   const confirmodal = isConfirmModalActive ? (
@@ -87,7 +121,7 @@ export const TodoList: FC = () => {
 
   const todoElements =
     loading === 'succeded' && !error
-      ? todosForRendering.map((todo: ITodo) => {
+      ? todosForRendering.sort(sortHandler).map((todo: ITodo) => {
           return (
             <TodoListItem
               key={todo.id}
@@ -97,6 +131,8 @@ export const TodoList: FC = () => {
               editedTodo={editedTodoActive}
               onSetEditedTodo={handleSetEditedTodoActive}
               onShowModal={handleShowModal}
+              onDrop={handleDrop}
+              onDragStart={setCurrentDraggable}
             />
           )
         })

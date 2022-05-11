@@ -4,17 +4,20 @@ import {
   takeEvery,
   take,
   cancel,
+  select,
   fork,
   actionChannel,
   all,
   spawn,
   SagaReturnType,
   ActionPattern,
-  StrictEffect
+  StrictEffect,
+  SelectEffectDescriptor,
+  SimpleEffect
 } from 'redux-saga/effects'
 import { Task } from 'redux-saga'
 
-import { TodosActionType } from '../../../types/todos'
+import { ITodosReducer, TodosActionType } from '../../../types/todos'
 
 import {
   fetchTodos,
@@ -48,11 +51,18 @@ import {
   ISendToDeleteCompletedTodos
 } from '../../../types/todos'
 
-import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
+import {
+  ErrorResponse,
+  InternalServerError,
+  ITodo
+} from '../../../types/generalTypes'
+
+import { todosSelector } from '../../selectors'
 
 type Todos = SagaReturnType<typeof fetchTodos>
 type NewTodo = SagaReturnType<typeof sendToAddTodo>
 type UpdatedTodo = SagaReturnType<typeof sendToUpdateTodo>
+type TodosReducer = SagaReturnType<typeof todosSelector>
 
 function* fetchTodosWorker(signal: AbortSignal) {
   try {
@@ -70,7 +80,11 @@ function* fetchTodosWorker(signal: AbortSignal) {
 
 function* sendToAddTodoWorker(action: ISendToAddTodo) {
   try {
-    const newTodo: NewTodo = yield call(sendToAddTodo, action.payload)
+    const todos: TodosReducer = yield select(todosSelector)
+    const newTodo: NewTodo = yield call(sendToAddTodo, [
+      action.payload,
+      todos?.todosData
+    ])
     yield put(addTodo(newTodo))
   } catch (error) {
     if (
@@ -84,8 +98,6 @@ function* sendToAddTodoWorker(action: ISendToAddTodo) {
 
 function* sendToUpdateTodoWorker(action: ISendToUpdateTodo) {
   try {
-    console.log(action.payload)
-
     const updatedTodo: UpdatedTodo = yield call(
       sendToUpdateTodo,
       action.payload

@@ -8,6 +8,10 @@
   border-bottom: 1px solid #ededed;
   min-height: 62px;
   font-size: 24px;
+  &--draggable {
+    background-color: #af5b5e;
+    transition: all 0.2 ease-in-out 2;
+  }
   @media screen and (max-width: $md) {
     font-size: 18px;
   }

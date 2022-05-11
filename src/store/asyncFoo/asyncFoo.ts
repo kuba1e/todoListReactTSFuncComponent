@@ -7,6 +7,8 @@ import {
   IUserToUpdate
 } from '../../types/generalTypes'
 
+import { generateValue } from '../../helpers'
+
 export const loginUser = async (data: ICredentials) => {
   try {
     const response: IUser = await callApi('/login', {
@@ -77,9 +79,10 @@ export const fetchTodos = async (signal: AbortSignal) => {
   }
 }
 
-export const sendToAddTodo = async (label: string) => {
+export const sendToAddTodo = async ([label, todosData]: Array<any>) => {
   try {
-    const newTodo = { label, done: false }
+    const order_num = generateValue(todosData, 'order_num')
+    const newTodo = { label, done: false, order_num }
     const response: ITodo = await callApi('/todos', {
       method: 'POST',
       data: newTodo

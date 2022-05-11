@@ -14,6 +14,7 @@ interface ITodo {
   id: number
   label: string
   done: boolean
+  order_num: number
 }
 
 interface ICredentials {

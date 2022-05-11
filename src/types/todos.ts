@@ -77,7 +77,10 @@ interface IFailedToUpdateTodosAction {
 
 export interface ISendToAddTodo {
   type: TodosActionType.ACTION_SEND_TO_ADD_TODO
-  payload: string
+  payload: {
+    label: string
+    todosData: ITodo[] | []
+  }
 }
 
 interface IFailedToSendToAddTodoAction {

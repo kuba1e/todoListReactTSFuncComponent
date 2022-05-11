@@ -22,7 +22,6 @@ export const todosReducer = (
   state = initialState,
   action: TodosAction
 ): ITodosReducer => {
-  console.log(action)
   switch (action.type) {
     case TodosActionType.ACTION_ADD_TO_DO:
       return {

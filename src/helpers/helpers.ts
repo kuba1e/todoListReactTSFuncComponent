@@ -22,29 +22,29 @@ export const getFilteredTodosList = (filterValue: string, todos: ITodo[]) => {
   }
 }
 
-const getTheBiggestId = (todos: ITodo[]): number => {
+const getTheBiggestValue = (todos: ITodo[] | [], key: string): number => {
   if (todos !== undefined) {
     return (
       [...todos]
         .sort((prevTodo, nextTodo) => {
-          return prevTodo.id - nextTodo.id
+          return prevTodo[key] - nextTodo[key]
         })
-        .at(-1).id + 1
+        .at(-1)[key] + 1
     )
   }
   return 1
 }
 
-const generateId = (todos: ITodo[]) => {
+export const generateValue = (todos: ITodo[], key: string) => {
   if (!todos.length) {
     return 1
   }
-  return getTheBiggestId(todos)
+  return getTheBiggestValue(todos, key)
 }
 
 export const createTodo = (label: string, todos: ITodo[]) => {
   return {
-    id: generateId(todos),
+    id: generateValue(todos, 'id'),
     label,
     done: false
   }
@@ -81,4 +81,11 @@ export function isObjectEmpty<T>(data: T) {
 
 export const getResponseStatus = (status: number): number => {
   return Math.trunc(status / 100)
+}
+
+export const sortHandler = (prevElem: ITodo, nextElem: ITodo) =>
+  prevElem.order_num - nextElem.order_num
+
+export const findIndex = (todos: ITodo[], id: number) => {
+  return todos.findIndex((todo) => todo.id === id)
 }

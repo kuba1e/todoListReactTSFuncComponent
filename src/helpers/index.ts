@@ -9,7 +9,10 @@ import {
   clearCompletedTodo,
   editTodo,
   isObjectEmpty,
-  getResponseStatus
+  getResponseStatus,
+  generateValue,
+  sortHandler,
+  findIndex
 } from './helpers'
 
 export {
@@ -23,5 +26,8 @@ export {
   clearCompletedTodo,
   editTodo,
   isObjectEmpty,
-  getResponseStatus
+  getResponseStatus,
+  generateValue,
+  sortHandler,
+  findIndex
 }

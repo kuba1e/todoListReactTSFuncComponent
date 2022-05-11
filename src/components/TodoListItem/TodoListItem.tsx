@@ -1,4 +1,4 @@
-import React, { useCallback, useState, FC, ChangeEvent } from 'react'
+import React, { useCallback, useState, FC } from 'react'
 
 import './TodoListItem.scss'
 
@@ -14,6 +14,8 @@ interface TodoListItem {
   onSetEditedTodo: (id: number) => void
   onToggleDone: (todo: ITodo) => void
   onShowModal: (id: number) => void
+  onDrop: (todo: ITodo) => void
+  onDragStart: (todo: ITodo) => void
 }
 
 export const TodoListItem: FC<TodoListItem> = ({
@@ -22,10 +24,13 @@ export const TodoListItem: FC<TodoListItem> = ({
   onEditTodo,
   onSetEditedTodo,
   onToggleDone,
-  onShowModal
+  onShowModal,
+  onDrop,
+  onDragStart
 }) => {
   const [isButtonActive, setButtonActive] = useState(false)
   const [inputValue, setInputValue] = useState(todo.label)
+  const [isDraggable, setIsDraggable] = useState(false)
 
   const handleSetEditTodoActive = useCallback(() => {
     const { id } = todo
@@ -61,6 +66,33 @@ export const TodoListItem: FC<TodoListItem> = ({
     const { done } = todo
     onToggleDone({ ...todo, done: !done })
   }
+
+  const handleDragStart = useCallback(
+    (event: React.DragEvent<HTMLLIElement>) => {
+      onDragStart(todo)
+    },
+    []
+  )
+
+  const handleDrop = (event: React.DragEvent<HTMLLIElement>) => {
+    setIsDraggable(false)
+    onDrop(todo)
+  }
+
+  const handleDragOver = useCallback(
+    (event: React.DragEvent<HTMLLIElement>) => {
+      event.preventDefault()
+      setIsDraggable(true)
+    },
+    []
+  )
+
+  const handleDrahLeave = useCallback(
+    (event: React.DragEvent<HTMLLIElement>) => {
+      setIsDraggable(false)
+    },
+    []
+  )
 
   const handleMouseEnter = useCallback(() => setButtonActive(true), [])
   const handleMouseLeave = useCallback(() => setButtonActive(false), [])
@@ -98,7 +130,15 @@ export const TodoListItem: FC<TodoListItem> = ({
 
   return (
     <li
-      className='todo__list-item'
+      className={`todo__list-item ${
+        isDraggable ? 'todo__list-item--draggable' : ''
+      }`}
+      draggable={true}
+      onDragStart={handleDragStart}
+      onDragEnd={(e) => {}}
+      onDragLeave={handleDrahLeave}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onDoubleClick={handleSetEditTodoActive}
