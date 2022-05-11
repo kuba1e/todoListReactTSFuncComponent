@@ -75,7 +75,7 @@ export const TodoList: FC = () => {
         if (id === currentDraggable.id) {
           return
         }
-        let order_num: number = -1
+        let order_num: number | undefined
 
         const currentDraggableIndex = findIndex(todosData, currentDraggable.id)
         const dropIndex = findIndex(todosData, todo.id)
@@ -96,9 +96,11 @@ export const TodoList: FC = () => {
               (todo.order_num + todosData[dropIndex + 1].order_num) / 2
           }
         }
-        const updatedTodo = { ...currentDraggable, order_num }
-        if (updatedTodo !== undefined) {
-          dispatch(sendToUpdateTodo(updatedTodo))
+        if (order_num !== undefined) {
+          const updatedTodo = { ...currentDraggable, order_num }
+          if (updatedTodo !== undefined) {
+            dispatch(sendToUpdateTodo(updatedTodo))
+          }
         }
       }
     },
