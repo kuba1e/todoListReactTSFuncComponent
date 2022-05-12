@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import './Navigation.scss'
 
 import Button from '../UI/Button'
+import Notification from '../Notification'
 
 import { userSelector } from '../../store/selectors'
 import { logoutUser } from '../../store/actions/user'
@@ -42,6 +43,9 @@ export const Navigation: FC = () => {
         <Button onClick={handleLogoutUser} className='logout'>
           Logout
         </Button>
+      </li>
+      <li className='header__nav-list-item'>
+        <Notification />
       </li>
     </>
   ) : null

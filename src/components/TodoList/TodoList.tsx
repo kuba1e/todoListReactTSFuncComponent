@@ -30,6 +30,7 @@ export const TodoList: FC = () => {
   const [id, setId] = useState(-1)
 
   const { todosData, loading, error, filterValue } = useSelector(todosSelector)
+  console.log(todosData)
 
   const dispatch = useDispatch()
 
@@ -101,7 +102,7 @@ export const TodoList: FC = () => {
         if (order_num !== undefined) {
           const updatedTodo = { ...currentDraggable, order_num }
           if (updatedTodo !== undefined) {
-            dispatch(sendToUpdateTodoOrder(updatedTodo))
+            dispatch(sendToUpdateTodo(updatedTodo))
           }
         }
       }

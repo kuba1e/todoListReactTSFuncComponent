@@ -8,6 +8,7 @@ const initialState: IUserReducer = {
     email: '',
     isActivated: false
   },
+  notifications: [],
   loginError: '',
   registrError: '',
   updateError: '',

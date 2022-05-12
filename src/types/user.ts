@@ -20,6 +20,7 @@ export interface IUserReducer {
   isAuth: boolean
   isRegistered: boolean
   userData: IUserData
+  notifications: []
   loginError: string
   registrError: string
   updateError: string
