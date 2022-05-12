@@ -58,3 +58,6 @@ export const sendToDeleteCompletedTodos = (todos: ITodo[]) =>
 
 export const failedToDeleteCompletedTodos = (error: string) =>
   action(TodosActionType.ACTION_FAILED_TO_DELETE_COMPLETED_TODOS, error)
+
+export const updateTodos = (todos: ITodo[]) =>
+  action(TodosActionType.ACTION_UPDATE_ALL_TO_DO, todos)

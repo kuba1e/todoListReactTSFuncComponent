@@ -15,10 +15,6 @@ interface TodoListItem {
   onSetEditedTodo: (id: number) => void
   onToggleDone: (todo: ITodo) => void
   onShowModal: (id: number) => void
-  onDrag: (todo: ITodo) => void
-  onDrop: () => void
-  onDragStart: (todo: ITodo) => void
-  currentDraggable: ITodo | undefined
 }
 
 export const TodoListItem: FC<TodoListItem> = (props) => {
@@ -28,17 +24,11 @@ export const TodoListItem: FC<TodoListItem> = (props) => {
     onEditTodo,
     onSetEditedTodo,
     onToggleDone,
-    onShowModal,
-    onDrag,
-    onDrop,
-    onDragStart,
-    currentDraggable
+    onShowModal
   } = props
 
   const [isButtonActive, setButtonActive] = useState(false)
   const [inputValue, setInputValue] = useState(todo.label)
-  const [isDraggable, setIsDraggable] = useState(false)
-  const liElement = useRef(null)
 
   const handleSetEditTodoActive = useCallback(() => {
     const { id } = todo
@@ -74,66 +64,6 @@ export const TodoListItem: FC<TodoListItem> = (props) => {
     const { done } = todo
     onToggleDone({ ...todo, done: !done })
   }
-
-  const handleDragStart = useCallback(
-    (event: React.DragEvent<HTMLLIElement>) => {
-      onDragStart(todo)
-    },
-    []
-  )
-
-  const handleDragEnd = useCallback((event: React.DragEvent<HTMLLIElement>) => {
-    event.preventDefault()
-    onDragStart({
-      id: -1,
-      label: '',
-      done: false,
-      order_num: 0
-    })
-  }, [])
-
-  const handleDrop = (event: React.DragEvent<HTMLLIElement>) => {
-    event.preventDefault()
-    setIsDraggable(false)
-    onDrop()
-    onDragStart({
-      id: -1,
-      label: '',
-      done: false,
-      order_num: 0
-    })
-  }
-
-  const handleDragOver = useCallback(
-    (event: React.DragEvent<HTMLLIElement>) => {
-      event.preventDefault()
-      setIsDraggable(true)
-    },
-    []
-  )
-
-  const handleDragEnter = useCallback(
-    (event: React.DragEvent<HTMLLIElement>) => {
-      event.preventDefault()
-
-      onDrag(todo)
-    },
-    [onDrag]
-  )
-
-  const handleDragLeave = useCallback(
-    (event: React.DragEvent<HTMLLIElement>) => {
-      event.preventDefault()
-      setIsDraggable(false)
-    },
-    []
-  )
-
-  const handleDrag = useCallback((event: React.DragEvent<HTMLLIElement>) => {
-    if (liElement.current !== null) {
-      const li = liElement.current as HTMLLIElement
-    }
-  }, [])
 
   const handleMouseEnter = useCallback(() => setButtonActive(true), [])
   const handleMouseLeave = useCallback(() => setButtonActive(false), [])
@@ -173,18 +103,9 @@ export const TodoListItem: FC<TodoListItem> = (props) => {
     <>
       <li
         className={clsx(
-          'todo__list-item',
-          currentDraggable?.id === id && 'todo__list-item--draggable'
+          'todo__list-item'
+          //currentDraggable?.id === id && 'todo__list-item--draggable'
         )}
-        ref={liElement}
-        draggable={true}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        onDragEnter={handleDragEnter}
-        onDragLeave={handleDragLeave}
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-        onDrag={handleDrag}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onDoubleClick={handleSetEditTodoActive}

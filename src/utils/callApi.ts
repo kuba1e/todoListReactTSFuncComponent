@@ -20,7 +20,6 @@ interface ParsedResponse {
 export async function callApi<T>(path: string, params?: Params): Promise<T> {
   try {
     const baseUrl = process.env.BASE_URL
-    console.log(baseUrl)
     const { method = 'GET', data, ...otherOptions } = params ?? {}
     const token = localStorage.getItem('token')?.slice(1, -1) ?? ''
     const options: RequestInit = {

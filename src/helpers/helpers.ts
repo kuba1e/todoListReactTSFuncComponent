@@ -84,8 +84,22 @@ export const getResponseStatus = (status: number): number => {
 }
 
 export const sortHandler = (prevElem: ITodo, nextElem: ITodo) =>
-  prevElem.order_num - nextElem.order_num
+  prevElem.id - nextElem.id
 
 export const findIndex = (todos: ITodo[], id: number) => {
   return todos.findIndex((todo) => todo.id === id)
+}
+
+export const sortArray = (
+  todos: ITodo[],
+  dragableIndex: number,
+  dropableIndex: number
+) => {
+  console.log(dragableIndex, dropableIndex)
+
+  const todosCopy = [...todos]
+  const [draggableTodo] = todosCopy.splice(dragableIndex, 1)
+  todosCopy.splice(dropableIndex, 0, draggableTodo)
+
+  return todosCopy
 }

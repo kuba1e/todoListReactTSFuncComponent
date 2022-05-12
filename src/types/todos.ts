@@ -19,7 +19,8 @@ export enum TodosActionType {
   ACTION_SEND_TO_DELETE_TODO = 'ACTION_SEND_TO_DELETE_TODO',
   ACTION_FAILED_TO_DELETE_TODO = 'ACTION_FAILED_TO_DELETE_TODO',
   ACTION_SEND_TO_DELETE_COMPLETED_TODOS = 'ACTION_SEND_TO_DELETE_COMPLETED_TODOS',
-  ACTION_FAILED_TO_DELETE_COMPLETED_TODOS = 'ACTION_FAILED_TO_DELETE_COMPLETED_TODOS'
+  ACTION_FAILED_TO_DELETE_COMPLETED_TODOS = 'ACTION_FAILED_TO_DELETE_COMPLETED_TODOS',
+  ACTION_UPDATE_ALL_TO_DO = 'ACTION_UPDATE_ALL_TO_DO'
 }
 
 interface IAddTodoAction {
@@ -118,6 +119,11 @@ interface IFailedToDeleteCompletedTodoAction {
   payload: string
 }
 
+interface IUpdateAllTodos {
+  type: TodosActionType.ACTION_UPDATE_ALL_TO_DO
+  payload: ITodo[]
+}
+
 export interface ITodosReducer {
   todosData: [] | ITodo[]
   filterValue: string
@@ -139,3 +145,4 @@ export type TodosAction =
   | IFailedToUpdateAllTodoAction
   | IFailedToDeleteTodoAction
   | IFailedToDeleteCompletedTodoAction
+  | IUpdateAllTodos

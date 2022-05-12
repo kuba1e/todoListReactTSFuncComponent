@@ -17,7 +17,8 @@ import {
   failedToDeleteCompletedTodos,
   sendToDeleteCompletedTodos,
   sendToUpdateAllTodo,
-  sendToDeleteTodo
+  sendToDeleteTodo,
+  updateTodos
 } from './todosActions'
 
 export {
@@ -39,5 +40,6 @@ export {
   failedToDeleteCompletedTodos,
   sendToDeleteCompletedTodos,
   sendToUpdateAllTodo,
-  sendToDeleteTodo
+  sendToDeleteTodo,
+  updateTodos
 }
