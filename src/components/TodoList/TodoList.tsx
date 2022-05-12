@@ -109,32 +109,6 @@ export const TodoList: FC = () => {
     [todosData, currentDraggable]
   )
 
-  /*
-
-  const handleDragStart: DraggableEventHandler = useCallback(() => {
-    onDragStart(todo)
-  }, [])
-
-  const handleDrop: DraggableEventHandler = () => {
-    setIsDraggable(false)
-    onDrop(todo)
-  }
-
-  const handleDragOver: DraggableEventHandler = useCallback(() => {
-    setIsDraggable(true)
-  }, [])
-
-  const handleDragLeave = useCallback(
-    (event: React.DragEvent<HTMLLIElement>) => {
-      event.preventDefault()
-
-      setIsDraggable(false)
-    },
-    []
-  )
-
-  */
-
   const todosForRendering = getFilteredTodosList(filterValue, todosData)
 
   const confirmodal = isConfirmModalActive ? (
