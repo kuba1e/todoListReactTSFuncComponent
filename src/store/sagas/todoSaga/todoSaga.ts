@@ -12,12 +12,15 @@ import {
   SagaReturnType,
   ActionPattern,
   StrictEffect,
-  SelectEffectDescriptor,
-  SimpleEffect
+  CallEffect,
+  PutEffect,
+  ForkEffect
 } from 'redux-saga/effects'
 import { Task } from 'redux-saga'
 
-import { ITodosReducer, TodosActionType } from '../../../types/todos'
+import { TodosActionType } from '../../../types/todos'
+
+import { ITodo } from '../../../types/generalTypes'
 
 import {
   fetchTodos,
@@ -51,11 +54,7 @@ import {
   ISendToDeleteCompletedTodos
 } from '../../../types/todos'
 
-import {
-  ErrorResponse,
-  InternalServerError,
-  ITodo
-} from '../../../types/generalTypes'
+import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
 
 import { todosSelector } from '../../selectors'
 
@@ -63,6 +62,9 @@ type Todos = SagaReturnType<typeof fetchTodos>
 type NewTodo = SagaReturnType<typeof sendToAddTodo>
 type UpdatedTodo = SagaReturnType<typeof sendToUpdateTodo>
 type TodosReducer = SagaReturnType<typeof todosSelector>
+interface ISendToUpdateTodoOrder extends Task {
+  payload: ITodo
+}
 
 function* fetchTodosWorker(signal: AbortSignal) {
   try {
@@ -101,6 +103,28 @@ function* sendToUpdateTodoWorker(action: ISendToUpdateTodo) {
     const updatedTodo: UpdatedTodo = yield call(
       sendToUpdateTodo,
       action.payload
+    )
+    yield put(editTodo(updatedTodo))
+  } catch (error) {
+    if (
+      error instanceof ErrorResponse ||
+      error instanceof InternalServerError
+    ) {
+      yield put(failedToUpdateTodo(error.message))
+    }
+  }
+}
+
+function* sendToUpdateTodoOrderWorker(
+  action: ISendToUpdateTodoOrder,
+  signal: AbortSignal
+): Generator<StrictEffect, any, UpdatedTodo> {
+  try {
+    console.log(signal)
+    const updatedTodo: UpdatedTodo = yield call(
+      sendToUpdateTodo,
+      action.payload,
+      signal
     )
     yield put(editTodo(updatedTodo))
   } catch (error) {
@@ -169,6 +193,31 @@ function* fetchTodosWatcher(): Generator<StrictEffect, any, Task> {
   }
 }
 
+function* sendToUpdateTodoOrderWatcher(): Generator<
+  StrictEffect,
+  any,
+  ISendToUpdateTodoOrder
+> {
+  let task: Task | undefined
+  let abortController = new AbortController()
+  while (true) {
+    const action: ISendToUpdateTodoOrder = yield take(
+      TodosActionType.ACTION_SEND_TO_UPDATE_TODO_ORDER
+    )
+    console.log(action)
+    if (task !== undefined) {
+      abortController.abort()
+      yield cancel(task)
+      abortController = new AbortController()
+    }
+    task = yield fork(
+      sendToUpdateTodoOrderWorker,
+      action,
+      abortController.signal
+    )
+  }
+}
+
 function* updateTodoWatcher() {
   const channel: ActionPattern<ISendToUpdateTodo> = yield actionChannel(
     TodosActionType.ACTION_SEND_TO_UPDATE_TODO
@@ -211,7 +260,8 @@ export default function* todosSaga() {
     sendToAddTodoWatcher,
     sendToUpdateAllTodoWatcher,
     sendToDeleteTodoWatcher,
-    sendToDeleteCompletedTodoWatcher
+    sendToDeleteCompletedTodoWatcher,
+    sendToUpdateTodoOrderWatcher
   ]
 
   const retrySagas = sagas.map((saga) => {

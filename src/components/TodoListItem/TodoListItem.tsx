@@ -1,4 +1,6 @@
-import React, { useCallback, useState, FC } from 'react'
+import React, { useCallback, useState, FC, useRef } from 'react'
+import type { Identifier, XYCoord } from 'dnd-core'
+import { useDrag, useDrop } from 'react-dnd'
 import clsx from 'clsx'
 
 import './TodoListItem.scss'
@@ -15,7 +17,7 @@ interface TodoListItem {
   onSetEditedTodo: (id: number) => void
   onToggleDone: (todo: ITodo) => void
   onShowModal: (id: number) => void
-  onDrop: (todo: ITodo) => void
+  onDrop: (draggableTodo: ITodo, dropebletodo: ITodo) => void
   onDragStart: (todo: ITodo) => void
 }
 
@@ -27,11 +29,65 @@ export const TodoListItem: FC<TodoListItem> = ({
   onToggleDone,
   onShowModal,
   onDrop,
-  onDragStart
+  onDragStart,
+  ...props
 }) => {
   const [isButtonActive, setButtonActive] = useState(false)
   const [inputValue, setInputValue] = useState(todo.label)
-  const [isDraggable, setIsDraggable] = useState(false)
+  const liElement = useRef<HTMLLIElement>(null)
+
+  const [{ isDragging }, drag, dragPreview] = useDrag(() => ({
+    type: 'todo',
+    item: todo,
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging()
+    })
+  }))
+
+  const [{ handlerId }, drop] = useDrop<
+    ITodo,
+    void,
+    { handlerId: Identifier | null }
+  >({
+    accept: 'todo',
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId()
+      }
+    },
+    hover(item: ITodo, monitor) {
+      if (!liElement.current) {
+        return
+      }
+      const dragIndex = item.order_num
+      const hoverIndex = todo.order_num
+
+      if (dragIndex === hoverIndex) {
+        return
+      }
+
+      const hoverBoundingRect = liElement.current?.getBoundingClientRect()
+
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+
+      const clientOffset = monitor.getClientOffset()
+
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top
+
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return
+      }
+
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return
+      }
+
+      onDrop(item, todo)
+
+      item.order_num = hoverIndex
+    }
+  })
 
   const handleSetEditTodoActive = useCallback(() => {
     const { id } = todo
@@ -68,35 +124,6 @@ export const TodoListItem: FC<TodoListItem> = ({
     onToggleDone({ ...todo, done: !done })
   }
 
-  const handleDragStart = useCallback(
-    (event: React.DragEvent<HTMLLIElement>) => {
-      onDragStart(todo)
-    },
-    []
-  )
-
-  const handleDrop = (event: React.DragEvent<HTMLLIElement>) => {
-    setIsDraggable(false)
-    onDrop(todo)
-  }
-
-  const handleDragOver = useCallback(
-    (event: React.DragEvent<HTMLLIElement>) => {
-      event.preventDefault()
-      setIsDraggable(true)
-    },
-    []
-  )
-
-  const handleDragLeave = useCallback(
-    (event: React.DragEvent<HTMLLIElement>) => {
-      event.preventDefault()
-
-      setIsDraggable(false)
-    },
-    []
-  )
-
   const handleMouseEnter = useCallback(() => setButtonActive(true), [])
   const handleMouseLeave = useCallback(() => setButtonActive(false), [])
 
@@ -129,19 +156,22 @@ export const TodoListItem: FC<TodoListItem> = ({
     </form>
   )
 
+  drag(drop(liElement))
+
   const todoBody = isInputActive ? todoEditInput : todoLabel
+
+  if (isDragging) {
+    return <li className='todo__list-item'></li>
+  }
 
   return (
     <li
+      {...props}
       className={clsx(
         'todo__list-item',
-        isDraggable && 'todo__list-item--draggable'
+        isDragging && 'todo__list-item--draggable'
       )}
-      draggable={true}
-      onDragStart={handleDragStart}
-      onDragLeave={handleDragLeave}
-      onDragOver={handleDragOver}
-      onDrop={handleDrop}
+      ref={liElement}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onDoubleClick={handleSetEditTodoActive}

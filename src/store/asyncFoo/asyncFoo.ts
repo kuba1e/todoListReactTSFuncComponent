@@ -93,10 +93,11 @@ export const sendToAddTodo = async ([label, todosData]: Array<any>) => {
   }
 }
 
-export const sendToUpdateTodo = async (todo: ITodo) => {
+export const sendToUpdateTodo = async (todo: ITodo, signal?: AbortSignal) => {
   try {
+    console.log(signal)
     const { id, ...todoData } = todo
-    await callApi(`/todos/${id}`, { method: 'PUT', data: todoData })
+    await callApi(`/todos/${id}`, { method: 'PUT', data: todoData, signal })
     return todo
   } catch (error) {
     throw error

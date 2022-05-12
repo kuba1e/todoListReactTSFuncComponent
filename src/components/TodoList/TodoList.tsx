@@ -13,13 +13,15 @@ import {
   sendToUpdateAllTodo,
   fetchTodos,
   sendToUpdateTodo,
-  sendToDeleteTodo
+  sendToDeleteTodo,
+  sendToUpdateTodoOrder
 } from '../../store/actions/todos'
 
 import { getFilteredTodosList, sortHandler, findIndex } from '../../helpers'
 import { todosSelector } from '../../store/selectors'
 
 import { ITodo } from '../../types/generalTypes'
+import clsx from 'clsx'
 
 export const TodoList: FC = () => {
   const [currentDraggable, setCurrentDraggable] = useState<ITodo>()
@@ -70,7 +72,7 @@ export const TodoList: FC = () => {
   }, [])
 
   const handleDrop = useCallback(
-    (todo: ITodo) => {
+    (currentDraggable: ITodo, hoverDragable: ITodo) => {
       if (currentDraggable !== undefined) {
         if (id === currentDraggable.id) {
           return
@@ -78,7 +80,7 @@ export const TodoList: FC = () => {
         let order_num: number | undefined
 
         const currentDraggableIndex = findIndex(todosData, currentDraggable.id)
-        const dropIndex = findIndex(todosData, todo.id)
+        const dropIndex = findIndex(todosData, hoverDragable.id)
 
         if (dropIndex === 0) {
           order_num = todosData[0].order_num / 2
@@ -89,23 +91,49 @@ export const TodoList: FC = () => {
         if (dropIndex !== 0 && dropIndex !== todosData.length - 1) {
           if (currentDraggableIndex > dropIndex) {
             order_num =
-              (todo.order_num + todosData[dropIndex - 1].order_num) / 2
+              (hoverDragable.order_num + todosData[dropIndex - 1].order_num) / 2
           }
           if (currentDraggableIndex < dropIndex) {
             order_num =
-              (todo.order_num + todosData[dropIndex + 1].order_num) / 2
+              (hoverDragable.order_num + todosData[dropIndex + 1].order_num) / 2
           }
         }
         if (order_num !== undefined) {
           const updatedTodo = { ...currentDraggable, order_num }
           if (updatedTodo !== undefined) {
-            dispatch(sendToUpdateTodo(updatedTodo))
+            dispatch(sendToUpdateTodoOrder(updatedTodo))
           }
         }
       }
     },
     [todosData, currentDraggable]
   )
+
+  /*
+
+  const handleDragStart: DraggableEventHandler = useCallback(() => {
+    onDragStart(todo)
+  }, [])
+
+  const handleDrop: DraggableEventHandler = () => {
+    setIsDraggable(false)
+    onDrop(todo)
+  }
+
+  const handleDragOver: DraggableEventHandler = useCallback(() => {
+    setIsDraggable(true)
+  }, [])
+
+  const handleDragLeave = useCallback(
+    (event: React.DragEvent<HTMLLIElement>) => {
+      event.preventDefault()
+
+      setIsDraggable(false)
+    },
+    []
+  )
+
+  */
 
   const todosForRendering = getFilteredTodosList(filterValue, todosData)
 
@@ -155,9 +183,10 @@ export const TodoList: FC = () => {
       {errorIndicator}
       {todosHeader}
       <ul
-        className={`todo__list ${
-          loading === 'pending' ? 'todo__list--pending' : ''
-        }`}
+        className={clsx(
+          'todo__list',
+          loading === 'pending' && 'todo__list--pending'
+        )}
       >
         {loader}
         {todoElements}
