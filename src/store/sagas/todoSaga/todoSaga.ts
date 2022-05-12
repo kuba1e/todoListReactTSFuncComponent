@@ -11,13 +11,11 @@ import {
   spawn,
   SagaReturnType,
   ActionPattern,
-  StrictEffect,
-  SelectEffectDescriptor,
-  SimpleEffect
+  StrictEffect
 } from 'redux-saga/effects'
 import { Task } from 'redux-saga'
 
-import { ITodosReducer, TodosActionType } from '../../../types/todos'
+import { TodosActionType } from '../../../types/todos'
 
 import {
   fetchTodos,
@@ -51,11 +49,7 @@ import {
   ISendToDeleteCompletedTodos
 } from '../../../types/todos'
 
-import {
-  ErrorResponse,
-  InternalServerError,
-  ITodo
-} from '../../../types/generalTypes'
+import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
 
 import { todosSelector } from '../../selectors'
 
@@ -115,8 +109,8 @@ function* sendToUpdateTodoWorker(action: ISendToUpdateTodo) {
 
 function* sendToUpdateAllTodoWorker(action: ISendToUpdateAllTodo) {
   try {
-    yield call(sentToUpdateAllTodo, action.payload)
-    yield put(toggleAllDoneTodo(action.payload))
+    const { todosData }: TodosReducer = yield select(todosSelector)
+    yield call(sentToUpdateAllTodo, todosData)
   } catch (error) {
     if (
       error instanceof ErrorResponse ||

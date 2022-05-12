@@ -11,8 +11,8 @@
   cursor: grabbing;
 
   &--draggable {
-    background-color: $mainPageColor;
     transition: all 0.2 ease-in-out 2;
+    opacity: 0;
   }
   @media screen and (max-width: $md) {
     font-size: 18px;
@@ -118,4 +118,8 @@
     opacity: 1;
     cursor: pointer;
   }
+}
+
+.preview {
+  display: none;
 }

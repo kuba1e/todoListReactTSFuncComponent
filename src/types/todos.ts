@@ -90,7 +90,7 @@ interface IFailedToSendToAddTodoAction {
 
 export interface ISendToUpdateAllTodo {
   type: TodosActionType.ACTION_SEND_TO_UPDATED_ALL_TODO
-  payload: boolean
+  payload: ITodo[]
 }
 
 interface IFailedToUpdateAllTodoAction {

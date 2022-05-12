@@ -103,9 +103,9 @@ export const sendToUpdateTodo = async (todo: ITodo) => {
   }
 }
 
-export const sentToUpdateAllTodo = async (status: boolean) => {
+export const sentToUpdateAllTodo = async (todos: ITodo[]) => {
   try {
-    await callApi('/todos', { method: 'PUT', data: { done: status } })
+    await callApi('/todos', { method: 'PUT', data: { todos } })
   } catch (error) {
     throw error
   }

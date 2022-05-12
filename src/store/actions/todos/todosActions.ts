@@ -41,8 +41,8 @@ export const sendToUpdateTodo = (data: ITodo) =>
 export const failedToUpdateTodo = (error: string) =>
   action(TodosActionType.ACTION_FAILED_TO_UPDATE_TODO, error)
 
-export const sendToUpdateAllTodo = (status: boolean) =>
-  action(TodosActionType.ACTION_SEND_TO_UPDATED_ALL_TODO, status)
+export const sendToUpdateAllTodo = () =>
+  action(TodosActionType.ACTION_SEND_TO_UPDATED_ALL_TODO)
 
 export const failedToUpdateAllTodo = (error: string) =>
   action(TodosActionType.ACTION_FAILED_TO_UPDATE_ALL_TODO, error)

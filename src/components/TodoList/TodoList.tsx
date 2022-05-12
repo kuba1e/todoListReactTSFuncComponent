@@ -13,7 +13,9 @@ import {
   sendToUpdateAllTodo,
   fetchTodos,
   sendToUpdateTodo,
-  sendToDeleteTodo
+  sendToDeleteTodo,
+  toggleAllDoneTodo,
+  editTodo
 } from '../../store/actions/todos'
 
 import { getFilteredTodosList, sortHandler, findIndex } from '../../helpers'
@@ -66,10 +68,11 @@ export const TodoList: FC = () => {
   }, [])
 
   const handleAllDoneTodo = useCallback((done: boolean) => {
-    dispatch(sendToUpdateAllTodo(done))
+    dispatch(toggleAllDoneTodo(done))
+    dispatch(sendToUpdateAllTodo())
   }, [])
 
-  const handleDrop = useCallback(
+  const handleDrag = useCallback(
     (todo: ITodo) => {
       if (currentDraggable !== undefined) {
         if (id === currentDraggable.id) {
@@ -99,13 +102,17 @@ export const TodoList: FC = () => {
         if (order_num !== undefined) {
           const updatedTodo = { ...currentDraggable, order_num }
           if (updatedTodo !== undefined) {
-            dispatch(sendToUpdateTodo(updatedTodo))
+            dispatch(editTodo(updatedTodo))
           }
         }
       }
     },
     [todosData, currentDraggable]
   )
+
+  const handleDrop = useCallback(() => {
+    dispatch(sendToUpdateAllTodo())
+  }, [])
 
   const todosForRendering = getFilteredTodosList(filterValue, todosData)
 
@@ -136,8 +143,10 @@ export const TodoList: FC = () => {
               editedTodo={editedTodoActive}
               onSetEditedTodo={handleSetEditedTodoActive}
               onShowModal={handleShowModal}
+              onDrag={handleDrag}
               onDrop={handleDrop}
               onDragStart={setCurrentDraggable}
+              currentDraggable={currentDraggable}
             />
           )
         })
