@@ -1,0 +1,26 @@
+@import '../../scssStyles/variables';
+.notification {
+  &-inner {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: $success;
+    position: relative;
+    cursor: pointer;
+  }
+
+  &-widget {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: $danger;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $success;
+    font-weight: 700;
+    &-count {
+    }
+  }
+}

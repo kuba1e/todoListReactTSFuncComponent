@@ -93,13 +93,15 @@ export const findIndex = (todos: ITodo[], id: number) => {
 export const sortArray = (
   todos: ITodo[],
   dragableIndex: number,
-  dropableIndex: number
+  dropableIndex: number | undefined
 ) => {
   console.log(dragableIndex, dropableIndex)
 
   const todosCopy = [...todos]
   const [draggableTodo] = todosCopy.splice(dragableIndex, 1)
-  todosCopy.splice(dropableIndex, 0, draggableTodo)
+  if (dropableIndex !== undefined) {
+    todosCopy.splice(dropableIndex, 0, draggableTodo)
+  }
 
   return todosCopy
 }

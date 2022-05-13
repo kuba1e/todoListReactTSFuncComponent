@@ -1,6 +1,12 @@
 import React, { useCallback, useEffect, useState, FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+  ResponderProvided
+} from 'react-beautiful-dnd'
 
 import './TodoList.scss'
 
@@ -19,7 +25,7 @@ import {
   updateTodos
 } from '../../store/actions/todos'
 
-import { getFilteredTodosList, sortHandler, sortArray } from '../../helpers'
+import { getFilteredTodosList, sortArray } from '../../helpers'
 import { todosSelector } from '../../store/selectors'
 
 import { ITodo } from '../../types/generalTypes'
@@ -73,15 +79,16 @@ export const TodoList: FC = () => {
   }, [])
 
   const handleDrop = useCallback(
-    (result, provided) => {
-      const updatedArray = sortArray(
-        todosData,
-        result.source.index,
-        result.destination.index
-      )
-      console.log(updatedArray)
-      dispatch(updateTodos(updatedArray))
-      dispatch(sendToUpdateAllTodo())
+    (result: DropResult, provided: ResponderProvided) => {
+      if (result !== undefined) {
+        const updatedArray = sortArray(
+          todosData,
+          result.source.index,
+          result.destination?.index
+        )
+        dispatch(updateTodos(updatedArray))
+        dispatch(sendToUpdateAllTodo())
+      }
     },
     [todosData]
   )
