@@ -43,3 +43,6 @@ export const checkAuth = () => action(UserActionType.ACTION_CHECK_AUTH)
 
 export const resetUserErrors = () =>
   action(UserActionType.ACTION_RESET_USERS_ERROR)
+
+export const setWebsocketConnection = (status: boolean) =>
+  action(UserActionType.ACTION_SET_WEBSOCKET_CONNECTION, status)

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, FC, useRef } from 'react'
+import React, { useCallback, useState, FC, useRef, useEffect } from 'react'
 import clsx from 'clsx'
 
 import './TodoListItem.scss'
@@ -26,9 +26,12 @@ export const TodoListItem: FC<TodoListItem> = (props) => {
     onToggleDone,
     onShowModal
   } = props
-
   const [isButtonActive, setButtonActive] = useState(false)
   const [inputValue, setInputValue] = useState(todo.label)
+
+  useEffect(() => {
+    setInputValue(todo.label)
+  }, [todo.label])
 
   const handleSetEditTodoActive = useCallback(() => {
     const { id } = todo

@@ -52,6 +52,7 @@ import {
 import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
 
 import { todosSelector } from '../../selectors'
+import { Socket } from 'socket.io'
 
 type Todos = SagaReturnType<typeof fetchTodos>
 type NewTodo = SagaReturnType<typeof sendToAddTodo>
@@ -72,14 +73,16 @@ function* fetchTodosWorker(signal: AbortSignal) {
   }
 }
 
-function* sendToAddTodoWorker(action: ISendToAddTodo) {
+function* sendToAddTodoWorker(websocket: Socket, action: ISendToAddTodo) {
   try {
     const todos: TodosReducer = yield select(todosSelector)
+    console.log(action.payload)
     const newTodo: NewTodo = yield call(sendToAddTodo, [
       action.payload,
       todos?.todosData
     ])
     yield put(addTodo(newTodo))
+    websocket.emit('add-todo', newTodo)
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
@@ -90,13 +93,17 @@ function* sendToAddTodoWorker(action: ISendToAddTodo) {
   }
 }
 
-function* sendToUpdateTodoWorker(action: ISendToUpdateTodo) {
+function* sendToUpdateTodoWorker(action: ISendToUpdateTodo, websocket: Socket) {
   try {
+    console.log(websocket)
     const updatedTodo: UpdatedTodo = yield call(
       sendToUpdateTodo,
       action.payload
     )
     yield put(editTodo(updatedTodo))
+    console.log(updatedTodo)
+
+    websocket.emit('edit-todo', updatedTodo)
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
@@ -121,10 +128,11 @@ function* sendToUpdateAllTodoWorker(action: ISendToUpdateAllTodo) {
   }
 }
 
-function* sendToDeleteTodoWorker(action: ISendToDelete) {
+function* sendToDeleteTodoWorker(websocket: Socket, action: ISendToDelete) {
   try {
     yield call(sendToDeleteTodo, action.payload)
     yield put(deleteTodo(action.payload))
+    websocket.emit('delete-todo', action.payload)
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
@@ -163,18 +171,22 @@ function* fetchTodosWatcher(): Generator<StrictEffect, any, Task> {
   }
 }
 
-function* updateTodoWatcher() {
+function* updateTodoWatcher(websocket: Socket) {
   const channel: ActionPattern<ISendToUpdateTodo> = yield actionChannel(
     TodosActionType.ACTION_SEND_TO_UPDATE_TODO
   )
   while (true) {
     const action: ISendToUpdateTodo = yield take(channel)
-    yield call(sendToUpdateTodoWorker, action)
+    yield call(sendToUpdateTodoWorker, action, websocket)
   }
 }
 
-function* sendToAddTodoWatcher() {
-  yield takeEvery(TodosActionType.ACTION_SEND_TO_ADD_TODO, sendToAddTodoWorker)
+function* sendToAddTodoWatcher(websocket: Socket) {
+  yield takeEvery(
+    TodosActionType.ACTION_SEND_TO_ADD_TODO,
+    sendToAddTodoWorker,
+    websocket
+  )
 }
 
 function* sendToUpdateAllTodoWatcher() {
@@ -184,10 +196,11 @@ function* sendToUpdateAllTodoWatcher() {
   )
 }
 
-function* sendToDeleteTodoWatcher() {
+function* sendToDeleteTodoWatcher(websocket: Socket) {
   yield takeEvery(
     TodosActionType.ACTION_SEND_TO_DELETE_TODO,
-    sendToDeleteTodoWorker
+    sendToDeleteTodoWorker,
+    websocket
   )
 }
 
@@ -198,7 +211,7 @@ function* sendToDeleteCompletedTodoWatcher() {
   )
 }
 
-export default function* todosSaga() {
+export default function* todosSaga(websocket: Socket) {
   const sagas = [
     fetchTodosWatcher,
     updateTodoWatcher,
@@ -212,7 +225,7 @@ export default function* todosSaga() {
     return spawn(function* () {
       while (true) {
         try {
-          yield call(saga)
+          yield call(saga, websocket)
           break
         } catch (error) {
           console.log(error)

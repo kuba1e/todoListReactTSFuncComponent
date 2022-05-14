@@ -33,13 +33,15 @@ import {
 } from '../../../types/user'
 
 import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
+import { Socket } from 'socket.io'
 
 type UserData = SagaReturnType<typeof loginUser>
 type UpdatedUser = SagaReturnType<typeof updateUserProfile>
 
-function* loginUserWorker(action: ILoginUserAction) {
+function* loginUserWorker(websocket: Socket, action: ILoginUserAction) {
   try {
     const userData: UserData = yield call(loginUser, action.payload)
+    websocket.emit('join-room', { room: userData.user.id })
     yield put(setUserData(userData.user))
     yield put(setAuthStatus(true))
   } catch (error) {
@@ -99,9 +101,11 @@ function* updateUserProfileWorker(action: IUpdateUserAction) {
   }
 }
 
-function* checkAuthWorker() {
+function* checkAuthWorker(websocket: Socket) {
   try {
     const userData: UserData = yield call(checkAuth)
+    websocket.emit('join-room', { room: userData.user.id })
+
     yield put(setUserData(userData.user))
     yield put(setAuthStatus(true))
   } catch (error) {
@@ -114,12 +118,12 @@ function* checkAuthWorker() {
   }
 }
 
-function* loginUserWatcher() {
-  yield takeEvery(UserActionType.ACTION_LOGIN_USER, loginUserWorker)
+function* loginUserWatcher(websocket: Socket) {
+  yield takeEvery(UserActionType.ACTION_LOGIN_USER, loginUserWorker, websocket)
 }
 
-function* checkAuthWatcher() {
-  yield takeEvery(UserActionType.ACTION_CHECK_AUTH, checkAuthWorker)
+function* checkAuthWatcher(websocket: Socket) {
+  yield takeEvery(UserActionType.ACTION_CHECK_AUTH, checkAuthWorker, websocket)
 }
 
 function* logoutUserWatcher() {
@@ -137,7 +141,7 @@ function* updateUserProfileWatcher() {
   yield takeEvery(UserActionType.ACTION_UPDATE_USER, updateUserProfileWorker)
 }
 
-export default function* userSaga() {
+export default function* userSaga(websocket: Socket) {
   const sagas = [
     loginUserWatcher,
     checkAuthWatcher,
@@ -150,7 +154,7 @@ export default function* userSaga() {
     return spawn(function* () {
       while (true) {
         try {
-          yield call(saga)
+          yield call(saga, websocket)
           break
         } catch (error) {
           console.log(error)

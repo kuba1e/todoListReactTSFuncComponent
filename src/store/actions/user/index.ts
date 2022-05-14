@@ -11,7 +11,8 @@ import {
   setUserData,
   setAuthStatus,
   setRegistrationUser,
-  resetUserErrors
+  resetUserErrors,
+  setWebsocketConnection
 } from './usersActions'
 
 export {
@@ -27,5 +28,6 @@ export {
   setAuthStatus,
   checkAuth,
   setRegistrationUser,
-  resetUserErrors
+  resetUserErrors,
+  setWebsocketConnection
 }

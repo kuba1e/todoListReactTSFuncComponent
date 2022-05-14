@@ -1,4 +1,4 @@
-import React, { useEffect, FC } from 'react'
+import React, { useEffect, FC, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 import Title from '../UI/Title'
@@ -11,6 +11,7 @@ import { useTypedSelector } from '../../hooks/useTypedSelector'
 export const HomePage: FC = () => {
   const dispatch = useDispatch()
   const { isAuth } = useTypedSelector(userSelector)
+
   useEffect(() => {
     if (localStorage.getItem('token') && !isAuth) {
       dispatch(checkAuth())

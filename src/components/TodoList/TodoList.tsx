@@ -37,6 +37,8 @@ export const TodoList: FC = () => {
 
   const { todosData, loading, error, filterValue } = useSelector(todosSelector)
 
+  console.log(todosData)
+
   const dispatch = useDispatch()
 
   useEffect(() => {

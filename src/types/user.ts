@@ -13,7 +13,8 @@ export enum UserActionType {
   ACTION_SET_AUTH_STATUS = 'ACTION_SET_AUTH_STATUS',
   ACTION_SET_REGISTRATION_USER = 'ACTION_SET_REGISTRATION_USER',
   ACTION_RESET_USERS_ERROR = 'ACTION_RESET_USERS_ERROR',
-  ACTION_CHECK_AUTH = 'ACTION_CHECK_AUTH'
+  ACTION_CHECK_AUTH = 'ACTION_CHECK_AUTH',
+  ACTION_SET_WEBSOCKET_CONNECTION = 'ACTION_SET_WEBSOCKET_CONNECTION'
 }
 
 export interface IUserReducer {
@@ -24,6 +25,7 @@ export interface IUserReducer {
   registrError: string
   updateError: string
   logoutError: string
+  isWebSocketConnected: boolean
 }
 
 export interface ILoginUserAction {
@@ -84,6 +86,11 @@ interface IResetErrorsAction {
   type: UserActionType.ACTION_RESET_USERS_ERROR
 }
 
+interface ISetWebsocketConnection {
+  type: UserActionType.ACTION_SET_WEBSOCKET_CONNECTION
+  payload: boolean
+}
+
 export type UserAction =
   | ILoginUserAction
   | IFailedToLoginAction
@@ -97,3 +104,4 @@ export type UserAction =
   | ISetAuthStatusAction
   | ISetRegistrationUserAction
   | IResetErrorsAction
+  | ISetWebsocketConnection

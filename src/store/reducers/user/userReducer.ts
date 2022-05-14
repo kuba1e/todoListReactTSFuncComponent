@@ -2,6 +2,7 @@ import { IUserReducer, UserAction, UserActionType } from '../../../types/user'
 
 const initialState: IUserReducer = {
   isAuth: false,
+  isWebSocketConnected: false,
   isRegistered: false,
   userData: {
     id: '',
@@ -82,6 +83,12 @@ export const userReducer = (state = initialState, action: UserAction) => {
         registrError: '',
         updateError: '',
         logoutError: ''
+      }
+
+    case UserActionType.ACTION_SET_WEBSOCKET_CONNECTION:
+      return {
+        ...state,
+        isWebSocketConnected: action.payload
       }
 
     default:
