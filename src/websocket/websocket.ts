@@ -12,48 +12,6 @@ import {
 } from '../store/actions/todos'
 
 import { addNotification } from '../store/actions/user'
-
-/*
-
-export const setupWebSocket = (dispatch: Dispatch<any>) => {
-  if (baseUrl === undefined) {
-    return
-  }
-  const token = localStorage.getItem('token')?.slice(1, -1) ?? ''
-
-  const socket = io(baseUrl, {
-    withCredentials: true,
-    extraHeaders: {
-      ...(token ? { Authorization: `Bearer ${token}` } : {})
-    }
-  })
-  socket.on('connect', () => {
-    dispatch(setWebsocketConnection(true))
-    socket.on('added-todo', (payload) => {
-      dispatch(addTodo(payload))
-    })
-    socket.on('edited-todo', (payload) => {
-      dispatch(editTodo(payload))
-    })
-
-    socket.on('deleted-todo', (payload) => {
-      dispatch(deleteTodo(payload))
-    })
-
-    socket.on('updated-all-todo', (payload) => {
-      dispatch(updateTodos(payload))
-    })
-
-    socket.on('deleted-completed', () => {
-      console.log('completed')
-      dispatch(clearCompleted())
-    })
-  })
-
-  return socket
-}
-*/
-
 export class SetupWebSocket {
   protected dispatch: Dispatch<any>
   static baseUrl = process.env.BASE_SOCKET_URL
