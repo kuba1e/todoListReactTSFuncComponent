@@ -52,6 +52,7 @@ export const Notification = () => {
             {notifications.map((notification) => {
               return (
                 <li
+                  key={notification.id}
                   className={clsx(
                     'notifications__list-item',
                     `notifications__list-item--${notification.type}`

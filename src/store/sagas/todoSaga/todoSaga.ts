@@ -60,6 +60,7 @@ type Todos = SagaReturnType<typeof fetchTodos>
 type NewTodo = SagaReturnType<typeof sendToAddTodo>
 type UpdatedTodo = SagaReturnType<typeof sendToUpdateTodo>
 type TodosReducer = SagaReturnType<typeof todosSelector>
+type DeletedTodo = SagaReturnType<typeof sendToDeleteTodo>
 
 function* fetchTodosWorker(signal: AbortSignal) {
   try {
@@ -82,13 +83,16 @@ function* sendToAddTodoWorker(websocket: IWebSocket, action: ISendToAddTodo) {
       action.payload,
       todos?.todosData
     ])
-    yield put(addTodo(newTodo))
-    const message = new Notification('add', newTodo)
+    yield put(addTodo(newTodo.data))
+    const message = new Notification(
+      newTodo.notification.type,
+      newTodo.notification.message,
+      newTodo.notification.id
+    )
     yield put(addNotification(message))
 
     yield websocket.events?.emit('add-todo', {
-      data: newTodo,
-      message
+      data: newTodo
     })
   } catch (error) {
     if (
@@ -109,13 +113,18 @@ function* sendToUpdateTodoWorker(
       sendToUpdateTodo,
       action.payload
     )
-    yield put(editTodo(updatedTodo))
-    const message = new Notification('edit', updatedTodo)
+
+    console.log(updatedTodo)
+    yield put(editTodo(updatedTodo.data))
+    const message = new Notification(
+      updatedTodo.notification.type,
+      updatedTodo.notification.message,
+      updatedTodo.notification.id
+    )
     yield put(addNotification(message))
 
     yield websocket.events?.emit('edit-todo', {
-      data: updatedTodo,
-      message
+      data: updatedTodo
     })
   } catch (error) {
     if (
@@ -147,16 +156,20 @@ function* sendToUpdateAllTodoWorker(
 
 function* sendToDeleteTodoWorker(websocket: IWebSocket, action: ISendToDelete) {
   try {
-    yield call(sendToDeleteTodo, action.payload)
-    yield put(deleteTodo(action.payload))
-    const { todosData }: TodosReducer = yield select(todosSelector)
-    const message = new Notification(
-      'delete',
-      todosData[findIndex(todosData, action.payload)]
+    const deletedTodo: DeletedTodo = yield call(
+      sendToDeleteTodo,
+      action.payload
     )
+    yield put(deleteTodo(action.payload))
+    const message = new Notification(
+      deletedTodo.notification.type,
+      deletedTodo.notification.message,
+      deletedTodo.notification.id
+    )
+    yield put(addNotification(message))
+
     yield websocket.events?.emit('delete-todo', {
-      data: action.payload,
-      message
+      data: deletedTodo
     })
   } catch (error) {
     if (

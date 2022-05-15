@@ -109,8 +109,10 @@ export const sortArray = (
 export class Notification implements INotification {
   type: string
   message: ITodo
-  constructor(type: string, message: ITodo) {
+  id: number
+  constructor(type: string, message: ITodo, id: number) {
     this.type = type
     this.message = message
+    this.id = id
   }
 }

@@ -98,6 +98,18 @@ export const userReducer = (state = initialState, action: UserAction) => {
         notifications: [...state.notifications, action.payload]
       }
 
+    case UserActionType.ACTION_DELETE_NOTIFICATION:
+      return {
+        ...state,
+        notifications: []
+      }
+
+    case UserActionType.ACTION_GET_NOTIFICATIONS:
+      return {
+        ...state,
+        notifications: [...action.payload]
+      }
+
     default:
       return state
   }

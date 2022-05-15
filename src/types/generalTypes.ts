@@ -36,6 +36,7 @@ interface IUserToUpdate {
 export interface INotification {
   type: string
   message: ITodo
+  id: number
 }
 
 export class ErrorResponse {

@@ -53,3 +53,6 @@ export const addNotification = (notification: INotification) =>
 
 export const deleteNotification = (notification: INotification) =>
   action(UserActionType.ACTION_DELETE_NOTIFICATION, notification)
+
+export const getNotifications = (notification: INotification[]) =>
+  action(UserActionType.ACTION_GET_NOTIFICATIONS, notification)

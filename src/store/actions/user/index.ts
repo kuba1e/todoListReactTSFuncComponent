@@ -14,7 +14,8 @@ import {
   resetUserErrors,
   setWebsocketConnection,
   addNotification,
-  deleteNotification
+  deleteNotification,
+  getNotifications
 } from './usersActions'
 
 export {
@@ -33,5 +34,6 @@ export {
   resetUserErrors,
   setWebsocketConnection,
   addNotification,
-  deleteNotification
+  deleteNotification,
+  getNotifications
 }

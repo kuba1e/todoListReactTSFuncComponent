@@ -21,7 +21,8 @@ export enum UserActionType {
   ACTION_CHECK_AUTH = 'ACTION_CHECK_AUTH',
   ACTION_SET_WEBSOCKET_CONNECTION = 'ACTION_SET_WEBSOCKET_CONNECTION',
   ACTION_ADD_NOTIFICATION = 'ACTION_ADD_NOTIFICATION',
-  ACTION_DELETE_NOTIFICATION = 'ACTION_DELETE_NOTIFICATION'
+  ACTION_DELETE_NOTIFICATION = 'ACTION_DELETE_NOTIFICATION',
+  ACTION_GET_NOTIFICATIONS = 'ACTION_GET_NOTIFICATIONS'
 }
 
 export interface IUserReducer {
@@ -109,6 +110,11 @@ interface IDeleteNotification {
   payload: INotification
 }
 
+interface IGetNotifications {
+  type: UserActionType.ACTION_GET_NOTIFICATIONS
+  payload: INotification[]
+}
+
 export type UserAction =
   | ILoginUserAction
   | IFailedToLoginAction
@@ -125,3 +131,4 @@ export type UserAction =
   | ISetWebsocketConnection
   | IAddNotification
   | IDeleteNotification
+  | IGetNotifications

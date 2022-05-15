@@ -12,8 +12,6 @@ import {
 } from '../store/actions/todos'
 
 import { addNotification } from '../store/actions/user'
-import { callApi } from '../utils/callApi'
-import { IUser } from '../types/generalTypes'
 
 /*
 
@@ -81,17 +79,18 @@ export class SetupWebSocket {
       })
 
       socket.on('added-todo', (payload) => {
+        console.log(payload)
         this.dispatch(addTodo(payload.data))
-        this.dispatch(addNotification(payload.message))
+        this.dispatch(addNotification(payload.notification))
       })
       socket.on('edited-todo', (payload) => {
         this.dispatch(editTodo(payload.data))
-        this.dispatch(addNotification(payload.message))
+        this.dispatch(addNotification(payload.notification))
       })
 
       socket.on('deleted-todo', (payload) => {
-        this.dispatch(deleteTodo(payload.data))
-        this.dispatch(addNotification(payload.message))
+        this.dispatch(deleteTodo(payload.data.id))
+        this.dispatch(addNotification(payload.notification))
       })
 
       socket.on('updated-all-todo', (payload) => {
@@ -107,10 +106,6 @@ export class SetupWebSocket {
       })
 
       socket.on('connect_error', async (error) => {
-        if (error.message === 'User is unauthorized') {
-          const response: IUser = await callApi('/refresh')
-          localStorage.setItem('token', JSON.stringify(response.accessToken))
-        }
         this.dispatch(setWebsocketConnection(false))
       })
     }

@@ -12,7 +12,8 @@ import {
   logoutUser,
   userRegistration,
   updateUserProfile,
-  checkAuth
+  checkAuth,
+  fetchNotifications
 } from '../../asyncFoo'
 
 import {
@@ -22,7 +23,8 @@ import {
   failedToUpdateUser,
   setUserData,
   setAuthStatus,
-  setRegistrationUser
+  setRegistrationUser,
+  getNotifications
 } from '../../actions/user'
 
 import {
@@ -37,12 +39,14 @@ import { IWebSocket } from '../../../websocket/websocket'
 
 type UserData = SagaReturnType<typeof loginUser>
 type UpdatedUser = SagaReturnType<typeof updateUserProfile>
+type Notifications = SagaReturnType<typeof fetchNotifications>
 
 function* loginUserWorker(websocket: IWebSocket, action: ILoginUserAction) {
   try {
     const userData: UserData = yield call(loginUser, action.payload)
+    yield put(getNotifications(userData.notifications))
     websocket.connectSocket()
-    yield put(setUserData(userData.user))
+    yield put(setUserData(userData.userInfo.user))
     yield put(setAuthStatus(true))
   } catch (error) {
     if (
@@ -104,9 +108,12 @@ function* updateUserProfileWorker(action: IUpdateUserAction) {
 function* checkAuthWorker(websocket: IWebSocket) {
   try {
     const userData: UserData = yield call(checkAuth)
+
+    yield put(getNotifications(userData.notifications))
+
     yield websocket.connectSocket()
 
-    yield put(setUserData(userData.user))
+    yield put(setUserData(userData.userInfo.user))
     yield put(setAuthStatus(true))
   } catch (error) {
     if (
