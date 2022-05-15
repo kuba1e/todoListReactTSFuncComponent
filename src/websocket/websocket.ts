@@ -15,7 +15,7 @@ import { addNotification } from '../store/actions/user'
 
 export class SetupWebSocket {
   protected dispatch: Dispatch<any>
-  static baseUrl = process.env.BASE_SOCKET_URL
+  static baseUrl = 'ws://todos1e.herokuapp.com' //process.env.BASE_SOCKET_URL
   constructor(dispatch: Dispatch<any>) {
     this.dispatch = dispatch
   }
