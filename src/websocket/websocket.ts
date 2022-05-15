@@ -70,5 +70,3 @@ export class SetupWebSocket {
     }
   }
 }
-
-//export interface IWebSocket extends SetupWebSocket {}
