@@ -78,45 +78,40 @@ export class SetupWebSocket {
       socket.on('connect', () => {
         this.dispatch(setWebsocketConnection(true))
         this.events = socket
+      })
 
-        if (this.events !== undefined) {
-          this.events.on('added-todo', (payload) => {
-            this.dispatch(addTodo(payload.data))
-            this.dispatch(addNotification(payload.message))
-          })
-          this.events.on('edited-todo', (payload) => {
-            this.dispatch(editTodo(payload.data))
-            this.dispatch(addNotification(payload.message))
-          })
+      socket.on('added-todo', (payload) => {
+        this.dispatch(addTodo(payload.data))
+        this.dispatch(addNotification(payload.message))
+      })
+      socket.on('edited-todo', (payload) => {
+        this.dispatch(editTodo(payload.data))
+        this.dispatch(addNotification(payload.message))
+      })
 
-          this.events.on('deleted-todo', (payload) => {
-            this.dispatch(deleteTodo(payload.data))
-            this.dispatch(addNotification(payload.message))
-          })
+      socket.on('deleted-todo', (payload) => {
+        this.dispatch(deleteTodo(payload.data))
+        this.dispatch(addNotification(payload.message))
+      })
 
-          this.events.on('updated-all-todo', (payload) => {
-            this.dispatch(updateTodos(payload))
-          })
+      socket.on('updated-all-todo', (payload) => {
+        this.dispatch(updateTodos(payload))
+      })
 
-          this.events.on('deleted-completed', () => {
-            console.log('completed')
-            this.dispatch(clearCompleted())
-          })
-          this.events.on('disconnect', (reason) => {
-            this.dispatch(setWebsocketConnection(false))
-          })
+      socket.on('deleted-completed', () => {
+        console.log('completed')
+        this.dispatch(clearCompleted())
+      })
+      socket.on('disconnect', (reason) => {
+        this.dispatch(setWebsocketConnection(false))
+      })
 
-          this.events.on('connect_error', async (error) => {
-            if (error.message === 'User is unauthorized') {
-              const response: IUser = await callApi('/refresh')
-              localStorage.setItem(
-                'token',
-                JSON.stringify(response.accessToken)
-              )
-            }
-            this.dispatch(setWebsocketConnection(false))
-          })
+      socket.on('connect_error', async (error) => {
+        if (error.message === 'User is unauthorized') {
+          const response: IUser = await callApi('/refresh')
+          localStorage.setItem('token', JSON.stringify(response.accessToken))
         }
+        this.dispatch(setWebsocketConnection(false))
       })
     }
   }
