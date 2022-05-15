@@ -12,6 +12,7 @@ import {
 } from '../store/actions/todos'
 
 import { addNotification } from '../store/actions/user'
+
 export class SetupWebSocket {
   protected dispatch: Dispatch<any>
   static baseUrl = process.env.BASE_SOCKET_URL
@@ -70,4 +71,4 @@ export class SetupWebSocket {
   }
 }
 
-export interface IWebSocket extends SetupWebSocket {}
+//export interface IWebSocket extends SetupWebSocket {}
