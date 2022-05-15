@@ -1,4 +1,5 @@
 import { action } from 'typesafe-actions'
+import { INotification } from '../../../types/generalTypes'
 
 import {
   ICredentials,
@@ -43,3 +44,15 @@ export const checkAuth = () => action(UserActionType.ACTION_CHECK_AUTH)
 
 export const resetUserErrors = () =>
   action(UserActionType.ACTION_RESET_USERS_ERROR)
+
+export const setWebsocketConnection = (status: boolean) =>
+  action(UserActionType.ACTION_SET_WEBSOCKET_CONNECTION, status)
+
+export const addNotification = (notification: INotification) =>
+  action(UserActionType.ACTION_ADD_NOTIFICATION, notification)
+
+export const deleteNotification = (notification: INotification) =>
+  action(UserActionType.ACTION_DELETE_NOTIFICATION, notification)
+
+export const getNotifications = (notification: INotification[]) =>
+  action(UserActionType.ACTION_GET_NOTIFICATIONS, notification)

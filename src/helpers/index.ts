@@ -12,7 +12,9 @@ import {
   getResponseStatus,
   generateValue,
   sortHandler,
-  findIndex
+  findIndex,
+  sortArray,
+  Notification
 } from './helpers'
 
 export {
@@ -29,5 +31,7 @@ export {
   getResponseStatus,
   generateValue,
   sortHandler,
-  findIndex
+  findIndex,
+  sortArray,
+  Notification
 }

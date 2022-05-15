@@ -39,6 +39,12 @@ export const todosReducer = (
         ...state,
         todosData: editTodo(action.payload, state.todosData)
       }
+    case TodosActionType.ACTION_UPDATE_ALL_TO_DO:
+      console.log(action.payload)
+      return {
+        ...state,
+        todosData: action.payload
+      }
 
     case TodosActionType.ACTION_TOGGLE_DONE_ALL_TO_DO:
       return {

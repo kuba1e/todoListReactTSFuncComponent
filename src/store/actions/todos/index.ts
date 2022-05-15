@@ -18,7 +18,7 @@ import {
   sendToDeleteCompletedTodos,
   sendToUpdateAllTodo,
   sendToDeleteTodo,
-  sendToUpdateTodoOrder
+  updateTodos
 } from './todosActions'
 
 export {
@@ -41,5 +41,5 @@ export {
   sendToDeleteCompletedTodos,
   sendToUpdateAllTodo,
   sendToDeleteTodo,
-  sendToUpdateTodoOrder
+  updateTodos
 }

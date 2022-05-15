@@ -1,5 +1,12 @@
 import React, { useCallback, useEffect, useState, FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+  ResponderProvided
+} from 'react-beautiful-dnd'
 
 import './TodoList.scss'
 
@@ -14,17 +21,22 @@ import {
   fetchTodos,
   sendToUpdateTodo,
   sendToDeleteTodo,
-  sendToUpdateTodoOrder
+  toggleAllDoneTodo,
+  editTodo
 } from '../../store/actions/todos'
 
-import { getFilteredTodosList, sortHandler, findIndex } from '../../helpers'
+import {
+  getFilteredTodosList,
+  sortArray,
+  sortHandler,
+  findIndex
+} from '../../helpers'
 import { todosSelector } from '../../store/selectors'
 
 import { ITodo } from '../../types/generalTypes'
 import clsx from 'clsx'
 
 export const TodoList: FC = () => {
-  const [currentDraggable, setCurrentDraggable] = useState<ITodo>()
   const [isConfirmModalActive, setConfirmModalActive] = useState(false)
   const [editedTodoActive, setEditedTodoActive] = useState(-1)
   const [id, setId] = useState(-1)
@@ -69,19 +81,14 @@ export const TodoList: FC = () => {
   }, [])
 
   const handleAllDoneTodo = useCallback((done: boolean) => {
-    dispatch(sendToUpdateAllTodo(done))
+    dispatch(toggleAllDoneTodo(done))
+    dispatch(sendToUpdateAllTodo())
   }, [])
 
-  const handleDrop = useCallback(
-    (currentDraggable: ITodo, hoverDragable: ITodo) => {
-      if (currentDraggable !== undefined) {
-        if (id === currentDraggable.id) {
-          return
-        }
+  const handleSort = useCallback(
+    (currentDraggableIndex: number, dropIndex: number | undefined) => {
+      if (dropIndex !== undefined) {
         let order_num: number | undefined
-
-        const currentDraggableIndex = findIndex(todosData, currentDraggable.id)
-        const dropIndex = findIndex(todosData, hoverDragable.id)
 
         if (dropIndex === 0) {
           order_num = todosData[0].order_num / 2
@@ -92,22 +99,36 @@ export const TodoList: FC = () => {
         if (dropIndex !== 0 && dropIndex !== todosData.length - 1) {
           if (currentDraggableIndex > dropIndex) {
             order_num =
-              (hoverDragable.order_num + todosData[dropIndex - 1].order_num) / 2
+              (todosData[dropIndex].order_num +
+                todosData[dropIndex - 1].order_num) /
+              2
           }
           if (currentDraggableIndex < dropIndex) {
             order_num =
-              (hoverDragable.order_num + todosData[dropIndex + 1].order_num) / 2
+              (todosData[dropIndex].order_num +
+                todosData[dropIndex + 1].order_num) /
+              2
           }
         }
         if (order_num !== undefined) {
-          const updatedTodo = { ...currentDraggable, order_num }
+          const updatedTodo = { ...todosData[currentDraggableIndex], order_num }
           if (updatedTodo !== undefined) {
-            dispatch(sendToUpdateTodo(updatedTodo))
+            dispatch(editTodo(updatedTodo))
+            dispatch(sendToUpdateAllTodo())
           }
         }
       }
     },
-    [todosData, currentDraggable]
+    [todosData]
+  )
+
+  const handleDrop = useCallback(
+    (result: DropResult, provided: ResponderProvided) => {
+      if (result !== undefined) {
+        handleSort(result.source.index, result.destination?.index)
+      }
+    },
+    [todosData]
   )
 
   const todosForRendering = getFilteredTodosList(filterValue, todosData)
@@ -129,21 +150,32 @@ export const TodoList: FC = () => {
 
   const todoElements =
     loading === 'succeded' && !error
-      ? todosForRendering.sort(sortHandler).map((todo: ITodo) => {
-          return (
-            <TodoListItem
-              key={todo.id}
-              todo={todo}
-              onToggleDone={handleToggleDone}
-              onEditTodo={handleEditTodo}
-              editedTodo={editedTodoActive}
-              onSetEditedTodo={handleSetEditedTodoActive}
-              onShowModal={handleShowModal}
-              onDrop={handleDrop}
-              onDragStart={setCurrentDraggable}
-            />
-          )
-        })
+      ? todosForRendering
+          .sort(sortHandler)
+          .map((todo: ITodo, index: number) => {
+            return (
+              <Draggable draggableId={`${todo.id}`} key={todo.id} index={index}>
+                {(provided, snapshot) => {
+                  return (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.dragHandleProps}
+                      {...provided.draggableProps}
+                    >
+                      <TodoListItem
+                        todo={todo}
+                        onToggleDone={handleToggleDone}
+                        onEditTodo={handleEditTodo}
+                        editedTodo={editedTodoActive}
+                        onSetEditedTodo={handleSetEditedTodoActive}
+                        onShowModal={handleShowModal}
+                      />
+                    </div>
+                  )
+                }}
+              </Draggable>
+            )
+          })
       : null
 
   const loader = loading === 'pending' && !error ? <Loader /> : null
@@ -157,15 +189,24 @@ export const TodoList: FC = () => {
       {confirmodal}
       {errorIndicator}
       {todosHeader}
-      <ul
-        className={clsx(
-          'todo__list',
-          loading === 'pending' && 'todo__list--pending'
-        )}
-      >
-        {loader}
-        {todoElements}
-      </ul>
+      <DragDropContext onDragEnd={handleDrop}>
+        <Droppable droppableId='10000000'>
+          {(provided, snapshot) => {
+            return (
+              <ul
+                className={`todo__list ${
+                  loading === 'pending' ? 'todo__list--pending' : ''
+                }`}
+                ref={provided.innerRef}
+              >
+                {loader}
+                {todoElements}
+                {provided.placeholder}
+              </ul>
+            )
+          }}
+        </Droppable>
+      </DragDropContext>
     </>
   )
 }

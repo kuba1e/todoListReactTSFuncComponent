@@ -1,6 +1,6 @@
 @import '../../scssStyles/variables';
-.notification {
-  &-inner {
+.notifications {
+  &__inner {
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -8,8 +8,20 @@
     position: relative;
     cursor: pointer;
   }
+  &__user-status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgb(176, 37, 37);
+    position: absolute;
+    right: 0;
+    top: 0;
+    &--online {
+      background-color: green;
+    }
+  }
 
-  &-widget {
+  &__widget-count {
     position: absolute;
     width: 15px;
     height: 15px;
@@ -20,7 +32,32 @@
     justify-content: center;
     color: $success;
     font-weight: 700;
-    &-count {
+    &__count {
     }
   }
+  &__list {
+    width: 300px;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    z-index: 2;
+    padding: 0;
+    background-color: #f5f5f5;
+    list-style: none;
+    display: none;
+    &--active {
+      display: block;
+    }
+    &-item {
+      &--add {
+        background-color: $success;
+      }
+      &--edit {
+        background-color: yellow;
+      }
+    }
+  }
+}
+p {
+  margin: 0;
 }

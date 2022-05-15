@@ -1,5 +1,5 @@
 import { action } from 'typesafe-actions'
-import { ITodo } from '../../../types/generalTypes'
+import { ITodo, INotification } from '../../../types/generalTypes'
 
 import { TodosActionType } from '../../../types/todos'
 
@@ -44,8 +44,8 @@ export const sendToUpdateTodoOrder = (data: ITodo) =>
 export const failedToUpdateTodo = (error: string) =>
   action(TodosActionType.ACTION_FAILED_TO_UPDATE_TODO, error)
 
-export const sendToUpdateAllTodo = (status: boolean) =>
-  action(TodosActionType.ACTION_SEND_TO_UPDATED_ALL_TODO, status)
+export const sendToUpdateAllTodo = () =>
+  action(TodosActionType.ACTION_SEND_TO_UPDATED_ALL_TODO)
 
 export const failedToUpdateAllTodo = (error: string) =>
   action(TodosActionType.ACTION_FAILED_TO_UPDATE_ALL_TODO, error)
@@ -61,3 +61,6 @@ export const sendToDeleteCompletedTodos = (todos: ITodo[]) =>
 
 export const failedToDeleteCompletedTodos = (error: string) =>
   action(TodosActionType.ACTION_FAILED_TO_DELETE_COMPLETED_TODOS, error)
+
+export const updateTodos = (todos: ITodo[]) =>
+  action(TodosActionType.ACTION_UPDATE_ALL_TO_DO, todos)

@@ -9,10 +9,11 @@
   min-height: 62px;
   font-size: 24px;
   cursor: grabbing;
+  background-color: #fff;
 
   &--draggable {
-    background-color: $mainPageColor;
-    opacity: 0.5;
+    transition: all 0.2 ease-in-out 2;
+    opacity: 0;
   }
   @media screen and (max-width: $md) {
     font-size: 18px;
@@ -118,4 +119,8 @@
     opacity: 1;
     cursor: pointer;
   }
+}
+
+.preview {
+  display: none;
 }

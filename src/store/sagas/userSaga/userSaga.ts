@@ -12,7 +12,8 @@ import {
   logoutUser,
   userRegistration,
   updateUserProfile,
-  checkAuth
+  checkAuth,
+  fetchNotifications
 } from '../../asyncFoo'
 
 import {
@@ -22,7 +23,8 @@ import {
   failedToUpdateUser,
   setUserData,
   setAuthStatus,
-  setRegistrationUser
+  setRegistrationUser,
+  getNotifications
 } from '../../actions/user'
 
 import {
@@ -33,14 +35,18 @@ import {
 } from '../../../types/user'
 
 import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
+import { IWebSocket } from '../../../websocket/websocket'
 
 type UserData = SagaReturnType<typeof loginUser>
 type UpdatedUser = SagaReturnType<typeof updateUserProfile>
+type Notifications = SagaReturnType<typeof fetchNotifications>
 
-function* loginUserWorker(action: ILoginUserAction) {
+function* loginUserWorker(websocket: IWebSocket, action: ILoginUserAction) {
   try {
     const userData: UserData = yield call(loginUser, action.payload)
-    yield put(setUserData(userData.user))
+    yield put(getNotifications(userData.notifications))
+    websocket.connectSocket()
+    yield put(setUserData(userData.userInfo.user))
     yield put(setAuthStatus(true))
   } catch (error) {
     if (
@@ -99,10 +105,15 @@ function* updateUserProfileWorker(action: IUpdateUserAction) {
   }
 }
 
-function* checkAuthWorker() {
+function* checkAuthWorker(websocket: IWebSocket) {
   try {
     const userData: UserData = yield call(checkAuth)
-    yield put(setUserData(userData.user))
+
+    yield put(getNotifications(userData.notifications))
+
+    yield websocket.connectSocket()
+
+    yield put(setUserData(userData.userInfo.user))
     yield put(setAuthStatus(true))
   } catch (error) {
     if (
@@ -114,12 +125,12 @@ function* checkAuthWorker() {
   }
 }
 
-function* loginUserWatcher() {
-  yield takeEvery(UserActionType.ACTION_LOGIN_USER, loginUserWorker)
+function* loginUserWatcher(websocket: IWebSocket) {
+  yield takeEvery(UserActionType.ACTION_LOGIN_USER, loginUserWorker, websocket)
 }
 
-function* checkAuthWatcher() {
-  yield takeEvery(UserActionType.ACTION_CHECK_AUTH, checkAuthWorker)
+function* checkAuthWatcher(websocket: IWebSocket) {
+  yield takeEvery(UserActionType.ACTION_CHECK_AUTH, checkAuthWorker, websocket)
 }
 
 function* logoutUserWatcher() {
@@ -137,7 +148,7 @@ function* updateUserProfileWatcher() {
   yield takeEvery(UserActionType.ACTION_UPDATE_USER, updateUserProfileWorker)
 }
 
-export default function* userSaga() {
+export default function* userSaga(websocket: IWebSocket) {
   const sagas = [
     loginUserWatcher,
     checkAuthWatcher,
@@ -150,7 +161,7 @@ export default function* userSaga() {
     return spawn(function* () {
       while (true) {
         try {
-          yield call(saga)
+          yield call(saga, websocket)
           break
         } catch (error) {
           console.log(error)

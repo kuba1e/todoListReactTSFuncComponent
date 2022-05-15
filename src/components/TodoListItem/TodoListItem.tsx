@@ -1,6 +1,4 @@
-import React, { useCallback, useState, FC, useRef } from 'react'
-import type { Identifier, XYCoord } from 'dnd-core'
-import { useDrag, useDrop } from 'react-dnd'
+import React, { useCallback, useState, FC, useRef, useEffect } from 'react'
 import clsx from 'clsx'
 
 import './TodoListItem.scss'
@@ -17,77 +15,23 @@ interface TodoListItem {
   onSetEditedTodo: (id: number) => void
   onToggleDone: (todo: ITodo) => void
   onShowModal: (id: number) => void
-  onDrop: (draggableTodo: ITodo, dropebletodo: ITodo) => void
-  onDragStart: (todo: ITodo) => void
 }
 
-export const TodoListItem: FC<TodoListItem> = ({
-  todo,
-  editedTodo,
-  onEditTodo,
-  onSetEditedTodo,
-  onToggleDone,
-  onShowModal,
-  onDrop,
-  onDragStart,
-  ...props
-}) => {
+export const TodoListItem: FC<TodoListItem> = (props) => {
+  const {
+    todo,
+    editedTodo,
+    onEditTodo,
+    onSetEditedTodo,
+    onToggleDone,
+    onShowModal
+  } = props
   const [isButtonActive, setButtonActive] = useState(false)
   const [inputValue, setInputValue] = useState(todo.label)
-  const liElement = useRef<HTMLLIElement>(null)
 
-  const [{ isDragging }, drag, dragPreview] = useDrag(() => ({
-    type: 'todo',
-    item: todo,
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging()
-    })
-  }))
-
-  const [{ handlerId }, drop] = useDrop<
-    ITodo,
-    void,
-    { handlerId: Identifier | null }
-  >({
-    accept: 'todo',
-    collect(monitor) {
-      return {
-        handlerId: monitor.getHandlerId()
-      }
-    },
-    hover(item: ITodo, monitor) {
-      if (!liElement.current) {
-        return
-      }
-      const dragIndex = item.order_num
-      const hoverIndex = todo.order_num
-
-      if (dragIndex === hoverIndex) {
-        return
-      }
-
-      const hoverBoundingRect = liElement.current?.getBoundingClientRect()
-
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-
-      const clientOffset = monitor.getClientOffset()
-
-      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top
-
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return
-      }
-
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return
-      }
-
-      onDrop(item, todo)
-
-      item.order_num = hoverIndex
-    }
-  })
+  useEffect(() => {
+    setInputValue(todo.label)
+  }, [todo.label])
 
   const handleSetEditTodoActive = useCallback(() => {
     const { id } = todo
@@ -156,47 +100,47 @@ export const TodoListItem: FC<TodoListItem> = ({
     </form>
   )
 
-  drag(drop(liElement))
 
   const todoBody = isInputActive ? todoEditInput : todoLabel
 
-  if (isDragging) {
-    return <li className='todo__list-item'></li>
-  }
+
 
   return (
-    <li
-      {...props}
-      className={clsx(
-        'todo__list-item',
-        isDragging && 'todo__list-item--draggable'
-      )}
-      ref={liElement}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onDoubleClick={handleSetEditTodoActive}
-    >
-      <Checkbox
-        className={clsx(isInputActive && 'checkbox--hide')}
-        onChange={onCheckboxChange}
-        checked={done}
-      />
-      {todoBody}
-      <div
+    <>
+      <li
         className={clsx(
-          'btns-container',
-          isInputActive && 'btns-container--hide'
+          'todo__list-item'
+          //currentDraggable?.id === id && 'todo__list-item--draggable'
         )}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onDoubleClick={handleSetEditTodoActive}
       >
-        <Button
-          className={clsx('edit-btn', isButtonActive && 'edit-btn--active')}
-          onClick={handleSetEditTodoActive}
+        <Checkbox
+          className={clsx(isInputActive && 'checkbox--hide')}
+          onChange={onCheckboxChange}
+          checked={done}
         />
-        <Button
-          className={clsx('delete-btn', isButtonActive && 'delete-btn--active')}
-          onClick={handleShowModal}
-        />
-      </div>
-    </li>
+        {todoBody}
+        <div
+          className={clsx(
+            'btns-container',
+            isInputActive && 'btns-container--hide'
+          )}
+        >
+          <Button
+            className={clsx('edit-btn', isButtonActive && 'edit-btn--active')}
+            onClick={handleSetEditTodoActive}
+          />
+          <Button
+            className={clsx(
+              'delete-btn',
+              isButtonActive && 'delete-btn--active'
+            )}
+            onClick={handleShowModal}
+          />
+        </div>
+      </li>
+    </>
   )
 }

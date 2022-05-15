@@ -1,4 +1,4 @@
-import { ITodo } from './generalTypes'
+import { ITodo, INotification } from './generalTypes'
 
 export enum TodosActionType {
   ACTION_ADD_TO_DO = 'ACTION_ADD_TO_DO',
@@ -20,7 +20,10 @@ export enum TodosActionType {
   ACTION_SEND_TO_DELETE_TODO = 'ACTION_SEND_TO_DELETE_TODO',
   ACTION_FAILED_TO_DELETE_TODO = 'ACTION_FAILED_TO_DELETE_TODO',
   ACTION_SEND_TO_DELETE_COMPLETED_TODOS = 'ACTION_SEND_TO_DELETE_COMPLETED_TODOS',
-  ACTION_FAILED_TO_DELETE_COMPLETED_TODOS = 'ACTION_FAILED_TO_DELETE_COMPLETED_TODOS'
+  ACTION_FAILED_TO_DELETE_COMPLETED_TODOS = 'ACTION_FAILED_TO_DELETE_COMPLETED_TODOS',
+  ACTION_UPDATE_ALL_TO_DO = 'ACTION_UPDATE_ALL_TO_DO',
+  ACTION_ADD_NOTIFICATION = 'ACTION_ADD_NOTIFICATION',
+  ACTION_DELETE_NOTIFICATION = 'ACTION_DELETE_NOTIFICATION'
 }
 
 interface IAddTodoAction {
@@ -96,7 +99,7 @@ interface IFailedToSendToAddTodoAction {
 
 export interface ISendToUpdateAllTodo {
   type: TodosActionType.ACTION_SEND_TO_UPDATED_ALL_TODO
-  payload: boolean
+  payload: ITodo[]
 }
 
 interface IFailedToUpdateAllTodoAction {
@@ -124,6 +127,11 @@ interface IFailedToDeleteCompletedTodoAction {
   payload: string
 }
 
+interface IUpdateAllTodos {
+  type: TodosActionType.ACTION_UPDATE_ALL_TO_DO
+  payload: ITodo[]
+}
+
 export interface ITodosReducer {
   todosData: [] | ITodo[]
   filterValue: string
@@ -145,3 +153,4 @@ export type TodosAction =
   | IFailedToUpdateAllTodoAction
   | IFailedToDeleteTodoAction
   | IFailedToDeleteCompletedTodoAction
+  | IUpdateAllTodos

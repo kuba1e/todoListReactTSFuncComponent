@@ -1,4 +1,4 @@
-import { ITodo } from '../types/generalTypes'
+import { INotification, ITodo } from '../types/generalTypes'
 
 export const getCompletedQuantity = (todos: ITodo[]) => {
   return todos.filter((todo) => todo.done).length
@@ -23,9 +23,10 @@ export const getFilteredTodosList = (filterValue: string, todos: ITodo[]) => {
 }
 
 const getTheBiggestValue = (todos: ITodo[] | [], key: string): number => {
-  if (todos !== undefined) {
+  const todosCopy = [...todos]
+  if (todosCopy !== undefined) {
     return (
-      [...todos]
+      todosCopy
         .sort((prevTodo, nextTodo) => {
           return prevTodo[key] - nextTodo[key]
         })
@@ -88,4 +89,30 @@ export const sortHandler = (prevElem: ITodo, nextElem: ITodo) =>
 
 export const findIndex = (todos: ITodo[], id: number) => {
   return todos.findIndex((todo) => todo.id === id)
+}
+
+export const sortArray = (
+  todos: ITodo[],
+  dragableIndex: number,
+  dropableIndex: number | undefined
+) => {
+  const todosCopy = [...todos]
+  const draggableOrdernum = todosCopy[dragableIndex].order_num
+
+  if (dropableIndex !== undefined) {
+    todosCopy[dragableIndex].order_num = todosCopy[dropableIndex].order_num
+    todosCopy[dropableIndex].order_num = draggableOrdernum
+  }
+  return todosCopy
+}
+
+export class Notification implements INotification {
+  type: string
+  message: ITodo
+  id: number
+  constructor(type: string, message: ITodo, id: number) {
+    this.type = type
+    this.message = message
+    this.id = id
+  }
 }

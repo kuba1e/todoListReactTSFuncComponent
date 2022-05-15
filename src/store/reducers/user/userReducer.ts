@@ -2,6 +2,7 @@ import { IUserReducer, UserAction, UserActionType } from '../../../types/user'
 
 const initialState: IUserReducer = {
   isAuth: false,
+  isWebSocketConnected: false,
   isRegistered: false,
   userData: {
     id: '',
@@ -12,7 +13,8 @@ const initialState: IUserReducer = {
   loginError: '',
   registrError: '',
   updateError: '',
-  logoutError: ''
+  logoutError: '',
+  notifications: []
 }
 
 export const userReducer = (state = initialState, action: UserAction) => {
@@ -83,6 +85,30 @@ export const userReducer = (state = initialState, action: UserAction) => {
         registrError: '',
         updateError: '',
         logoutError: ''
+      }
+
+    case UserActionType.ACTION_SET_WEBSOCKET_CONNECTION:
+      return {
+        ...state,
+        isWebSocketConnected: action.payload
+      }
+
+    case UserActionType.ACTION_ADD_NOTIFICATION:
+      return {
+        ...state,
+        notifications: [...state.notifications, action.payload]
+      }
+
+    case UserActionType.ACTION_DELETE_NOTIFICATION:
+      return {
+        ...state,
+        notifications: []
+      }
+
+    case UserActionType.ACTION_GET_NOTIFICATIONS:
+      return {
+        ...state,
+        notifications: [...action.payload]
       }
 
     default:
