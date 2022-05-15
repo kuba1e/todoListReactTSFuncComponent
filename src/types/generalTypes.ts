@@ -33,6 +33,11 @@ interface IUserToUpdate {
   id: string
 }
 
+export interface INotification {
+  type: string
+  message: ITodo
+}
+
 export class ErrorResponse {
   constructor(public message: string, public status: number) {}
 }
@@ -42,3 +47,9 @@ export class InternalServerError implements ErrorResponse {
 }
 
 export { IUserData, IUser, ITodo, ICredentials, IUserProfile, IUserToUpdate }
+
+export enum TodosEvents {
+  add = 'Added todo',
+  delete = 'Deleted todo',
+  edit = 'Edited todo'
+}

@@ -33,15 +33,15 @@ import {
 } from '../../../types/user'
 
 import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
-import { Socket } from 'socket.io'
+import { IWebSocket } from '../../../websocket/websocket'
 
 type UserData = SagaReturnType<typeof loginUser>
 type UpdatedUser = SagaReturnType<typeof updateUserProfile>
 
-function* loginUserWorker(websocket: Socket, action: ILoginUserAction) {
+function* loginUserWorker(websocket: IWebSocket, action: ILoginUserAction) {
   try {
     const userData: UserData = yield call(loginUser, action.payload)
-    websocket.emit('join-room', { room: userData.user.id })
+    websocket.connectSocket()
     yield put(setUserData(userData.user))
     yield put(setAuthStatus(true))
   } catch (error) {
@@ -101,10 +101,10 @@ function* updateUserProfileWorker(action: IUpdateUserAction) {
   }
 }
 
-function* checkAuthWorker(websocket: Socket) {
+function* checkAuthWorker(websocket: IWebSocket) {
   try {
     const userData: UserData = yield call(checkAuth)
-    websocket.emit('join-room', { room: userData.user.id })
+    yield websocket.connectSocket()
 
     yield put(setUserData(userData.user))
     yield put(setAuthStatus(true))
@@ -118,11 +118,11 @@ function* checkAuthWorker(websocket: Socket) {
   }
 }
 
-function* loginUserWatcher(websocket: Socket) {
+function* loginUserWatcher(websocket: IWebSocket) {
   yield takeEvery(UserActionType.ACTION_LOGIN_USER, loginUserWorker, websocket)
 }
 
-function* checkAuthWatcher(websocket: Socket) {
+function* checkAuthWatcher(websocket: IWebSocket) {
   yield takeEvery(UserActionType.ACTION_CHECK_AUTH, checkAuthWorker, websocket)
 }
 
@@ -141,7 +141,7 @@ function* updateUserProfileWatcher() {
   yield takeEvery(UserActionType.ACTION_UPDATE_USER, updateUserProfileWorker)
 }
 
-export default function* userSaga(websocket: Socket) {
+export default function* userSaga(websocket: IWebSocket) {
   const sagas = [
     loginUserWatcher,
     checkAuthWatcher,

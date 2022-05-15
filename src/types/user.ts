@@ -1,4 +1,9 @@
-import { ICredentials, IUserData, IUserToUpdate } from './generalTypes'
+import {
+  ICredentials,
+  INotification,
+  IUserData,
+  IUserToUpdate
+} from './generalTypes'
 
 export enum UserActionType {
   ACTION_LOGIN_USER = 'ACTION_LOGIN_USER',
@@ -14,7 +19,9 @@ export enum UserActionType {
   ACTION_SET_REGISTRATION_USER = 'ACTION_SET_REGISTRATION_USER',
   ACTION_RESET_USERS_ERROR = 'ACTION_RESET_USERS_ERROR',
   ACTION_CHECK_AUTH = 'ACTION_CHECK_AUTH',
-  ACTION_SET_WEBSOCKET_CONNECTION = 'ACTION_SET_WEBSOCKET_CONNECTION'
+  ACTION_SET_WEBSOCKET_CONNECTION = 'ACTION_SET_WEBSOCKET_CONNECTION',
+  ACTION_ADD_NOTIFICATION = 'ACTION_ADD_NOTIFICATION',
+  ACTION_DELETE_NOTIFICATION = 'ACTION_DELETE_NOTIFICATION'
 }
 
 export interface IUserReducer {
@@ -26,6 +33,7 @@ export interface IUserReducer {
   updateError: string
   logoutError: string
   isWebSocketConnected: boolean
+  notifications: INotification[]
 }
 
 export interface ILoginUserAction {
@@ -91,6 +99,16 @@ interface ISetWebsocketConnection {
   payload: boolean
 }
 
+interface IAddNotification {
+  type: UserActionType.ACTION_ADD_NOTIFICATION
+  payload: INotification
+}
+
+interface IDeleteNotification {
+  type: UserActionType.ACTION_DELETE_NOTIFICATION
+  payload: INotification
+}
+
 export type UserAction =
   | ILoginUserAction
   | IFailedToLoginAction
@@ -105,3 +123,5 @@ export type UserAction =
   | ISetRegistrationUserAction
   | IResetErrorsAction
   | ISetWebsocketConnection
+  | IAddNotification
+  | IDeleteNotification

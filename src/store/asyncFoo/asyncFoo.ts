@@ -28,7 +28,6 @@ export const userRegistration = async (data: ICredentials) => {
       method: 'POST',
       data
     })
-    console.log(response)
 
     localStorage.setItem('token', JSON.stringify(response.accessToken))
     return response
@@ -82,7 +81,6 @@ export const fetchTodos = async (signal: AbortSignal) => {
 export const sendToAddTodo = async ([label, todosData]: Array<any>) => {
   try {
     const order_num = generateValue(todosData, 'order_num')
-    console.log(label)
     const newTodo = { label, done: false, order_num }
     const response: ITodo = await callApi('/todos', {
       method: 'POST',

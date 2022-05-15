@@ -12,7 +12,8 @@ const initialState: IUserReducer = {
   loginError: '',
   registrError: '',
   updateError: '',
-  logoutError: ''
+  logoutError: '',
+  notifications: []
 }
 
 export const userReducer = (state = initialState, action: UserAction) => {
@@ -89,6 +90,12 @@ export const userReducer = (state = initialState, action: UserAction) => {
       return {
         ...state,
         isWebSocketConnected: action.payload
+      }
+
+    case UserActionType.ACTION_ADD_NOTIFICATION:
+      return {
+        ...state,
+        notifications: [...state.notifications, action.payload]
       }
 
     default:

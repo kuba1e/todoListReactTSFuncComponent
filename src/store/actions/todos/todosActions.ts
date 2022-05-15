@@ -1,5 +1,5 @@
 import { action } from 'typesafe-actions'
-import { ITodo } from '../../../types/generalTypes'
+import { ITodo, INotification } from '../../../types/generalTypes'
 
 import { TodosActionType } from '../../../types/todos'
 

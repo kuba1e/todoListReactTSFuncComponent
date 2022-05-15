@@ -13,7 +13,8 @@ import {
   generateValue,
   sortHandler,
   findIndex,
-  sortArray
+  sortArray,
+  Notification
 } from './helpers'
 
 export {
@@ -31,5 +32,6 @@ export {
   generateValue,
   sortHandler,
   findIndex,
-  sortArray
+  sortArray,
+  Notification
 }

@@ -10,7 +10,7 @@ import { useTypedSelector } from '../../hooks/useTypedSelector'
 
 export const HomePage: FC = () => {
   const dispatch = useDispatch()
-  const { isAuth } = useTypedSelector(userSelector)
+  const { isAuth, isWebSocketConnected } = useTypedSelector(userSelector)
 
   useEffect(() => {
     if (localStorage.getItem('token') && !isAuth) {
