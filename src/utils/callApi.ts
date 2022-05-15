@@ -19,7 +19,7 @@ interface ParsedResponse {
 
 export async function callApi<T>(path: string, params?: Params): Promise<T> {
   try {
-    const baseUrl = 'https://todos1e.herokuapp.com' //process.env.BASE_URL
+    const baseUrl = process.env.BASE_URL
     const { method = 'GET', data, ...otherOptions } = params ?? {}
     const token = localStorage.getItem('token')?.slice(1, -1) ?? ''
     const options: RequestInit = {

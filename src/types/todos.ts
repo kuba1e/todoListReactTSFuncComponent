@@ -1,4 +1,4 @@
-import { ITodo, INotification } from './generalTypes'
+import { ITodo } from './generalTypes'
 
 export enum TodosActionType {
   ACTION_ADD_TO_DO = 'ACTION_ADD_TO_DO',

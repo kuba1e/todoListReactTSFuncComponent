@@ -35,7 +35,7 @@ import {
 } from '../../../types/user'
 
 import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
-import { IWebSocket } from '../../../websocket/websocket'
+import { IWebSocket } from '../../../websocket'
 
 type UserData = SagaReturnType<typeof loginUser>
 type UpdatedUser = SagaReturnType<typeof updateUserProfile>

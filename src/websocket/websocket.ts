@@ -13,9 +13,14 @@ import {
 
 import { addNotification } from '../store/actions/user'
 
-export class SetupWebSocket {
-  protected dispatch: Dispatch<any>
-  static baseUrl = 'ws://todos1e.herokuapp.com' //process.env.BASE_SOCKET_URL
+export interface IWebSocket {
+  events?: Socket
+  connectSocket: () => void
+}
+
+export class SetupWebSocket implements IWebSocket {
+  public dispatch: Dispatch<any>
+  readonly baseUrl = process.env.BASE_SOCKET_URL
   constructor(dispatch: Dispatch<any>) {
     this.dispatch = dispatch
   }
@@ -25,8 +30,8 @@ export class SetupWebSocket {
   connectSocket = () => {
     const token = localStorage.getItem('token')?.slice(1, -1)
 
-    if (SetupWebSocket.baseUrl !== undefined) {
-      const socket = io(SetupWebSocket.baseUrl, {
+    if (this.baseUrl !== undefined) {
+      const socket = io(this.baseUrl, {
         withCredentials: true,
         extraHeaders: {
           ...(token ? { Authorization: `Bearer ${token}` } : {})

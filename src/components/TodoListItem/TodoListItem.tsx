@@ -63,10 +63,10 @@ export const TodoListItem: FC<TodoListItem> = (props) => {
     []
   )
 
-  const onCheckboxChange = () => {
+  const onCheckboxChange = useCallback(() => {
     const { done } = todo
     onToggleDone({ ...todo, done: !done })
-  }
+  }, [todo])
 
   const handleMouseEnter = useCallback(() => setButtonActive(true), [])
   const handleMouseLeave = useCallback(() => setButtonActive(false), [])
@@ -105,10 +105,7 @@ export const TodoListItem: FC<TodoListItem> = (props) => {
   return (
     <>
       <li
-        className={clsx(
-          'todo__list-item'
-          //currentDraggable?.id === id && 'todo__list-item--draggable'
-        )}
+        className={clsx('todo__list-item')}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onDoubleClick={handleSetEditTodoActive}
