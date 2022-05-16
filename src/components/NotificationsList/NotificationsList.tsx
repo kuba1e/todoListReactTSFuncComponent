@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import clsx from 'clsx'
 
 import './NotificationsList.scss'
@@ -8,6 +7,7 @@ import { useTypedSelector } from '../../hooks/useTypedSelector'
 import { userSelector } from '../../store/selectors'
 
 import NotificationListItem from '../../components/NotificationListItem'
+import { filterHiddenNotifications } from '../../helpers'
 
 export const NotificationsList = () => {
   const { notifications, isWebSocketConnected } = useTypedSelector(userSelector)
@@ -32,9 +32,11 @@ export const NotificationsList = () => {
     [isActiveList]
   )
 
-  const countWidget = notifications.length ? (
+  const countWidget = filterHiddenNotifications(notifications).length ? (
     <span className={clsx('notifications__widget-count')}>
-      {notifications.length >= 99 ? 99 : notifications.length}
+      {filterHiddenNotifications(notifications).length >= 99
+        ? 99
+        : filterHiddenNotifications(notifications).length}
     </span>
   ) : null
 
@@ -49,7 +51,7 @@ export const NotificationsList = () => {
               isActiveList && 'notifications__list--active'
             )}
           >
-            {notifications.map((notification) => {
+            {filterHiddenNotifications(notifications).map((notification) => {
               return (
                 <NotificationListItem
                   key={notification.id}

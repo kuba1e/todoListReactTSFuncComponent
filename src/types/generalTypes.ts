@@ -37,6 +37,7 @@ export interface INotification {
   type: string
   message: ITodo
   id: number
+  hidden: boolean
 }
 
 export class ErrorResponse {

@@ -83,8 +83,8 @@ function* sendToAddTodoWorker(action: ISendToAddTodo) {
       todos?.todosData
     ])
     yield put(addTodo(newTodo.data))
-    const { type, message, id } = newTodo.notification
-    const notificationMessage = new Notification(type, message, id)
+    const { type, message, id, hidden } = newTodo.notification
+    const notificationMessage = new Notification(type, message, id, hidden)
     yield put(addNotification(notificationMessage))
   } catch (error) {
     if (
@@ -105,9 +105,9 @@ function* sendToUpdateTodoWorker(action: ISendToUpdateTodo) {
 
     yield put(editTodo(updatedTodo.data))
 
-    const { type, message, id } = updatedTodo.notification
+    const { type, message, id, hidden } = updatedTodo.notification
 
-    const notificationMessage = new Notification(type, message, id)
+    const notificationMessage = new Notification(type, message, id, hidden)
     yield put(addNotification(notificationMessage))
   } catch (error) {
     if (
@@ -141,8 +141,8 @@ function* sendToDeleteTodoWorker(action: ISendToDelete) {
     )
     yield put(deleteTodo(action.payload))
 
-    const { type, message, id } = deletedTodo.notification
-    const notificationMessage = new Notification(type, message, id)
+    const { type, message, id, hidden } = deletedTodo.notification
+    const notificationMessage = new Notification(type, message, id, hidden)
     yield put(addNotification(notificationMessage))
   } catch (error) {
     if (

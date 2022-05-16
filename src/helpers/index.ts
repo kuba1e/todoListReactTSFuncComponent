@@ -16,7 +16,8 @@ import {
   sortArray,
   Notification,
   deleteNotification,
-  getShorterText
+  getShorterText,
+  filterHiddenNotifications
 } from './helpers'
 
 export {
@@ -37,5 +38,6 @@ export {
   sortArray,
   Notification,
   deleteNotification,
-  getShorterText
+  getShorterText,
+  filterHiddenNotifications
 }

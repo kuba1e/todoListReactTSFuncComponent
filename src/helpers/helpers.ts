@@ -113,6 +113,7 @@ export const deleteNotification = (
   const notificationIndex = findIndex(notifications, id)
   return [
     ...notifications.slice(0, notificationIndex),
+    { ...notifications[notificationIndex], hidden: true },
     ...notifications.slice(notificationIndex + 1)
   ]
 }
@@ -126,13 +127,19 @@ export const getShorterText = (label: string, length: number) => {
   return `${label.slice(0, length)}...`
 }
 
+export const filterHiddenNotifications = (notifications: Notification[]) => {
+  return notifications.filter((notification) => !notification.hidden)
+}
+
 export class Notification implements INotification {
   type: string
   message: ITodo
   id: number
-  constructor(type: string, message: ITodo, id: number) {
+  hidden: boolean
+  constructor(type: string, message: ITodo, id: number, hidden: boolean) {
     this.type = type
     this.message = message
     this.id = id
+    this.hidden = hidden
   }
 }

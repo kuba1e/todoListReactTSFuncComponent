@@ -128,13 +128,9 @@ function* checkAuthWorker(websocket: IWebSocket) {
   }
 }
 
-function* sendToDeleteNotificationWorker(
-  websocket: IWebSocket,
-  action: ISendToDeleteNotification
-) {
+function* sendToDeleteNotificationWorker(action: ISendToDeleteNotification) {
   try {
     yield call(sendToDeleteNotification, action.payload)
-
     yield put(deleteNotification(action.payload))
   } catch (error) {
     if (
@@ -169,11 +165,10 @@ function* updateUserProfileWatcher() {
   yield takeEvery(UserActionType.ACTION_UPDATE_USER, updateUserProfileWorker)
 }
 
-function* sendToDeleteNotificationWatcher(websocket: IWebSocket) {
+function* sendToDeleteNotificationWatcher() {
   yield takeEvery(
     UserActionType.ACTION_SEND_TO_DELETE_NOTIFICATION,
-    sendToDeleteNotificationWorker,
-    websocket
+    sendToDeleteNotificationWorker
   )
 }
 
