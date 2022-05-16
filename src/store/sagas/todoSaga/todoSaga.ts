@@ -84,16 +84,18 @@ function* sendToAddTodoWorker(websocket: IWebSocket, action: ISendToAddTodo) {
       todos?.todosData
     ])
     yield put(addTodo(newTodo.data))
-    const message = new Notification(
-      newTodo.notification.type,
-      newTodo.notification.message,
-      newTodo.notification.id
-    )
-    yield put(addNotification(message))
-
-    yield websocket.events?.emit('add-todo', {
-      data: newTodo
-    })
+    const { type, message, id } = newTodo.notification
+    const notificationMessage = new Notification(type, message, id)
+    yield put(addNotification(notificationMessage))
+    if (websocket.events !== undefined) {
+      yield call(
+        { context: websocket.events, fn: websocket.events.emit },
+        'add-todo',
+        {
+          data: newTodo
+        }
+      )
+    }
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
@@ -114,18 +116,22 @@ function* sendToUpdateTodoWorker(
       action.payload
     )
 
-    console.log(updatedTodo)
     yield put(editTodo(updatedTodo.data))
-    const message = new Notification(
-      updatedTodo.notification.type,
-      updatedTodo.notification.message,
-      updatedTodo.notification.id
-    )
-    yield put(addNotification(message))
 
-    yield websocket.events?.emit('edit-todo', {
-      data: updatedTodo
-    })
+    const { type, message, id } = updatedTodo.notification
+
+    const notificationMessage = new Notification(type, message, id)
+    yield put(addNotification(notificationMessage))
+
+    if (websocket.events !== undefined) {
+      yield call(
+        { context: websocket.events, fn: websocket.events.emit },
+        'edit-todo',
+        {
+          data: updatedTodo
+        }
+      )
+    }
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
@@ -143,7 +149,14 @@ function* sendToUpdateAllTodoWorker(
   try {
     const { todosData }: TodosReducer = yield select(todosSelector)
     yield call(sentToUpdateAllTodo, todosData)
-    yield websocket.events?.emit('update-all-todo', todosData)
+
+    if (websocket.events !== undefined) {
+      yield call(
+        { context: websocket.events, fn: websocket.events.emit },
+        'update-all-todo',
+        todosData
+      )
+    }
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
@@ -161,16 +174,20 @@ function* sendToDeleteTodoWorker(websocket: IWebSocket, action: ISendToDelete) {
       action.payload
     )
     yield put(deleteTodo(action.payload))
-    const message = new Notification(
-      deletedTodo.notification.type,
-      deletedTodo.notification.message,
-      deletedTodo.notification.id
-    )
-    yield put(addNotification(message))
 
-    yield websocket.events?.emit('delete-todo', {
-      data: deletedTodo
-    })
+    const { type, message, id } = deletedTodo.notification
+    const notificationMessage = new Notification(type, message, id)
+    yield put(addNotification(notificationMessage))
+
+    if (websocket.events !== undefined) {
+      yield call(
+        { context: websocket.events, fn: websocket.events.emit },
+        'delete-todo',
+        {
+          data: deletedTodo
+        }
+      )
+    }
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
@@ -188,7 +205,13 @@ function* sendToDeleteCompletedTodoWorker(
   try {
     yield call(sendToDeleteCompletedTodo, action.payload)
     yield put(clearCompleted())
-    yield websocket.events?.emit('delete-completed')
+
+    if (websocket.events !== undefined) {
+      yield call(
+        { context: websocket.events, fn: websocket.events.emit },
+        'delete-completed'
+      )
+    }
   } catch (error) {
     if (
       error instanceof ErrorResponse ||

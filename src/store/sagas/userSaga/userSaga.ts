@@ -114,7 +114,7 @@ function* checkAuthWorker(websocket: IWebSocket) {
 
     yield put(getNotifications(userData.notifications))
 
-    yield websocket.connectSocket()
+    yield call(websocket.connectSocket)
 
     yield put(setUserData(userData.userInfo.user))
     yield put(setAuthStatus(true))
@@ -134,7 +134,13 @@ function* sendToDeleteNotificationWorker(
 ) {
   try {
     yield call(sendToDeleteNotification, action.payload)
-    yield websocket.events?.emit('delete-notification', action.payload)
+    if (websocket.events !== undefined) {
+      yield call(
+        { context: websocket.events, fn: websocket.events.emit },
+        'delete-notification',
+        action.payload
+      )
+    }
     yield put(deleteNotification(action.payload))
   } catch (error) {
     if (
