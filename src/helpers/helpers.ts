@@ -87,8 +87,8 @@ export const getResponseStatus = (status: number): number => {
 export const sortHandler = (prevElem: ITodo, nextElem: ITodo) =>
   prevElem.order_num - nextElem.order_num
 
-export const findIndex = (todos: ITodo[], id: number) => {
-  return todos.findIndex((todo) => todo.id === id)
+export const findIndex = (array: ITodo[] | INotification[], id: number) => {
+  return array.findIndex((arrayElement) => arrayElement.id === id)
 }
 
 export const sortArray = (
@@ -104,6 +104,26 @@ export const sortArray = (
     todosCopy[dropableIndex].order_num = draggableOrdernum
   }
   return todosCopy
+}
+
+export const deleteNotification = (
+  notifications: INotification[],
+  id: number
+) => {
+  const notificationIndex = findIndex(notifications, id)
+  return [
+    ...notifications.slice(0, notificationIndex),
+    ...notifications.slice(notificationIndex + 1)
+  ]
+}
+
+export const getShorterText = (label: string, length: number) => {
+  const labelLength = label.length
+  if (labelLength < length) {
+    return label
+  }
+
+  return `${label.slice(0, length)}...`
 }
 
 export class Notification implements INotification {

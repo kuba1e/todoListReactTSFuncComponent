@@ -51,8 +51,11 @@ export const setWebsocketConnection = (status: boolean) =>
 export const addNotification = (notification: INotification) =>
   action(UserActionType.ACTION_ADD_NOTIFICATION, notification)
 
-export const deleteNotification = (notification: INotification) =>
-  action(UserActionType.ACTION_DELETE_NOTIFICATION, notification)
+export const deleteNotification = (notificationId: number) =>
+  action(UserActionType.ACTION_DELETE_NOTIFICATION, notificationId)
 
 export const getNotifications = (notification: INotification[]) =>
   action(UserActionType.ACTION_GET_NOTIFICATIONS, notification)
+
+export const sendTodeleteNotification = (notificationId: number) =>
+  action(UserActionType.ACTION_SEND_TO_DELETE_NOTIFICATION, notificationId)

@@ -1,0 +1,21 @@
+@import '../../scssStyles/variables';
+.notifications {
+  &__list {
+    max-height: 300px;
+    overflow-y: auto;
+    &-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      &--add {
+        background-color: $success;
+      }
+      &--edit {
+        background-color: yellow;
+      }
+      &--delete {
+        background-color: tomato;
+      }
+    }
+  }
+}

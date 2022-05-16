@@ -138,7 +138,7 @@ export const sendToDeleteTodo = async (id: number) => {
 
 export const sendToDeleteNotification = async (id: number) => {
   try {
-    await callApi(`/todos/${id}`, { method: 'DELETE' })
+    await callApi(`/notifications/${id}`, { method: 'DELETE' })
   } catch (error) {
     throw error
   }

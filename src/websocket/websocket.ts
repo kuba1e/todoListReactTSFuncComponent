@@ -2,7 +2,10 @@ import { io } from 'socket.io-client'
 import { Socket } from 'socket.io'
 import { Dispatch } from 'react'
 
-import { setWebsocketConnection } from '../store/actions/user'
+import {
+  deleteNotification,
+  setWebsocketConnection
+} from '../store/actions/user'
 import {
   addTodo,
   clearCompleted,
@@ -62,14 +65,18 @@ export class SetupWebSocket implements IWebSocket {
       })
 
       socket.on('deleted-completed', () => {
-        console.log('completed')
         this.dispatch(clearCompleted())
       })
-      socket.on('disconnect', (reason) => {
+
+      socket.on('deleted-notification', (id) => {
+        this.dispatch(deleteNotification(id))
+      })
+
+      socket.on('disconnect', () => {
         this.dispatch(setWebsocketConnection(false))
       })
 
-      socket.on('connect_error', async (error) => {
+      socket.on('connect_error', async () => {
         this.dispatch(setWebsocketConnection(false))
       })
     }

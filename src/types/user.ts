@@ -22,7 +22,8 @@ export enum UserActionType {
   ACTION_SET_WEBSOCKET_CONNECTION = 'ACTION_SET_WEBSOCKET_CONNECTION',
   ACTION_ADD_NOTIFICATION = 'ACTION_ADD_NOTIFICATION',
   ACTION_DELETE_NOTIFICATION = 'ACTION_DELETE_NOTIFICATION',
-  ACTION_GET_NOTIFICATIONS = 'ACTION_GET_NOTIFICATIONS'
+  ACTION_GET_NOTIFICATIONS = 'ACTION_GET_NOTIFICATIONS',
+  ACTION_SEND_TO_DELETE_NOTIFICATION = 'ACTION_SEND_TO_DELETE_NOTIFICATION'
 }
 
 export interface IUserReducer {
@@ -107,12 +108,17 @@ interface IAddNotification {
 
 interface IDeleteNotification {
   type: UserActionType.ACTION_DELETE_NOTIFICATION
-  payload: INotification
+  payload: number
 }
 
 interface IGetNotifications {
   type: UserActionType.ACTION_GET_NOTIFICATIONS
   payload: INotification[]
+}
+
+export interface ISendToDeleteNotification {
+  type: UserActionType.ACTION_SEND_TO_DELETE_NOTIFICATION
+  payload: number
 }
 
 export type UserAction =

@@ -1,14 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import clsx from 'clsx'
 
-import { TodosEvents } from '../../types/generalTypes'
-
-import './Notification.scss'
+import './NotificationsList.scss'
 
 import { useTypedSelector } from '../../hooks/useTypedSelector'
 import { userSelector } from '../../store/selectors'
 
-export const Notification = () => {
+import NotificationListItem from '../../components/NotificationListItem'
+
+export const NotificationsList = () => {
   const { notifications, isWebSocketConnected } = useTypedSelector(userSelector)
 
   const [isActiveList, setActiveList] = useState(false)
@@ -34,7 +35,7 @@ export const Notification = () => {
 
   const countWidget = notifications.length ? (
     <span className={clsx('notifications__widget-count')}>
-      {notifications.length}
+      {notifications.length >= 99 ? 99 : notifications.length}
     </span>
   ) : null
 
@@ -51,20 +52,10 @@ export const Notification = () => {
           >
             {notifications.map((notification) => {
               return (
-                <li
+                <NotificationListItem
                   key={notification.id}
-                  className={clsx(
-                    'notifications__list-item',
-                    `notifications__list-item--${notification.type}`
-                  )}
-                >
-                  <p className='notifications__list-item-title'>
-                    {TodosEvents[notification.type]}
-                  </p>
-                  <p className='notifications__list-item-subtitle'>
-                    {notification.message.label}
-                  </p>
-                </li>
+                  notification={notification}
+                />
               )
             })}
           </ul>

@@ -10,7 +10,8 @@ import {
   sentToUpdateAllTodo,
   sendToDeleteTodo,
   sendToDeleteCompletedTodo,
-  fetchNotifications
+  fetchNotifications,
+  sendToDeleteNotification
 } from './asyncFoo'
 
 export {
@@ -25,5 +26,6 @@ export {
   sentToUpdateAllTodo,
   sendToDeleteTodo,
   sendToDeleteCompletedTodo,
-  fetchNotifications
+  fetchNotifications,
+  sendToDeleteNotification
 }

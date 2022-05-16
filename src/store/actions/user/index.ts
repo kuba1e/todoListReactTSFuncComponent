@@ -15,7 +15,8 @@ import {
   setWebsocketConnection,
   addNotification,
   deleteNotification,
-  getNotifications
+  getNotifications,
+  sendTodeleteNotification
 } from './usersActions'
 
 export {
@@ -35,5 +36,6 @@ export {
   setWebsocketConnection,
   addNotification,
   deleteNotification,
-  getNotifications
+  getNotifications,
+  sendTodeleteNotification
 }

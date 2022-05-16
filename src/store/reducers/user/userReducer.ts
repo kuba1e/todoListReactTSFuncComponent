@@ -1,4 +1,5 @@
 import { IUserReducer, UserAction, UserActionType } from '../../../types/user'
+import { deleteNotification } from '../../../helpers'
 
 const initialState: IUserReducer = {
   isAuth: false,
@@ -17,6 +18,8 @@ const initialState: IUserReducer = {
 }
 
 export const userReducer = (state = initialState, action: UserAction) => {
+  console.log(action)
+
   switch (action.type) {
     case UserActionType.ACTION_LOGIN_USER:
       return {
@@ -101,7 +104,7 @@ export const userReducer = (state = initialState, action: UserAction) => {
     case UserActionType.ACTION_DELETE_NOTIFICATION:
       return {
         ...state,
-        notifications: []
+        notifications: deleteNotification(state.notifications, action.payload)
       }
 
     case UserActionType.ACTION_GET_NOTIFICATIONS:

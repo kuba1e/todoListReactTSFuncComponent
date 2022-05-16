@@ -32,8 +32,7 @@
     justify-content: center;
     color: $success;
     font-weight: 700;
-    &__count {
-    }
+    font-size: 12px;
   }
   &__list {
     width: 300px;
@@ -47,14 +46,6 @@
     display: none;
     &--active {
       display: block;
-    }
-    &-item {
-      &--add {
-        background-color: $success;
-      }
-      &--edit {
-        background-color: yellow;
-      }
     }
   }
 }

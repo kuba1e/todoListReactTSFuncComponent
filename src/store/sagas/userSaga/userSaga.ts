@@ -13,7 +13,8 @@ import {
   userRegistration,
   updateUserProfile,
   checkAuth,
-  fetchNotifications
+  fetchNotifications,
+  sendToDeleteNotification
 } from '../../asyncFoo'
 
 import {
@@ -24,18 +25,21 @@ import {
   setUserData,
   setAuthStatus,
   setRegistrationUser,
-  getNotifications
+  getNotifications,
+  deleteNotification
 } from '../../actions/user'
 
 import {
   IUpdateUserAction,
   UserActionType,
   IUserRegistrationAction,
-  ILoginUserAction
+  ILoginUserAction,
+  ISendToDeleteNotification
 } from '../../../types/user'
 
 import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
 import { IWebSocket } from '../../../websocket'
+import { action } from 'typesafe-actions'
 
 type UserData = SagaReturnType<typeof loginUser>
 type UpdatedUser = SagaReturnType<typeof updateUserProfile>
@@ -125,6 +129,25 @@ function* checkAuthWorker(websocket: IWebSocket) {
   }
 }
 
+function* sendToDeleteNotificationWorker(
+  websocket: IWebSocket,
+  action: ISendToDeleteNotification
+) {
+  try {
+    console.log('send')
+    yield call(sendToDeleteNotification, action.payload)
+    websocket.events?.emit('delete-notification', action.payload)
+    yield put(deleteNotification(action.payload))
+  } catch (error) {
+    if (
+      error instanceof ErrorResponse ||
+      error instanceof InternalServerError
+    ) {
+      yield put(setAuthStatus(false))
+    }
+  }
+}
+
 function* loginUserWatcher(websocket: IWebSocket) {
   yield takeEvery(UserActionType.ACTION_LOGIN_USER, loginUserWorker, websocket)
 }
@@ -148,13 +171,22 @@ function* updateUserProfileWatcher() {
   yield takeEvery(UserActionType.ACTION_UPDATE_USER, updateUserProfileWorker)
 }
 
+function* sendToDeleteNotificationWatcher(websocket: IWebSocket) {
+  yield takeEvery(
+    UserActionType.ACTION_SEND_TO_DELETE_NOTIFICATION,
+    sendToDeleteNotificationWorker,
+    websocket
+  )
+}
+
 export default function* userSaga(websocket: IWebSocket) {
   const sagas = [
     loginUserWatcher,
     checkAuthWatcher,
     logoutUserWatcher,
     userRegistrationWatcher,
-    updateUserProfileWatcher
+    updateUserProfileWatcher,
+    sendToDeleteNotificationWatcher
   ]
 
   const retrySagas = sagas.map((saga) => {

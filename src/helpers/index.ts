@@ -14,7 +14,9 @@ import {
   sortHandler,
   findIndex,
   sortArray,
-  Notification
+  Notification,
+  deleteNotification,
+  getShorterText
 } from './helpers'
 
 export {
@@ -33,5 +35,7 @@ export {
   sortHandler,
   findIndex,
   sortArray,
-  Notification
+  Notification,
+  deleteNotification,
+  getShorterText
 }

@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import './Button.scss'
 
 interface ButtonProps {
-  onClick?: () => void
+  onClick: () => void
   className?: string
   type?: 'submit' | 'button'
   children?: React.ReactNode
@@ -13,7 +13,15 @@ export const Button: FC<ButtonProps> = (props) => {
   const { className = '', children, type = 'button', ...otherProps } = props
 
   return (
-    <button className={`button ${className}`} {...otherProps} type={type}>
+    <button
+      className={`button ${className}`}
+      {...otherProps}
+      type={type}
+      onClick={(event) => {
+        event.stopPropagation()
+        otherProps.onClick()
+      }}
+    >
       {children}
     </button>
   )

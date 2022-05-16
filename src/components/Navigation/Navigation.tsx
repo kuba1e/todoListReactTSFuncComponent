@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import './Navigation.scss'
 
 import Button from '../UI/Button'
-import Notification from '../Notification'
+import Notification from '../NotificationsList'
 
 import { userSelector } from '../../store/selectors'
 import { logoutUser } from '../../store/actions/user'
