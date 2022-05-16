@@ -26,7 +26,8 @@ import {
   setAuthStatus,
   setRegistrationUser,
   getNotifications,
-  deleteNotification
+  deleteNotification,
+  setWebsocketConnection
 } from '../../actions/user'
 
 import {
@@ -39,7 +40,6 @@ import {
 
 import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
 import { IWebSocket } from '../../../websocket'
-import { action } from 'typesafe-actions'
 
 type UserData = SagaReturnType<typeof loginUser>
 type UpdatedUser = SagaReturnType<typeof updateUserProfile>
@@ -57,7 +57,6 @@ function* loginUserWorker(websocket: IWebSocket, action: ILoginUserAction) {
       error instanceof ErrorResponse ||
       error instanceof InternalServerError
     ) {
-      console.log(error)
       yield put(failedToLoginUser(error.message))
     }
   }
@@ -134,16 +133,15 @@ function* sendToDeleteNotificationWorker(
   action: ISendToDeleteNotification
 ) {
   try {
-    console.log('send')
     yield call(sendToDeleteNotification, action.payload)
-    websocket.events?.emit('delete-notification', action.payload)
+    yield websocket.events?.emit('delete-notification', action.payload)
     yield put(deleteNotification(action.payload))
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
       error instanceof InternalServerError
     ) {
-      yield put(setAuthStatus(false))
+      yield put(setWebsocketConnection(false))
     }
   }
 }
