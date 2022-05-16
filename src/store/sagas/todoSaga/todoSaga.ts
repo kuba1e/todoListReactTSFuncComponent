@@ -53,7 +53,6 @@ import {
 import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
 
 import { todosSelector } from '../../selectors'
-import { IWebSocket } from '../../../websocket/websocket'
 import { addNotification } from '../../actions/user'
 
 type Todos = SagaReturnType<typeof fetchTodos>
@@ -76,7 +75,7 @@ function* fetchTodosWorker(signal: AbortSignal) {
   }
 }
 
-function* sendToAddTodoWorker(websocket: IWebSocket, action: ISendToAddTodo) {
+function* sendToAddTodoWorker(action: ISendToAddTodo) {
   try {
     const todos: TodosReducer = yield select(todosSelector)
     const newTodo: NewTodo = yield call(sendToAddTodo, [
@@ -87,15 +86,6 @@ function* sendToAddTodoWorker(websocket: IWebSocket, action: ISendToAddTodo) {
     const { type, message, id } = newTodo.notification
     const notificationMessage = new Notification(type, message, id)
     yield put(addNotification(notificationMessage))
-    if (websocket.events !== undefined) {
-      yield call(
-        { context: websocket.events, fn: websocket.events.emit },
-        'add-todo',
-        {
-          data: newTodo
-        }
-      )
-    }
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
@@ -106,10 +96,7 @@ function* sendToAddTodoWorker(websocket: IWebSocket, action: ISendToAddTodo) {
   }
 }
 
-function* sendToUpdateTodoWorker(
-  action: ISendToUpdateTodo,
-  websocket: IWebSocket
-) {
+function* sendToUpdateTodoWorker(action: ISendToUpdateTodo) {
   try {
     const updatedTodo: UpdatedTodo = yield call(
       sendToUpdateTodo,
@@ -122,16 +109,6 @@ function* sendToUpdateTodoWorker(
 
     const notificationMessage = new Notification(type, message, id)
     yield put(addNotification(notificationMessage))
-
-    if (websocket.events !== undefined) {
-      yield call(
-        { context: websocket.events, fn: websocket.events.emit },
-        'edit-todo',
-        {
-          data: updatedTodo
-        }
-      )
-    }
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
@@ -142,21 +119,10 @@ function* sendToUpdateTodoWorker(
   }
 }
 
-function* sendToUpdateAllTodoWorker(
-  websocket: IWebSocket,
-  action: ISendToUpdateAllTodo
-) {
+function* sendToUpdateAllTodoWorker(action: ISendToUpdateAllTodo) {
   try {
     const { todosData }: TodosReducer = yield select(todosSelector)
     yield call(sentToUpdateAllTodo, todosData)
-
-    if (websocket.events !== undefined) {
-      yield call(
-        { context: websocket.events, fn: websocket.events.emit },
-        'update-all-todo',
-        todosData
-      )
-    }
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
@@ -167,7 +133,7 @@ function* sendToUpdateAllTodoWorker(
   }
 }
 
-function* sendToDeleteTodoWorker(websocket: IWebSocket, action: ISendToDelete) {
+function* sendToDeleteTodoWorker(action: ISendToDelete) {
   try {
     const deletedTodo: DeletedTodo = yield call(
       sendToDeleteTodo,
@@ -178,16 +144,6 @@ function* sendToDeleteTodoWorker(websocket: IWebSocket, action: ISendToDelete) {
     const { type, message, id } = deletedTodo.notification
     const notificationMessage = new Notification(type, message, id)
     yield put(addNotification(notificationMessage))
-
-    if (websocket.events !== undefined) {
-      yield call(
-        { context: websocket.events, fn: websocket.events.emit },
-        'delete-todo',
-        {
-          data: deletedTodo
-        }
-      )
-    }
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
@@ -198,20 +154,10 @@ function* sendToDeleteTodoWorker(websocket: IWebSocket, action: ISendToDelete) {
   }
 }
 
-function* sendToDeleteCompletedTodoWorker(
-  websocket: IWebSocket,
-  action: ISendToDeleteCompletedTodos
-) {
+function* sendToDeleteCompletedTodoWorker(action: ISendToDeleteCompletedTodos) {
   try {
     yield call(sendToDeleteCompletedTodo, action.payload)
     yield put(clearCompleted())
-
-    if (websocket.events !== undefined) {
-      yield call(
-        { context: websocket.events, fn: websocket.events.emit },
-        'delete-completed'
-      )
-    }
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
@@ -236,49 +182,42 @@ function* fetchTodosWatcher(): Generator<StrictEffect, any, Task> {
   }
 }
 
-function* updateTodoWatcher(websocket: IWebSocket) {
+function* updateTodoWatcher() {
   const channel: ActionPattern<ISendToUpdateTodo> = yield actionChannel(
     TodosActionType.ACTION_SEND_TO_UPDATE_TODO
   )
   while (true) {
     const action: ISendToUpdateTodo = yield take(channel)
-    yield call(sendToUpdateTodoWorker, action, websocket)
+    yield call(sendToUpdateTodoWorker, action)
   }
 }
 
-function* sendToAddTodoWatcher(websocket: IWebSocket) {
-  yield takeEvery(
-    TodosActionType.ACTION_SEND_TO_ADD_TODO,
-    sendToAddTodoWorker,
-    websocket
-  )
+function* sendToAddTodoWatcher() {
+  yield takeEvery(TodosActionType.ACTION_SEND_TO_ADD_TODO, sendToAddTodoWorker)
 }
 
-function* sendToUpdateAllTodoWatcher(websocket: IWebSocket) {
+function* sendToUpdateAllTodoWatcher() {
   yield takeEvery(
     TodosActionType.ACTION_SEND_TO_UPDATED_ALL_TODO,
-    sendToUpdateAllTodoWorker,
-    websocket
+    sendToUpdateAllTodoWorker
   )
 }
 
-function* sendToDeleteTodoWatcher(websocket: IWebSocket) {
+function* sendToDeleteTodoWatcher() {
   yield takeEvery(
     TodosActionType.ACTION_SEND_TO_DELETE_TODO,
-    sendToDeleteTodoWorker,
-    websocket
+    sendToDeleteTodoWorker
   )
 }
 
-function* sendToDeleteCompletedTodoWatcher(websocket: IWebSocket) {
+function* sendToDeleteCompletedTodoWatcher() {
   yield takeEvery(
     TodosActionType.ACTION_SEND_TO_DELETE_COMPLETED_TODOS,
-    sendToDeleteCompletedTodoWorker,
-    websocket
+    sendToDeleteCompletedTodoWorker
   )
 }
 
-export default function* todosSaga(websocket: IWebSocket) {
+export default function* todosSaga() {
   const sagas = [
     fetchTodosWatcher,
     updateTodoWatcher,
@@ -292,7 +231,7 @@ export default function* todosSaga(websocket: IWebSocket) {
     return spawn(function* () {
       while (true) {
         try {
-          yield call(saga, websocket)
+          yield call(saga)
           break
         } catch (error) {
           console.log(error)

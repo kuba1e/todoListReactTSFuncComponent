@@ -11,7 +11,6 @@ import NotificationListItem from '../../components/NotificationListItem'
 
 export const NotificationsList = () => {
   const { notifications, isWebSocketConnected } = useTypedSelector(userSelector)
-
   const [isActiveList, setActiveList] = useState(false)
 
   useEffect(() => {

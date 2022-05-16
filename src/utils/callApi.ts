@@ -22,10 +22,13 @@ export async function callApi<T>(path: string, params?: Params): Promise<T> {
     const baseUrl = process.env.BASE_URL
     const { method = 'GET', data, ...otherOptions } = params ?? {}
     const token = localStorage.getItem('token')?.slice(1, -1) ?? ''
+    const socketId = localStorage.getItem('socketId') ?? ''
+    console.log(socketId)
     const options: RequestInit = {
       method,
       headers: {
         'Content-Type': 'application/json',
+        ...(socketId ? { socketId: socketId } : {}),
         ...(token ? { Authorization: `Bearer ${token}` } : {})
       },
       credentials: 'include',

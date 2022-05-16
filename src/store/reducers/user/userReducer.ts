@@ -18,8 +18,6 @@ const initialState: IUserReducer = {
 }
 
 export const userReducer = (state = initialState, action: UserAction) => {
-  console.log(action)
-
   switch (action.type) {
     case UserActionType.ACTION_LOGIN_USER:
       return {

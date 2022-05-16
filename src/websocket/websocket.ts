@@ -41,6 +41,8 @@ export class SetupWebSocket implements IWebSocket {
         }
       })
       socket.on('connect', () => {
+        console.log(socket.id)
+        localStorage.setItem('socketId', socket.id)
         this.dispatch(setWebsocketConnection(true))
         this.events = socket
       })
@@ -69,6 +71,7 @@ export class SetupWebSocket implements IWebSocket {
       })
 
       socket.on('deleted-notification', (id) => {
+        console.log(id)
         this.dispatch(deleteNotification(id))
       })
 

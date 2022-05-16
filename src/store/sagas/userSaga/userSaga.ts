@@ -43,7 +43,7 @@ import { IWebSocket } from '../../../websocket'
 
 type UserData = SagaReturnType<typeof loginUser>
 type UpdatedUser = SagaReturnType<typeof updateUserProfile>
-type Notifications = SagaReturnType<typeof fetchNotifications>
+type Notification = SagaReturnType<typeof sendToDeleteNotification>
 
 function* loginUserWorker(websocket: IWebSocket, action: ILoginUserAction) {
   try {
@@ -134,13 +134,7 @@ function* sendToDeleteNotificationWorker(
 ) {
   try {
     yield call(sendToDeleteNotification, action.payload)
-    if (websocket.events !== undefined) {
-      yield call(
-        { context: websocket.events, fn: websocket.events.emit },
-        'delete-notification',
-        action.payload
-      )
-    }
+
     yield put(deleteNotification(action.payload))
   } catch (error) {
     if (
