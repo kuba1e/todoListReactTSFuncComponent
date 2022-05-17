@@ -19,7 +19,9 @@ export const NotificationsList = () => {
   }, [isActiveList])
 
   const handleShowList = useCallback(() => {
-    setActiveList((isActiveList) => (isActiveList = !isActiveList))
+    if (filterHiddenNotifications(notifications).length) {
+      setActiveList((isActiveList) => (isActiveList = !isActiveList))
+    }
   }, [])
 
   const handleHideList = useCallback(

@@ -3,6 +3,7 @@
   &__list {
     max-height: 300px;
     overflow-y: auto;
+    overflow-x: hidden;
     &-item {
       display: flex;
       justify-content: space-between;
@@ -16,6 +17,21 @@
       &--delete {
         background-color: tomato;
       }
+      &--deleting {
+        position: relative;
+        animation: deleteAnimation 1s forwards;
+      }
     }
+  }
+}
+
+@keyframes deleteAnimation {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
   }
 }

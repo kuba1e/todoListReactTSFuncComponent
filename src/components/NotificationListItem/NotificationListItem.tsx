@@ -20,11 +20,14 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
   notification
 }) => {
   const [isButtonActive, setButtonActive] = useState(false)
+  const [isDeleting, setDeleting] = useState(false)
 
   const dispatch = useDispatch()
 
   const handleRemoveNotification = useCallback(() => {
+    setDeleting(true)
     dispatch(sendTodeleteNotification(notification.id))
+    setTimeout(() => dispatch(sendTodeleteNotification(notification.id)), 1000)
   }, [])
 
   const handleMouseEnter = useCallback(() => {
@@ -41,7 +44,8 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
     <li
       className={clsx(
         'notifications__list-item',
-        `notifications__list-item--${type}`
+        `notifications__list-item--${type}`,
+        isDeleting && 'notifications__list-item--deleting'
       )}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
