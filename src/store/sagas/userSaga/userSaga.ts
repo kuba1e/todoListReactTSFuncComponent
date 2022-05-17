@@ -27,7 +27,9 @@ import {
   setRegistrationUser,
   getNotifications,
   deleteNotification,
-  setWebsocketConnection
+  setWebsocketConnection,
+  fetchedStatisticNotificationsSuccessful,
+  failedToFetchStatisticNotifications
 } from '../../actions/user'
 
 import {
@@ -35,7 +37,8 @@ import {
   UserActionType,
   IUserRegistrationAction,
   ILoginUserAction,
-  ISendToDeleteNotification
+  ISendToDeleteNotification,
+  IFetchStatisticNotifications
 } from '../../../types/user'
 
 import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
@@ -43,7 +46,7 @@ import { IWebSocket } from '../../../websocket'
 
 type UserData = SagaReturnType<typeof loginUser>
 type UpdatedUser = SagaReturnType<typeof updateUserProfile>
-type Notification = SagaReturnType<typeof sendToDeleteNotification>
+type Notifications = SagaReturnType<typeof fetchNotifications>
 
 function* loginUserWorker(websocket: IWebSocket, action: ILoginUserAction) {
   try {
@@ -142,6 +145,22 @@ function* sendToDeleteNotificationWorker(action: ISendToDeleteNotification) {
   }
 }
 
+function* fetchStatisticNotificatiosWorker(
+  action: IFetchStatisticNotifications
+) {
+  try {
+    const notifications: Notifications = yield call(fetchNotifications)
+    yield put(fetchedStatisticNotificationsSuccessful(notifications))
+  } catch (error) {
+    if (
+      error instanceof ErrorResponse ||
+      error instanceof InternalServerError
+    ) {
+      yield put(failedToFetchStatisticNotifications(error.message))
+    }
+  }
+}
+
 function* loginUserWatcher(websocket: IWebSocket) {
   yield takeEvery(UserActionType.ACTION_LOGIN_USER, loginUserWorker, websocket)
 }
@@ -172,6 +191,13 @@ function* sendToDeleteNotificationWatcher() {
   )
 }
 
+function* fetchStatisticNotifications() {
+  yield takeEvery(
+    UserActionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS,
+    fetchStatisticNotificatiosWorker
+  )
+}
+
 export default function* userSaga(websocket: IWebSocket) {
   const sagas = [
     loginUserWatcher,
@@ -179,7 +205,8 @@ export default function* userSaga(websocket: IWebSocket) {
     logoutUserWatcher,
     userRegistrationWatcher,
     updateUserProfileWatcher,
-    sendToDeleteNotificationWatcher
+    sendToDeleteNotificationWatcher,
+    fetchStatisticNotifications
   ]
 
   const retrySagas = sagas.map((saga) => {

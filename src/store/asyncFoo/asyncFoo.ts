@@ -83,10 +83,8 @@ export const fetchTodos = async (signal: AbortSignal) => {
 
 export const fetchNotifications = async () => {
   try {
-    const response: { notifications: INotification[] } = await callApi(
-      '/notifications'
-    )
-    return response
+    const notifications: INotification[] = await callApi('/notifications')
+    return notifications
   } catch (error) {
     throw error
   }

@@ -23,12 +23,16 @@ export enum UserActionType {
   ACTION_ADD_NOTIFICATION = 'ACTION_ADD_NOTIFICATION',
   ACTION_DELETE_NOTIFICATION = 'ACTION_DELETE_NOTIFICATION',
   ACTION_GET_NOTIFICATIONS = 'ACTION_GET_NOTIFICATIONS',
-  ACTION_SEND_TO_DELETE_NOTIFICATION = 'ACTION_SEND_TO_DELETE_NOTIFICATION'
+  ACTION_SEND_TO_DELETE_NOTIFICATION = 'ACTION_SEND_TO_DELETE_NOTIFICATION',
+  ACTION_FETCH_STATISTIC_NOTIFICATIONS = 'ACTION_FETCH_STATISTIC_NOTIFICATIONS',
+  ACTION_FETCH_STATISTIC_NOTIFICATIONS_SUCCESSFUL = 'ACTION_FETCH_STATISTIC_NOTIFICATIONS_SUCCESSFUL',
+  ACTION_FAILED_TO_FETCH_STATISTIC_NOTIFICATIONS = 'ACTION_FAILED_TO_FETCH_STATISTIC_NOTIFICATIONS'
 }
 
 export interface IUserReducer {
   isAuth: boolean
   isRegistered: boolean
+  loading: string
   userData: IUserData
   loginError: string
   registrError: string
@@ -36,6 +40,7 @@ export interface IUserReducer {
   logoutError: string
   isWebSocketConnected: boolean
   notifications: INotification[]
+  notificationsForStatistic: INotification[]
 }
 
 export interface ILoginUserAction {
@@ -121,6 +126,19 @@ export interface ISendToDeleteNotification {
   payload: number
 }
 
+export interface IFetchStatisticNotifications {
+  type: UserActionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS
+}
+export interface IFetchedStatisticNotificationSuccessful {
+  type: UserActionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS_SUCCESSFUL
+  payload: INotification[]
+}
+
+export interface IFailedToFetchStaticticNotifications {
+  type: UserActionType.ACTION_FAILED_TO_FETCH_STATISTIC_NOTIFICATIONS
+  payload: string
+}
+
 export type UserAction =
   | ILoginUserAction
   | IFailedToLoginAction
@@ -138,3 +156,4 @@ export type UserAction =
   | IAddNotification
   | IDeleteNotification
   | IGetNotifications
+  | IFetchedStatisticNotificationSuccessful

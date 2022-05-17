@@ -59,3 +59,17 @@ export const getNotifications = (notification: INotification[]) =>
 
 export const sendTodeleteNotification = (notificationId: number) =>
   action(UserActionType.ACTION_SEND_TO_DELETE_NOTIFICATION, notificationId)
+
+export const fetchStatisticNotifications = () =>
+  action(UserActionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS)
+
+export const fetchedStatisticNotificationsSuccessful = (
+  notifications: INotification[]
+) =>
+  action(
+    UserActionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS_SUCCESSFUL,
+    notifications
+  )
+
+export const failedToFetchStatisticNotifications = (error: string) =>
+  action(UserActionType.ACTION_FAILED_TO_FETCH_STATISTIC_NOTIFICATIONS, error)

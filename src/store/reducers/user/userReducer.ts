@@ -1,10 +1,11 @@
 import { IUserReducer, UserAction, UserActionType } from '../../../types/user'
-import { deleteNotification } from '../../../helpers'
+import { deleteNotification, getCurrentDate } from '../../../helpers'
 
 const initialState: IUserReducer = {
   isAuth: false,
   isWebSocketConnected: false,
   isRegistered: false,
+  loading: 'idle',
   userData: {
     id: '',
     email: '',
@@ -14,8 +15,11 @@ const initialState: IUserReducer = {
   registrError: '',
   updateError: '',
   logoutError: '',
-  notifications: []
+  notifications: [],
+  notificationsForStatistic: []
 }
+
+console.log(getCurrentDate())
 
 export const userReducer = (state = initialState, action: UserAction) => {
   switch (action.type) {
@@ -109,6 +113,12 @@ export const userReducer = (state = initialState, action: UserAction) => {
       return {
         ...state,
         notifications: [...action.payload]
+      }
+
+    case UserActionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS_SUCCESSFUL:
+      return {
+        ...state,
+        notificationsForStatistic: action.payload
       }
 
     default:

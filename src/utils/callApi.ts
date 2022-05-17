@@ -23,7 +23,6 @@ export async function callApi<T>(path: string, params?: Params): Promise<T> {
     const { method = 'GET', data, ...otherOptions } = params ?? {}
     const token = localStorage.getItem('token')?.slice(1, -1) ?? ''
     const socketId = localStorage.getItem('socketId') ?? ''
-    console.log(socketId)
     const options: RequestInit = {
       method,
       headers: {

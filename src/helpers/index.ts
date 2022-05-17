@@ -17,7 +17,10 @@ import {
   Notification,
   deleteNotification,
   getShorterText,
-  filterHiddenNotifications
+  filterHiddenNotifications,
+  getCurrentDate,
+  getArrayForGraphRendering,
+  getTheBiggestCountNumber
 } from './helpers'
 
 export {
@@ -39,5 +42,8 @@ export {
   Notification,
   deleteNotification,
   getShorterText,
-  filterHiddenNotifications
+  filterHiddenNotifications,
+  getCurrentDate,
+  getArrayForGraphRendering,
+  getTheBiggestCountNumber
 }

@@ -16,7 +16,10 @@ import {
   addNotification,
   deleteNotification,
   getNotifications,
-  sendTodeleteNotification
+  sendTodeleteNotification,
+  fetchStatisticNotifications,
+  fetchedStatisticNotificationsSuccessful,
+  failedToFetchStatisticNotifications
 } from './usersActions'
 
 export {
@@ -37,5 +40,8 @@ export {
   addNotification,
   deleteNotification,
   getNotifications,
-  sendTodeleteNotification
+  sendTodeleteNotification,
+  fetchStatisticNotifications,
+  fetchedStatisticNotificationsSuccessful,
+  failedToFetchStatisticNotifications
 }

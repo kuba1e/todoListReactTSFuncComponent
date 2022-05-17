@@ -1,4 +1,4 @@
-import { INotification, ITodo } from '../types/generalTypes'
+import { INotification, IStatistic, ITodo } from '../types/generalTypes'
 
 export const getCompletedQuantity = (todos: ITodo[]) => {
   return todos.filter((todo) => todo.done).length
@@ -131,15 +131,91 @@ export const filterHiddenNotifications = (notifications: Notification[]) => {
   return notifications.filter((notification) => !notification.hidden)
 }
 
+export const getCurrentDate = () => {
+  const dateNow = new Date()
+  return `${dateNow.getDate()}.${dateNow.getMonth() + 1}`
+}
+
+export const getArrayForGraphRendering = (
+  notificationsArray: INotification[]
+) => {
+  if (!notificationsArray.length) {
+    return []
+  }
+  const arrayWithRigthUtcDateFormat = notificationsArray.map((notification) => {
+    const utcDate = new Date(notification.date)
+    return {
+      ...notification,
+      date: `${utcDate.getDate()}.${utcDate.getMonth() + 1}`
+    }
+  })
+
+  const objectWithInfoByDays = arrayWithRigthUtcDateFormat.reduce(
+    (acc, currentValue) => {
+      if (!acc[currentValue.date]) {
+        acc[currentValue.date] = {
+          add: 0,
+          delete: 0,
+          edit: 0,
+          date: currentValue.date
+        }
+      }
+
+      switch (currentValue.type) {
+        case 'add':
+          acc[currentValue.date].add++
+          break
+        case 'edit':
+          acc[currentValue.date].edit++
+          break
+        case 'delete':
+          acc[currentValue.date].delete++
+          break
+      }
+
+      return acc
+    },
+    {}
+  )
+
+  return Object.values(objectWithInfoByDays as IStatistic)
+}
+
+export const getTheBiggestCountNumber = (notifications: IStatistic[]) => {
+  if (!notifications.length) {
+    return 0
+  }
+  const countArray = notifications.reduce((acc, currentElement) => {
+    const countNumbers = Object.values(currentElement)
+    countNumbers.forEach((element) => {
+      if (typeof element === 'number') {
+        acc.push(element)
+      }
+    })
+
+    return acc
+  }, [])
+
+  return Math.max(...countArray)
+}
+
 export class Notification implements INotification {
   type: string
   message: ITodo
   id: number
   hidden: boolean
-  constructor(type: string, message: ITodo, id: number, hidden: boolean) {
+  date: Date
+  constructor(
+    type: string,
+    message: ITodo,
+    id: number,
+    hidden: boolean,
+    date: Date
+  ) {
     this.type = type
     this.message = message
     this.id = id
     this.hidden = hidden
+    this.date = date
   }
 }

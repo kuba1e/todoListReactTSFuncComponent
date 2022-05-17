@@ -38,6 +38,14 @@ export interface INotification {
   message: ITodo
   id: number
   hidden: boolean
+  date: Date
+}
+
+export interface IStatistic {
+  edit: number
+  add: number
+  delete: number
+  date: string
 }
 
 export class ErrorResponse {
