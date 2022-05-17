@@ -40,6 +40,9 @@ export const Navigation: FC = () => {
         <Link to='/todos'>My Todos</Link>
       </li>
       <li className='header__nav-list-item'>
+        <Link to='/graph'>Graph</Link>
+      </li>
+      <li className='header__nav-list-item'>
         <Button onClick={handleLogoutUser} className='logout'>
           Logout
         </Button>

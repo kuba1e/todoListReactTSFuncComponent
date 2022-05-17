@@ -43,9 +43,13 @@
     padding: 0;
     background-color: #f5f5f5;
     list-style: none;
-    display: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.5s ease-in-out;
     &--active {
-      display: block;
+      opacity: 1;
+      pointer-events: all;
+      transition: all 0.5s ease-in-out;
     }
   }
 }

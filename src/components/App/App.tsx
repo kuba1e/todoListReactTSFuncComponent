@@ -13,6 +13,7 @@ import NotFound from '../NotFound'
 import Navigation from '../Navigation'
 import HomePage from '../HomePage'
 import EditProfilePage from '../EditProfilePage'
+import Graph from '../Graph'
 
 export const App: FC = () => {
   return (
@@ -43,6 +44,15 @@ export const App: FC = () => {
                   </div>
                 </div>
               </ErrorBoundary>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path='/graph'
+          element={
+            <ProtectedRoute redirectPath='/'>
+              <Graph />
             </ProtectedRoute>
           }
         />
