@@ -1,4 +1,4 @@
-import React, { useState, useCallback, FC } from 'react'
+import React, { useState, useCallback, FC, useRef, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import clsx from 'clsx'
 
@@ -19,16 +19,28 @@ interface NotificationListItemProps {
 export const NotificationListItem: FC<NotificationListItemProps> = ({
   notification
 }) => {
-  const [isButtonActive, setButtonActive] = useState(false)
   const [isDeleting, setDeleting] = useState(false)
+  const liElement = useRef(null)
+
+  useEffect(() => {
+    if (liElement.current !== null) {
+      const li = liElement.current as HTMLLIElement
+      li.addEventListener('animationend', animationEndHandler)
+
+      return () => li.removeEventListener('animationend', animationEndHandler)
+    }
+    return
+  }, [])
 
   const dispatch = useDispatch()
 
   const handleRemoveNotification = useCallback(() => {
     setDeleting(true)
-    dispatch(sendTodeleteNotification(notification.id))
-    setTimeout(() => dispatch(sendTodeleteNotification(notification.id)), 1000)
   }, [])
+
+  const animationEndHandler = () => {
+    dispatch(sendTodeleteNotification(notification.id))
+  }
 
   const handleMouseEnter = useCallback(() => {
     setButtonActive(true)
@@ -41,25 +53,25 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
   const { type, message } = notification
 
   return (
-    <li
-      className={clsx(
-        'notifications__list-item',
-        `notifications__list-item--${type}`,
-        isDeleting && 'notifications__list-item--deleting'
-      )}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div>
-        <p className='notifications__list-item-title'>{TodosEvents[type]}</p>
-        <p className='notifications__list-item-subtitle'>
-          {getShorterText(message.label, 20)}
-        </p>
-      </div>
-      <Button
-        className={clsx('delete-btn', isButtonActive && 'delete-btn--active')}
-        onClick={handleRemoveNotification}
-      />
-    </li>
+    <div className='container'>
+      <li
+        ref={liElement}
+        className={clsx(
+          'notifications__list-item',
+          `notifications__list-item--${type}`,
+          isDeleting && 'notifications__list-item--deleting'
+        )}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div>
+          <p className='notifications__list-item-title'>{TodosEvents[type]}</p>
+          <p className='notifications__list-item-subtitle'>
+            {getShorterText(message.label, 20)}
+          </p>
+        </div>
+        <button onClick={handleRemoveNotification}>delete</button>
+      </li>
+    </div>
   )
 }

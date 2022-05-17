@@ -1,4 +1,8 @@
 @import '../../scssStyles/variables';
+.container {
+  position: relative;
+}
+
 .notifications {
   &__list {
     max-height: 300px;
@@ -18,10 +22,12 @@
         background-color: tomato;
       }
       &--deleting {
-        position: relative;
         animation: deleteAnimation 1s forwards;
       }
     }
+  }
+
+  &__animation {
   }
 }
 

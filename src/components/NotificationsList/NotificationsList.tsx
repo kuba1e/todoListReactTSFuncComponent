@@ -13,16 +13,25 @@ export const NotificationsList = () => {
   const { notifications, isWebSocketConnected } = useTypedSelector(userSelector)
   const [isActiveList, setActiveList] = useState(false)
 
+  console.log(isActiveList)
   useEffect(() => {
     document.addEventListener('click', handleHideList)
     return () => document.removeEventListener('click', handleHideList)
   }, [isActiveList])
 
-  const handleShowList = useCallback(() => {
-    if (filterHiddenNotifications(notifications).length) {
-      setActiveList((isActiveList) => (isActiveList = !isActiveList))
-    }
-  }, [])
+  const handleShowList = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      const currentTarget = event.target as HTMLDivElement
+      console.log(currentTarget)
+      if (
+        filterHiddenNotifications(notifications).length &&
+        currentTarget.classList.contains('notifications__inner')
+      ) {
+        setActiveList((isActiveList) => (isActiveList = !isActiveList))
+      }
+    },
+    [notifications]
+  )
 
   const handleHideList = useCallback(
     (event: MouseEvent) => {
