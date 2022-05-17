@@ -19,6 +19,8 @@ export const NotificationsList = () => {
     return () => document.removeEventListener('click', handleHideList)
   }, [isActiveList])
 
+  console.log(filterHiddenNotifications(notifications))
+
   const handleShowList = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       const currentTarget = event.target as HTMLDivElement

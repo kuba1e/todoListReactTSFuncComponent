@@ -4,8 +4,6 @@ import clsx from 'clsx'
 
 import './NotificationListItem.scss'
 
-import Button from '../../components/UI/Button'
-
 import { INotification } from '../../types/generalTypes'
 import { TodosEvents } from '../../types/generalTypes'
 import { sendTodeleteNotification } from '../../store/actions/user'
@@ -42,14 +40,6 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
     dispatch(sendTodeleteNotification(notification.id))
   }
 
-  const handleMouseEnter = useCallback(() => {
-    setButtonActive(true)
-  }, [])
-
-  const handleMouseLeave = useCallback(() => {
-    setButtonActive(false)
-  }, [])
-
   const { type, message } = notification
 
   return (
@@ -61,8 +51,6 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
           `notifications__list-item--${type}`,
           isDeleting && 'notifications__list-item--deleting'
         )}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
         <div>
           <p className='notifications__list-item-title'>{TodosEvents[type]}</p>
