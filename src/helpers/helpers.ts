@@ -202,13 +202,7 @@ export const getTheBiggestCountNumber = (notifications: IStatistic[]) => {
 }
 
 export const getDivider = (maxCount: number) => {
-  function getDividerNumber(multiplier: number): number {
-    if (multiplier * 5 >= maxCount) {
-      return multiplier
-    }
-    return getDividerNumber(multiplier + 1)
-  }
-  return getDividerNumber(2)
+  return Math.ceil(maxCount / 5)
 }
 
 export class Notification implements INotification {
