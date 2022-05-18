@@ -36,9 +36,9 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
     setDeleting(true)
   }, [])
 
-  const animationEndHandler = () => {
+  const animationEndHandler = useCallback(() => {
     dispatch(sendTodeleteNotification(notification.id))
-  }
+  }, [])
 
   const { type, message } = notification
 
