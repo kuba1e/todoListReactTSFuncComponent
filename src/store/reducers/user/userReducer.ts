@@ -19,8 +19,6 @@ const initialState: IUserReducer = {
   notificationsForStatistic: []
 }
 
-console.log(getCurrentDate())
-
 export const userReducer = (state = initialState, action: UserAction) => {
   switch (action.type) {
     case UserActionType.ACTION_LOGIN_USER:
@@ -115,9 +113,16 @@ export const userReducer = (state = initialState, action: UserAction) => {
         notifications: [...action.payload]
       }
 
+    case UserActionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS:
+      return {
+        ...state,
+        loading: 'pending'
+      }
+
     case UserActionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS_SUCCESSFUL:
       return {
         ...state,
+        loading: 'idle',
         notificationsForStatistic: action.payload
       }
 

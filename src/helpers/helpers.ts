@@ -25,13 +25,14 @@ export const getFilteredTodosList = (filterValue: string, todos: ITodo[]) => {
 const getTheBiggestValue = (todos: ITodo[] | [], key: string): number => {
   const todosCopy = [...todos]
   if (todosCopy !== undefined) {
-    return (
+    const theBiggestValue =
       todosCopy
-        .sort((prevTodo, nextTodo) => {
+        ?.sort((prevTodo, nextTodo) => {
           return prevTodo[key] - nextTodo[key]
         })
         .at(-1)[key] + 1
-    )
+
+    return theBiggestValue
   }
   return 1
 }
@@ -196,7 +197,18 @@ export const getTheBiggestCountNumber = (notifications: IStatistic[]) => {
     return acc
   }, [])
 
-  return Math.max(...countArray)
+  const maxCount = Math.max(...countArray)
+  return maxCount >= 10 ? maxCount : 10
+}
+
+export const getDivider = (maxCount: number) => {
+  function getDividerNumber(multiplier: number): number {
+    if (multiplier * 5 >= maxCount) {
+      return multiplier
+    }
+    return getDividerNumber(multiplier + 1)
+  }
+  return getDividerNumber(2)
 }
 
 export class Notification implements INotification {

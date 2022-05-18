@@ -41,7 +41,6 @@ export class SetupWebSocket implements IWebSocket {
         }
       })
       socket.on('connect', () => {
-        console.log(socket.id)
         localStorage.setItem('socketId', socket.id)
         this.dispatch(setWebsocketConnection(true))
         this.events = socket

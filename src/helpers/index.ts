@@ -20,7 +20,8 @@ import {
   filterHiddenNotifications,
   getCurrentDate,
   getArrayForGraphRendering,
-  getTheBiggestCountNumber
+  getTheBiggestCountNumber,
+  getDivider
 } from './helpers'
 
 export {
@@ -45,5 +46,6 @@ export {
   filterHiddenNotifications,
   getCurrentDate,
   getArrayForGraphRendering,
-  getTheBiggestCountNumber
+  getTheBiggestCountNumber,
+  getDivider
 }
