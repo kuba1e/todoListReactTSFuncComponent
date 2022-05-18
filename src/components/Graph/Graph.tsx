@@ -72,7 +72,7 @@ export const Graph = () => {
       ctx.strokeStyle = '#fff'
 
       const scaleX = canvasPlotWidth / 15
-      const scaleY = canvasPlotHeight / maxScaleY
+      const scaleY = canvasPlotHeight / (maxScaleY + 3)
       const scaleDay = scaleX / 3
 
       let j = 0
@@ -81,7 +81,7 @@ export const Graph = () => {
         ctx?.moveTo(i, scaleY)
         ctx?.lineTo(i, canvasPlotHeight)
         if (arrayOfDays[j] !== undefined) {
-          ctx?.fillText(arrayOfDays[j], i, canvasPlotHeight - 30, 20)
+          ctx?.fillText(arrayOfDays[j], i + 10, canvasPlotHeight - 30, 20)
           j++
         }
       }
@@ -89,7 +89,6 @@ export const Graph = () => {
       for (let i = scaleY; i <= canvasPlotHeight; i += scaleY) {
         console.log(i)
         console.log(canvasPlotHeight)
-        console.log('q')
         ctx?.moveTo(scaleX, i)
         ctx?.lineTo(canvasPlotWidth, i)
         ctx?.fillText('ad', 0, i)
@@ -112,8 +111,8 @@ export const Graph = () => {
 
       arrayOfDays.forEach((day, index, array) => {
         const dayData =
-          statistic[
-            statistic.findIndex((statisticDay) => {
+          arrayForGraphRendering[
+            arrayForGraphRendering.findIndex((statisticDay) => {
               return statisticDay.date === day
             })
           ]
