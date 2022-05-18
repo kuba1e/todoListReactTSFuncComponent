@@ -22,22 +22,19 @@ export const Graph = () => {
     notificationsForStatistic
   )
 
-  const maxScaleY = getTheBiggestCountNumber(arrayForGraphRendering)
-
-  console.log(maxScaleY)
+  const statistic = [
+    { edit: 5, delete: 6, add: 7, date: '5.5' },
+    { edit: 5, delete: 6, add: 7, date: '8.5' },
+    { edit: 5, delete: 6, add: 20, date: '17.5' },
+    { edit: 5, delete: 6, add: 30, date: '18.5' }
+  ]
 
   const canvasElement = useRef(null)
 
   const MILLISECONDS_IN_TWO_WEEK = 1000 * 60 * 60 * 24 * 14
   const MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24
-
-  const statistic = [
-    { edit: 5, delete: 6, add: 7, date: '3.5' },
-    { edit: 5, delete: 6, add: 7, date: '4.5' },
-    { edit: 5, delete: 6, add: 7, date: '3.5' },
-    { edit: 5, delete: 6, add: 7, date: '8.5' },
-    { edit: 5, delete: 6, add: 7, date: '17.5' }
-  ]
+  const maxScaleX = 15
+  const maxScaleY = getTheBiggestCountNumber(statistic)
 
   useEffect(() => {
     dispatch(fetchStatisticNotifications())
@@ -71,28 +68,33 @@ export const Graph = () => {
       ctx.font = '14px Arial'
       ctx.strokeStyle = '#fff'
 
-      const scaleX = canvasPlotWidth / 15
-      const scaleY = canvasPlotHeight / (maxScaleY + 3)
+      const scaleX = canvasPlotWidth / maxScaleX
+      const scaleY = canvasPlotHeight / (maxScaleY + 1)
       const scaleDay = scaleX / 3
 
-      let j = 0
+      const shiftScaleX = scaleX / 4
 
-      for (let i = scaleX; i <= canvasPlotWidth; i += scaleX) {
-        ctx?.moveTo(i, scaleY)
-        ctx?.lineTo(i, canvasPlotHeight)
-        if (arrayOfDays[j] !== undefined) {
-          ctx?.fillText(arrayOfDays[j], i + 10, canvasPlotHeight - 30, 20)
-          j++
+      for (let i = 1; i <= maxScaleX; i++) {
+        console.log(scaleX)
+        ctx?.moveTo(i * scaleX, 0)
+        ctx?.lineTo(i * scaleX, canvasPlotHeight - scaleY)
+
+        if (arrayOfDays[i - 1] !== undefined) {
+          ctx?.fillText(
+            arrayOfDays[i - 1],
+            i * scaleX + shiftScaleX,
+            canvasPlotHeight + 10
+          )
         }
       }
 
-      for (let i = scaleY; i <= canvasPlotHeight; i += scaleY) {
-        console.log(i)
-        console.log(canvasPlotHeight)
-        ctx?.moveTo(scaleX, i)
-        ctx?.lineTo(canvasPlotWidth, i)
-        ctx?.fillText('ad', 0, i)
+      for (let i = 1; i <= maxScaleY; i++) {
+        //  if (i * scaleY > scaleX) {
+        ctx?.moveTo(scaleX, i * scaleY)
+        ctx?.lineTo(canvasPlotWidth, i * scaleY)
+        ctx?.fillText(`${maxScaleY - (i - 1)}`, 20, i * scaleY)
         ctx?.stroke()
+        //  }
       }
 
       ctx.lineWidth = 1
@@ -104,15 +106,15 @@ export const Graph = () => {
       ctx.lineWidth = 2
       ctx?.moveTo(scaleX, canvasPlotHeight - scaleY)
       ctx?.lineTo(canvasPlotWidth, canvasPlotHeight - scaleY)
-      ctx?.moveTo(scaleX, scaleY)
+      ctx?.moveTo(scaleX, 0)
       ctx?.lineTo(scaleX, canvasPlotHeight - scaleY)
       ctx?.stroke()
       ctx?.closePath()
 
       arrayOfDays.forEach((day, index, array) => {
         const dayData =
-          arrayForGraphRendering[
-            arrayForGraphRendering.findIndex((statisticDay) => {
+          statistic[
+            statistic.findIndex((statisticDay) => {
               return statisticDay.date === day
             })
           ]
