@@ -25,7 +25,22 @@ export const Graph = () => {
 
   const canvas =
     loading !== 'pending' ? (
-      <canvas ref={canvasElement} width='800px' height='600px'></canvas>
+      <div>
+        <canvas ref={canvasElement} width='800px' height='600px'></canvas>
+        <div className='widget'>
+          <ul className='description-list'>
+            <li className='description-list__item'>
+              <div className='edit-icon'></div>Edit
+            </li>
+            <li className='description-list__item'>
+              <div className='add-icon'></div>Add
+            </li>
+            <li className='description-list__item'>
+              <div className='delete-icon'></div>Delete
+            </li>
+          </ul>
+        </div>
+      </div>
     ) : null
 
   const loader = loading === 'pending' ? <Loader /> : null

@@ -9,3 +9,43 @@
   justify-content: center;
   align-items: center;
 }
+
+.widget {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.description-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  //width: 200px;
+  &__item {
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+.edit-icon,
+.add-icon,
+.delete-icon {
+  width: 40px;
+  height: 20px;
+  margin-right: 20px;
+}
+
+.edit-icon {
+  background-color: yellow;
+}
+
+.add-icon {
+  background-color: green;
+}
+
+.delete-icon {
+  background-color: red;
+}
