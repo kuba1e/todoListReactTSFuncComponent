@@ -22,17 +22,11 @@ import {
   sendToUpdateTodo,
   sendToDeleteTodo,
   toggleAllDoneTodo,
-  updateTodos,
   editTodo
 } from '../../store/actions/todos'
 
-import {
-  getFilteredTodosList,
-  sortArray,
-  sortHandler,
-  findIndex
-} from '../../helpers'
-import { todosSelector } from '../../store/selectors'
+import { getFilteredTodosList, sortHandler } from '../../helpers'
+import { todosSelector, filterValueSelector } from '../../store/selectors'
 
 import { ITodo } from '../../types/generalTypes'
 
@@ -41,7 +35,8 @@ export const TodoList: FC = () => {
   const [editedTodoActive, setEditedTodoActive] = useState(-1)
   const [id, setId] = useState(-1)
 
-  const { todosData, loading, error, filterValue } = useSelector(todosSelector)
+  const { todosData, loading, error } = useSelector(todosSelector)
+  const { filterValue } = useSelector(filterValueSelector)
 
   const dispatch = useDispatch()
 

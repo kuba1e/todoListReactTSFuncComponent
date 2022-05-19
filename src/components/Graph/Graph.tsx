@@ -1,10 +1,10 @@
-import { useTypedSelector } from '../../hooks/useTypedSelector'
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+
 import {
   BarChart,
   Bar,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -16,14 +16,15 @@ import {
 import './Graph.scss'
 
 import { getArrayForGraphRendering } from '../../helpers'
-import { userSelector } from '../../store/selectors'
+import { notificationSelector } from '../../store/selectors'
 import { fetchStatisticNotifications } from '../../store/actions/user'
 import { IStatistic } from '../../types/generalTypes'
 import Loader from '../../components/Loader'
 
 export const Graph = () => {
   const dispatch = useDispatch()
-  const { notificationsForStatistic, loading } = useTypedSelector(userSelector)
+  const { notificationsForStatistic, loading } =
+    useSelector(notificationSelector)
 
   useEffect(() => {
     dispatch(fetchStatisticNotifications())

@@ -9,11 +9,11 @@ import Notification from '../NotificationsList'
 
 import { userSelector } from '../../store/selectors'
 import { logoutUser } from '../../store/actions/user'
-import { useTypedSelector } from '../../hooks/useTypedSelector'
+import { useSelector } from 'react-redux'
 
 export const Navigation: FC = () => {
   const dispatch = useDispatch()
-  const { isAuth, userData } = useTypedSelector(userSelector)
+  const { isAuth, userData } = useSelector(userSelector)
   const { email } = userData ?? {}
 
   const handleLogoutUser = useCallback(() => {

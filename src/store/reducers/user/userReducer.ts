@@ -1,9 +1,7 @@
 import { IUserReducer, UserAction, UserActionType } from '../../../types/user'
-import { deleteNotification, getCurrentDate } from '../../../helpers'
 
 const initialState: IUserReducer = {
   isAuth: false,
-  isWebSocketConnected: false,
   isRegistered: false,
   loading: 'idle',
   userData: {
@@ -14,9 +12,7 @@ const initialState: IUserReducer = {
   loginError: '',
   registrError: '',
   updateError: '',
-  logoutError: '',
-  notifications: [],
-  notificationsForStatistic: []
+  logoutError: ''
 }
 
 export const userReducer = (state = initialState, action: UserAction) => {
@@ -71,6 +67,7 @@ export const userReducer = (state = initialState, action: UserAction) => {
         userData: action.payload
       }
     case UserActionType.ACTION_SET_AUTH_STATUS:
+      console.log(action)
       return {
         ...state,
         isAuth: action.payload
@@ -88,44 +85,6 @@ export const userReducer = (state = initialState, action: UserAction) => {
         updateError: '',
         logoutError: ''
       }
-
-    case UserActionType.ACTION_SET_WEBSOCKET_CONNECTION:
-      return {
-        ...state,
-        isWebSocketConnected: action.payload
-      }
-
-    case UserActionType.ACTION_ADD_NOTIFICATION:
-      return {
-        ...state,
-        notifications: [...state.notifications, action.payload]
-      }
-
-    case UserActionType.ACTION_DELETE_NOTIFICATION:
-      return {
-        ...state,
-        notifications: deleteNotification(state.notifications, action.payload)
-      }
-
-    case UserActionType.ACTION_GET_NOTIFICATIONS:
-      return {
-        ...state,
-        notifications: [...action.payload]
-      }
-
-    case UserActionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS:
-      return {
-        ...state,
-        loading: 'pending'
-      }
-
-    case UserActionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS_SUCCESSFUL:
-      return {
-        ...state,
-        loading: 'idle',
-        notificationsForStatistic: action.payload
-      }
-
     default:
       return state
   }

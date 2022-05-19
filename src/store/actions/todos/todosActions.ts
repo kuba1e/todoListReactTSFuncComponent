@@ -1,5 +1,6 @@
 import { action } from 'typesafe-actions'
-import { ITodo, INotification } from '../../../types/generalTypes'
+import { ITodo } from '../../../types/generalTypes'
+import { FilterValueActionType } from '../../../types/filterValue'
 
 import { TodosActionType } from '../../../types/todos'
 
@@ -16,7 +17,7 @@ export const clearCompleted = () =>
   action(TodosActionType.ACTION_CLEAR_COMPLETED_TO_DO)
 
 export const setFilterValue = (value: string) =>
-  action(TodosActionType.ACTION_SET_FILTER_VALUE, value)
+  action(FilterValueActionType.ACTION_SET_FILTER_VALUE, value)
 
 export const editTodo = (todo: ITodo) =>
   action(TodosActionType.ACTION_EDIT_TO_DO, todo)

@@ -1,3 +1,11 @@
-import { todosReducer } from './todosReducer'
+import { combineReducers } from 'redux'
 
-export default todosReducer
+import { todosReducer } from './todosReducer'
+import { filterValueReducer } from './filterValueReducer'
+
+const todosRootReducer = combineReducers({
+  todosData: todosReducer,
+  filterValue: filterValueReducer
+})
+
+export default todosRootReducer

@@ -3,14 +3,16 @@ import clsx from 'clsx'
 
 import './NotificationsList.scss'
 
-import { useTypedSelector } from '../../hooks/useTypedSelector'
-import { userSelector } from '../../store/selectors'
+import { notificationSelector, websocketSelector } from '../../store/selectors'
 
 import NotificationListItem from '../../components/NotificationListItem'
 import { filterHiddenNotifications } from '../../helpers'
+import { useSelector } from 'react-redux'
 
 export const NotificationsList = () => {
-  const { notifications, isWebSocketConnected } = useTypedSelector(userSelector)
+  const { notifications } = useSelector(notificationSelector)
+  const { isWebSocketConnected } = useSelector(websocketSelector)
+
   const [isActiveList, setActiveList] = useState(false)
 
   useEffect(() => {

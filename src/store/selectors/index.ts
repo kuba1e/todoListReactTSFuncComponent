@@ -1,3 +1,15 @@
-import { todosSelector, userSelector } from './selectors'
+import {
+  todosSelector,
+  userSelector,
+  filterValueSelector,
+  notificationSelector,
+  websocketSelector
+} from './selectors'
 
-export { todosSelector, userSelector }
+export {
+  todosSelector,
+  userSelector,
+  filterValueSelector,
+  notificationSelector,
+  websocketSelector
+}

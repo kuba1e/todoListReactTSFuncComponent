@@ -5,7 +5,7 @@ import * as yup from 'yup'
 
 import { userSelector } from '../../store/selectors'
 import { updateUser, resetUserErrors } from '../../store/actions/user'
-import { useTypedSelector } from '../../hooks/useTypedSelector'
+import { useSelector } from 'react-redux'
 
 interface FormValues {
   email: string
@@ -19,7 +19,7 @@ export const EditProfilePage: FC = () => {
   const {
     updateError,
     userData: { id, email }
-  } = useTypedSelector(userSelector)
+  } = useSelector(userSelector)
 
   useEffect(() => {
     ;() => dispatch(resetUserErrors())

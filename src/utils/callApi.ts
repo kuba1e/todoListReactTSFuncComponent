@@ -46,6 +46,7 @@ export async function callApi<T>(path: string, params?: Params): Promise<T> {
 
     if (response.status === 401) {
       const response: IUser = await callApi('/refresh')
+      console.log(response)
       localStorage.setItem('token', JSON.stringify(response.accessToken))
       return await callApi(path, params)
     }

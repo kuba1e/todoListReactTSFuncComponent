@@ -1,3 +1,13 @@
-import { userReducer } from './userReducer'
+import { combineReducers } from 'redux'
 
-export default userReducer
+import { userReducer } from './userReducer'
+import { notificationsReducer } from './notificationsReducer'
+import { websocketReducer } from './websocketReducer'
+
+const userRootReducer = combineReducers({
+  userData: userReducer,
+  notifications: notificationsReducer,
+  websocket: websocketReducer
+})
+
+export default userRootReducer

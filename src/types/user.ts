@@ -1,9 +1,4 @@
-import {
-  ICredentials,
-  INotification,
-  IUserData,
-  IUserToUpdate
-} from './generalTypes'
+import { ICredentials, IUserData, IUserToUpdate } from './generalTypes'
 
 export enum UserActionType {
   ACTION_LOGIN_USER = 'ACTION_LOGIN_USER',
@@ -18,15 +13,7 @@ export enum UserActionType {
   ACTION_SET_AUTH_STATUS = 'ACTION_SET_AUTH_STATUS',
   ACTION_SET_REGISTRATION_USER = 'ACTION_SET_REGISTRATION_USER',
   ACTION_RESET_USERS_ERROR = 'ACTION_RESET_USERS_ERROR',
-  ACTION_CHECK_AUTH = 'ACTION_CHECK_AUTH',
-  ACTION_SET_WEBSOCKET_CONNECTION = 'ACTION_SET_WEBSOCKET_CONNECTION',
-  ACTION_ADD_NOTIFICATION = 'ACTION_ADD_NOTIFICATION',
-  ACTION_DELETE_NOTIFICATION = 'ACTION_DELETE_NOTIFICATION',
-  ACTION_GET_NOTIFICATIONS = 'ACTION_GET_NOTIFICATIONS',
-  ACTION_SEND_TO_DELETE_NOTIFICATION = 'ACTION_SEND_TO_DELETE_NOTIFICATION',
-  ACTION_FETCH_STATISTIC_NOTIFICATIONS = 'ACTION_FETCH_STATISTIC_NOTIFICATIONS',
-  ACTION_FETCH_STATISTIC_NOTIFICATIONS_SUCCESSFUL = 'ACTION_FETCH_STATISTIC_NOTIFICATIONS_SUCCESSFUL',
-  ACTION_FAILED_TO_FETCH_STATISTIC_NOTIFICATIONS = 'ACTION_FAILED_TO_FETCH_STATISTIC_NOTIFICATIONS'
+  ACTION_CHECK_AUTH = 'ACTION_CHECK_AUTH'
 }
 
 export interface IUserReducer {
@@ -38,9 +25,6 @@ export interface IUserReducer {
   registrError: string
   updateError: string
   logoutError: string
-  isWebSocketConnected: boolean
-  notifications: INotification[]
-  notificationsForStatistic: INotification[]
 }
 
 export interface ILoginUserAction {
@@ -101,44 +85,6 @@ interface IResetErrorsAction {
   type: UserActionType.ACTION_RESET_USERS_ERROR
 }
 
-interface ISetWebsocketConnection {
-  type: UserActionType.ACTION_SET_WEBSOCKET_CONNECTION
-  payload: boolean
-}
-
-interface IAddNotification {
-  type: UserActionType.ACTION_ADD_NOTIFICATION
-  payload: INotification
-}
-
-interface IDeleteNotification {
-  type: UserActionType.ACTION_DELETE_NOTIFICATION
-  payload: number
-}
-
-interface IGetNotifications {
-  type: UserActionType.ACTION_GET_NOTIFICATIONS
-  payload: INotification[]
-}
-
-export interface ISendToDeleteNotification {
-  type: UserActionType.ACTION_SEND_TO_DELETE_NOTIFICATION
-  payload: number
-}
-
-export interface IFetchStatisticNotifications {
-  type: UserActionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS
-}
-export interface IFetchedStatisticNotificationSuccessful {
-  type: UserActionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS_SUCCESSFUL
-  payload: INotification[]
-}
-
-export interface IFailedToFetchStaticticNotifications {
-  type: UserActionType.ACTION_FAILED_TO_FETCH_STATISTIC_NOTIFICATIONS
-  payload: string
-}
-
 export type UserAction =
   | ILoginUserAction
   | IFailedToLoginAction
@@ -152,9 +98,3 @@ export type UserAction =
   | ISetAuthStatusAction
   | ISetRegistrationUserAction
   | IResetErrorsAction
-  | ISetWebsocketConnection
-  | IAddNotification
-  | IDeleteNotification
-  | IGetNotifications
-  | IFetchedStatisticNotificationSuccessful
-  | IFetchStatisticNotifications

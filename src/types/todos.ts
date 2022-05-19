@@ -5,7 +5,6 @@ export enum TodosActionType {
   ACTION_DELETE_TO_DO = 'ACTION_DELETE_TO_DO',
   ACTION_TOGGLE_DONE_ALL_TO_DO = 'ACTION_TOGGLE_DONE_ALL_TO_DO',
   ACTION_CLEAR_COMPLETED_TO_DO = 'ACTION_CLEAR_COMPLETED_TO_DO',
-  ACTION_SET_FILTER_VALUE = 'ACTION_SET_FILTER_VALUE',
   ACTION_EDIT_TO_DO = 'ACTION_EDIT_TO_DO',
   ACTION_FETCH_TODOS = 'ACTION_FETCH_TODOS',
   ACTION_SUCCESSFUL_FETCHED_TODOS = 'ACTION_SUCCESSFUL_FETCHED_TODOS',
@@ -42,11 +41,6 @@ interface IToggleDoneAllTodoAction {
 
 interface IClearCompletedTodoAction {
   type: TodosActionType.ACTION_CLEAR_COMPLETED_TO_DO
-}
-
-interface ISetFilterValueAction {
-  type: TodosActionType.ACTION_SET_FILTER_VALUE
-  payload: string
 }
 
 interface IEditTodoAction {
@@ -128,16 +122,15 @@ interface IUpdateAllTodos {
 
 export interface ITodosReducer {
   todosData: [] | ITodo[]
-  filterValue: string
   loading: string
   error: string
 }
+
 export type TodosAction =
   | IAddTodoAction
   | IDeleteTodoAction
   | IToggleDoneAllTodoAction
   | IClearCompletedTodoAction
-  | ISetFilterValueAction
   | IEditTodoAction
   | IFetchTodosAction
   | ISuccessfulFetchedTodos

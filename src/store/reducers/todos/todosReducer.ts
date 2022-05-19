@@ -4,13 +4,6 @@ import {
   TodosActionType
 } from '../../../types/todos'
 
-const initialState: ITodosReducer = {
-  todosData: [],
-  filterValue: 'all',
-  loading: 'idle',
-  error: ''
-}
-
 import {
   deleteTodo,
   editTodo,
@@ -18,8 +11,14 @@ import {
   clearCompletedTodo
 } from '../../../helpers'
 
+const initialTodosState: ITodosReducer = {
+  todosData: [],
+  loading: 'idle',
+  error: ''
+}
+
 export const todosReducer = (
-  state = initialState,
+  state = initialTodosState,
   action: TodosAction
 ): ITodosReducer => {
   switch (action.type) {
@@ -55,11 +54,6 @@ export const todosReducer = (
       return {
         ...state,
         todosData: clearCompletedTodo(state.todosData)
-      }
-    case TodosActionType.ACTION_SET_FILTER_VALUE:
-      return {
-        ...state,
-        filterValue: action.payload
       }
 
     case TodosActionType.ACTION_FETCH_TODOS:

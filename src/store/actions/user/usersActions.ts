@@ -1,5 +1,7 @@
 import { action } from 'typesafe-actions'
 import { INotification } from '../../../types/generalTypes'
+import { WebsocketActionType } from '../../../types/websocket'
+import { NotificationsAtionType } from '../../../types/notifications'
 
 import {
   ICredentials,
@@ -46,30 +48,36 @@ export const resetUserErrors = () =>
   action(UserActionType.ACTION_RESET_USERS_ERROR)
 
 export const setWebsocketConnection = (status: boolean) =>
-  action(UserActionType.ACTION_SET_WEBSOCKET_CONNECTION, status)
+  action(WebsocketActionType.ACTION_SET_WEBSOCKET_CONNECTION, status)
 
 export const addNotification = (notification: INotification) =>
-  action(UserActionType.ACTION_ADD_NOTIFICATION, notification)
+  action(NotificationsAtionType.ACTION_ADD_NOTIFICATION, notification)
 
 export const deleteNotification = (notificationId: number) =>
-  action(UserActionType.ACTION_DELETE_NOTIFICATION, notificationId)
+  action(NotificationsAtionType.ACTION_DELETE_NOTIFICATION, notificationId)
 
 export const getNotifications = (notification: INotification[]) =>
-  action(UserActionType.ACTION_GET_NOTIFICATIONS, notification)
+  action(NotificationsAtionType.ACTION_GET_NOTIFICATIONS, notification)
 
 export const sendTodeleteNotification = (notificationId: number) =>
-  action(UserActionType.ACTION_SEND_TO_DELETE_NOTIFICATION, notificationId)
+  action(
+    NotificationsAtionType.ACTION_SEND_TO_DELETE_NOTIFICATION,
+    notificationId
+  )
 
 export const fetchStatisticNotifications = () =>
-  action(UserActionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS)
+  action(NotificationsAtionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS)
 
 export const fetchedStatisticNotificationsSuccessful = (
   notifications: INotification[]
 ) =>
   action(
-    UserActionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS_SUCCESSFUL,
+    NotificationsAtionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS_SUCCESSFUL,
     notifications
   )
 
 export const failedToFetchStatisticNotifications = (error: string) =>
-  action(UserActionType.ACTION_FAILED_TO_FETCH_STATISTIC_NOTIFICATIONS, error)
+  action(
+    NotificationsAtionType.ACTION_FAILED_TO_FETCH_STATISTIC_NOTIFICATIONS,
+    error
+  )

@@ -6,7 +6,7 @@ import * as yup from 'yup'
 
 import { userRegistration, resetUserErrors } from '../../store/actions/user'
 import { userSelector } from '../../store/selectors'
-import { useTypedSelector } from '../../hooks/useTypedSelector'
+import { useSelector } from 'react-redux'
 
 interface FormValues {
   email: string
@@ -14,7 +14,7 @@ interface FormValues {
 }
 
 export const RegisterForm: FC = () => {
-  const { registrError, isRegistered } = useTypedSelector(userSelector)
+  const { registrError, isRegistered } = useSelector(userSelector)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 

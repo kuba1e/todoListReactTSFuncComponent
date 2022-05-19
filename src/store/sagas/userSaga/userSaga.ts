@@ -36,10 +36,14 @@ import {
   IUpdateUserAction,
   UserActionType,
   IUserRegistrationAction,
-  ILoginUserAction,
+  ILoginUserAction
+} from '../../../types/user'
+
+import { NotificationsAtionType } from '../../../types/notifications'
+import {
   ISendToDeleteNotification,
   IFetchStatisticNotifications
-} from '../../../types/user'
+} from '../../../types/notifications'
 
 import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
 import { IWebSocket } from '../../../websocket'
@@ -186,14 +190,14 @@ function* updateUserProfileWatcher() {
 
 function* sendToDeleteNotificationWatcher() {
   yield takeEvery(
-    UserActionType.ACTION_SEND_TO_DELETE_NOTIFICATION,
+    NotificationsAtionType.ACTION_SEND_TO_DELETE_NOTIFICATION,
     sendToDeleteNotificationWorker
   )
 }
 
 function* fetchStatisticNotifications() {
   yield takeEvery(
-    UserActionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS,
+    NotificationsAtionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS,
     fetchStatisticNotificatiosWorker
   )
 }

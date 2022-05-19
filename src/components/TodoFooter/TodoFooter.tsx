@@ -12,8 +12,8 @@ import {
 
 import { getCompletedQuantity, getTodoCount } from '../../helpers'
 
-import { todosSelector } from '../../store/selectors'
-import { useTypedSelector } from '../../hooks/useTypedSelector'
+import { filterValueSelector, todosSelector } from '../../store/selectors'
+import { useSelector } from 'react-redux'
 
 const filters = [
   {
@@ -30,7 +30,9 @@ const filters = [
 ]
 
 export const TodoFooter: FC = () => {
-  const { todosData, loading, filterValue } = useTypedSelector(todosSelector)
+  const { todosData, loading } = useSelector(todosSelector)
+  const { filterValue } = useSelector(filterValueSelector)
+
   const dispatch = useDispatch()
 
   const handleDeleteCompletedTodo = useCallback(
