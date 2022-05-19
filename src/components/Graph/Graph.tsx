@@ -34,8 +34,6 @@ export const Graph = () => {
     notificationsForStatistic
   )
 
-  console.log(arrayForGraphRendering)
-
   const char =
     loading !== 'pending' ? (
       <ResponsiveContainer width='100%' height='100%'>
@@ -55,7 +53,7 @@ export const Graph = () => {
   const loader = loading === 'pending' ? <Loader /> : null
 
   return (
-    <div className='graph'>
+    <div className='graph' data-testid='graph'>
       {char}
       {loader}
     </div>

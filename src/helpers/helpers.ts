@@ -25,14 +25,13 @@ export const getFilteredTodosList = (filterValue: string, todos: ITodo[]) => {
 const getTheBiggestValue = (todos: ITodo[] | [], key: string): number => {
   const todosCopy = [...todos]
   if (todosCopy !== undefined) {
-    const theBiggestValue =
-      todosCopy
-        ?.sort((prevTodo, nextTodo) => {
-          return prevTodo[key] - nextTodo[key]
-        })
-        .at(-1)[key] + 1
-
-    return theBiggestValue
+    todosCopy.sort((prevTodo, nextTodo) => {
+      return prevTodo[key] - nextTodo[key]
+    })
+    const lastTodo = todosCopy.at(-1)
+    if (lastTodo !== undefined) {
+      return lastTodo[key]
+    }
   }
   return 1
 }
@@ -186,16 +185,18 @@ export const getTheBiggestCountNumber = (notifications: IStatistic[]) => {
   if (!notifications.length) {
     return 0
   }
-  const countArray = notifications.reduce((acc, currentElement) => {
-    const countNumbers = Object.values(currentElement)
-    countNumbers.forEach((element) => {
-      if (typeof element === 'number') {
-        acc.push(element)
-      }
-    })
-
-    return acc
-  }, [])
+  const countArray: number[] | [] = notifications.reduce(
+    (acc: [] | number[], currentElement) => {
+      const countNumbers: number | string[] = Object.values(currentElement)
+      countNumbers.forEach((element) => {
+        if (typeof element === 'number') {
+          acc.push(element)
+        }
+      })
+      return acc
+    },
+    []
+  )
 
   const maxCount = Math.max(...countArray)
   return maxCount >= 10 ? maxCount : 10

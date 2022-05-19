@@ -17,7 +17,7 @@ import { Task } from 'redux-saga'
 
 import { TodosActionType } from '../../../types/todos'
 
-import { findIndex, Notification } from '../../../helpers'
+import { Notification } from '../../../helpers'
 
 import {
   fetchTodos,
@@ -45,7 +45,6 @@ import {
 import {
   ISendToAddTodo,
   ISendToUpdateTodo,
-  ISendToUpdateAllTodo,
   ISendToDelete,
   ISendToDeleteCompletedTodos
 } from '../../../types/todos'
@@ -131,7 +130,7 @@ function* sendToUpdateTodoWorker(action: ISendToUpdateTodo) {
   }
 }
 
-function* sendToUpdateAllTodoWorker(action: ISendToUpdateAllTodo) {
+function* sendToUpdateAllTodoWorker() {
   try {
     const { todosData }: TodosReducer = yield select(todosSelector)
     yield call(sentToUpdateAllTodo, todosData)

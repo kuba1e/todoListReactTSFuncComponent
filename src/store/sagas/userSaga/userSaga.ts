@@ -40,10 +40,7 @@ import {
 } from '../../../types/user'
 
 import { NotificationsAtionType } from '../../../types/notifications'
-import {
-  ISendToDeleteNotification,
-  IFetchStatisticNotifications
-} from '../../../types/notifications'
+import { ISendToDeleteNotification } from '../../../types/notifications'
 
 import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
 import { IWebSocket } from '../../../websocket'
@@ -149,9 +146,7 @@ function* sendToDeleteNotificationWorker(action: ISendToDeleteNotification) {
   }
 }
 
-function* fetchStatisticNotificatiosWorker(
-  action: IFetchStatisticNotifications
-) {
+function* fetchStatisticNotificatiosWorker() {
   try {
     const notifications: Notifications = yield call(fetchNotifications)
     yield put(fetchedStatisticNotificationsSuccessful(notifications))

@@ -52,7 +52,11 @@ export const NotificationsList = () => {
   ) : null
 
   return (
-    <div className='notifications' onClick={handleShowList}>
+    <div
+      className='notifications'
+      onClick={handleShowList}
+      data-testid='notifications'
+    >
       <div className='notifications__inner'>
         <div className='notifications__widget'>{countWidget}</div>
         <div className='notifications__messages'>

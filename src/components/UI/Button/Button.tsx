@@ -10,16 +10,23 @@ interface ButtonProps {
 }
 
 export const Button: FC<ButtonProps> = (props) => {
-  const { className = '', children, type = 'button', ...otherProps } = props
+  const {
+    className = '',
+    children,
+    type = 'button',
+    onClick,
+    ...otherProps
+  } = props
 
   return (
     <button
+      data-testid='button'
       className={`button ${className}`}
       {...otherProps}
       type={type}
       onClick={(event) => {
         event.stopPropagation()
-        otherProps.onClick()
+        onClick()
       }}
     >
       {children}

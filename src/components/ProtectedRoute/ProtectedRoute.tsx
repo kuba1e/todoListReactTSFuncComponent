@@ -7,7 +7,7 @@ import { userSelector } from '../../store/selectors'
 
 interface ProtectedRouteProps {
   redirectPath: string
-  children?: JSX.Element
+  children?: JSX.Element | React.ReactElement
 }
 
 export const ProtectedRoute: FC<ProtectedRouteProps & RouteProps> = ({

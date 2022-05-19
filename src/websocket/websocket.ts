@@ -1,5 +1,4 @@
 import { io } from 'socket.io-client'
-import { Socket } from 'socket.io'
 import { Dispatch } from 'react'
 
 import {
@@ -17,7 +16,6 @@ import {
 import { addNotification } from '../store/actions/user'
 
 export interface IWebSocket {
-  events?: Socket
   connectSocket: () => void
 }
 
@@ -27,8 +25,6 @@ export class SetupWebSocket implements IWebSocket {
   constructor(dispatch: Dispatch<any>) {
     this.dispatch = dispatch
   }
-
-  events?: Socket
 
   connectSocket = () => {
     const token = localStorage.getItem('token')?.slice(1, -1)
@@ -43,7 +39,6 @@ export class SetupWebSocket implements IWebSocket {
       socket.on('connect', () => {
         localStorage.setItem('socketId', socket.id)
         this.dispatch(setWebsocketConnection(true))
-        this.events = socket
       })
 
       socket.on('added-todo', (payload) => {

@@ -4,8 +4,7 @@ import {
   DragDropContext,
   Draggable,
   Droppable,
-  DropResult,
-  ResponderProvided
+  DropResult
 } from 'react-beautiful-dnd'
 
 import './TodoList.scss'
@@ -117,7 +116,7 @@ export const TodoList: FC = () => {
   )
 
   const handleDrop = useCallback(
-    (result: DropResult, provided: ResponderProvided) => {
+    (result: DropResult) => {
       if (result !== undefined) {
         handleSort(result.source.index, result.destination?.index)
       }
@@ -149,7 +148,7 @@ export const TodoList: FC = () => {
           .map((todo: ITodo, index: number) => {
             return (
               <Draggable draggableId={`${todo.id}`} key={todo.id} index={index}>
-                {(provided, snapshot) => {
+                {(provided) => {
                   return (
                     <div
                       ref={provided.innerRef}
@@ -185,7 +184,7 @@ export const TodoList: FC = () => {
       {todosHeader}
       <DragDropContext onDragEnd={handleDrop}>
         <Droppable droppableId='10000000'>
-          {(provided, snapshot) => {
+          {(provided) => {
             return (
               <ul
                 className={`todo__list ${

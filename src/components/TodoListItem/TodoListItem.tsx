@@ -1,4 +1,4 @@
-import React, { useCallback, useState, FC, useRef, useEffect } from 'react'
+import React, { useCallback, useState, FC, useEffect } from 'react'
 import clsx from 'clsx'
 
 import './TodoListItem.scss'
@@ -132,6 +132,7 @@ export const TodoListItem: FC<TodoListItem> = (props) => {
               isButtonActive && 'delete-btn--active'
             )}
             onClick={handleShowModal}
+            data-testid='delete-btn'
           />
         </div>
       </li>

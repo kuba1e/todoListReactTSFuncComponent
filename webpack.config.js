@@ -69,7 +69,13 @@ module.exports = (env = {}) => {
           use: {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env', '@babel/preset-typescript']
+              presets: [
+                ['@babel/preset-env'],
+                ['@babel/preset-react', { runtime: 'automatic' }],
+                //  '@babel/plugin-syntax-jsx',
+
+                '@babel/preset-typescript'
+              ]
             }
           }
         },
@@ -80,8 +86,10 @@ module.exports = (env = {}) => {
             loader: 'babel-loader',
             options: {
               presets: [
-                ['@babel/preset-env', { targets: { node: 'current' } }],
+                ['@babel/preset-env'],
                 ['@babel/preset-react', { runtime: 'automatic' }],
+                //   '@babel/plugin-syntax-jsx',
+
                 '@babel/preset-typescript'
               ]
             }
