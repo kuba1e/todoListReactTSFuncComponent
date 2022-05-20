@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
 import App from './components/App'
@@ -13,7 +14,9 @@ if (rootElement !== null) {
   ReactDOM.createRoot(rootElement).render(
     <Provider store={store}>
       <ErrorBoundary>
-        <App />
+        <Router>
+          <App />
+        </Router>
       </ErrorBoundary>
     </Provider>
   )

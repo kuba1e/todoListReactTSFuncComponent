@@ -94,7 +94,7 @@ export const EditProfilePage: FC = () => {
           handleChange,
           handleBlur
         }) => (
-          <Form className='auth__form'>
+          <Form className='auth__form' data-testid='form'>
             <div className='auth__container'>
               <label className='auth__form-label' htmlFor='email'>
                 Email
@@ -107,6 +107,7 @@ export const EditProfilePage: FC = () => {
                 value={email}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                data-testid='email'
               />
               <p className='auth__form-input-helper'>
                 {errors.email && touched.email ? errors.email : ''}
@@ -127,6 +128,7 @@ export const EditProfilePage: FC = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 type='password'
+                data-testid='current-password'
               />
               <p className='auth__form-input-helper'>
                 {errors.oldPassword && touched.oldPassword
@@ -149,6 +151,7 @@ export const EditProfilePage: FC = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 type='password'
+                data-testid='new-password'
               />
               <p className='auth__form-input-helper'>
                 {errors.newPassword && touched.newPassword
@@ -171,6 +174,7 @@ export const EditProfilePage: FC = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 type='password'
+                data-testid='confirm-password'
               />
               <p className='auth__form-input-helper'>
                 {errors.newPasswordConfirm && touched.newPasswordConfirm

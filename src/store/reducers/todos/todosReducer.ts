@@ -39,7 +39,6 @@ export const todosReducer = (
         todosData: editTodo(action.payload, state.todosData)
       }
     case TodosActionType.ACTION_UPDATE_ALL_TO_DO:
-      console.log(action.payload)
       return {
         ...state,
         todosData: action.payload
@@ -78,26 +77,33 @@ export const todosReducer = (
     case TodosActionType.ACTION_FAILED_TO_UPDATE_TODO:
       return {
         ...state,
+        loading: 'failed',
         error: action.payload
       }
     case TodosActionType.ACTION_FAILED_TO_SEND_TO_ADD_TODO:
       return {
         ...state,
+        loading: 'failed',
         error: action.payload
       }
     case TodosActionType.ACTION_FAILED_TO_UPDATE_ALL_TODO:
       return {
         ...state,
+        loading: 'failed',
+
         error: action.payload
       }
     case TodosActionType.ACTION_FAILED_TO_DELETE_TODO:
       return {
         ...state,
+        loading: 'failed',
+
         error: action.payload
       }
     case TodosActionType.ACTION_FAILED_TO_DELETE_COMPLETED_TODOS:
       return {
         ...state,
+        loading: 'failed',
         error: action.payload
       }
 

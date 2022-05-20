@@ -17,13 +17,15 @@ export const Checkbox: FC<CheckboxProps> = ({
 }) => {
   return (
     <div className={`checkbox ${className}`}>
-      <label className='checkbox__label'>
+      <label className='checkbox__label' data-testid='checkbox-label'>
         {children}
         <input
           className='checkbox__input'
           onChange={onChange}
           type='checkbox'
+          name='checkbox'
           checked={checked}
+          data-testid='checkbox'
         />
         <div className='checkbox__indicator' />
       </label>

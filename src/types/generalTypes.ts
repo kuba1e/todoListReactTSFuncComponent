@@ -56,10 +56,15 @@ export class InternalServerError implements ErrorResponse {
   constructor(public message: string, public status: number) {}
 }
 
-export { IUserData, IUser, ITodo, ICredentials, IUserProfile, IUserToUpdate }
+export interface UnknownAction {
+  type: ''
+  payload: ''
+}
 
 export enum TodosEvents {
   add = 'Added todo',
   delete = 'Deleted todo',
   edit = 'Edited todo'
 }
+
+export { IUserData, IUser, ITodo, ICredentials, IUserProfile, IUserToUpdate }

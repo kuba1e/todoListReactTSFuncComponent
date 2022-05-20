@@ -9,5 +9,8 @@ interface TitleProps {
 
 export const Title: FC<TitleProps> = (props) => {
   const { className = '', children } = props
+  if (!children) {
+    return null
+  }
   return <h4 className={`title ${className}`}>{children}</h4>
 }

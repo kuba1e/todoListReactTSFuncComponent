@@ -1,7 +1,7 @@
 import {
-  ISetFilterValueAction,
   FilterValueActionType,
-  ITodosFilterValueReducer
+  ITodosFilterValueReducer,
+  TodosFilterValueAction
 } from '../../../types/filterValue'
 
 const intialFilterValueState: ITodosFilterValueReducer = {
@@ -10,7 +10,7 @@ const intialFilterValueState: ITodosFilterValueReducer = {
 
 export const filterValueReducer = (
   state = intialFilterValueState,
-  action: ISetFilterValueAction
+  action: TodosFilterValueAction
 ) => {
   switch (action.type) {
     case FilterValueActionType.ACTION_SET_FILTER_VALUE:

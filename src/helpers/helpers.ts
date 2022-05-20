@@ -111,6 +111,9 @@ export const deleteNotification = (
   id: number
 ) => {
   const notificationIndex = findIndex(notifications, id)
+  if (notificationIndex === -1) {
+    return notifications
+  }
   return [
     ...notifications.slice(0, notificationIndex),
     { ...notifications[notificationIndex], hidden: true },

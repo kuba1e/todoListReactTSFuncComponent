@@ -9,7 +9,8 @@ import {
 const initialState: INotificationReducer = {
   notifications: [],
   notificationsForStatistic: [],
-  loading: 'idle'
+  loading: 'idle',
+  error: ''
 }
 
 export const notificationsReducer = (
@@ -44,8 +45,14 @@ export const notificationsReducer = (
     case NotificationsAtionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS_SUCCESSFUL:
       return {
         ...state,
-        loading: 'idle',
+        loading: 'succeded',
         notificationsForStatistic: action.payload
+      }
+    case NotificationsAtionType.ACTION_FAILED_TO_FETCH_STATISTIC_NOTIFICATIONS:
+      return {
+        ...state,
+        loading: 'failed',
+        error: action.payload
       }
 
     default:

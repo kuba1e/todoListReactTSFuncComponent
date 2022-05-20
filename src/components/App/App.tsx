@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import './App.scss'
 
 import ProtectedRoute from '../ProtectedRoute'
@@ -17,7 +17,7 @@ import Graph from '../Graph'
 
 export const App: FC = () => {
   return (
-    <Router>
+    <>
       <Navigation />
       <Routes>
         <Route path='/' element={<HomePage />} />
@@ -59,6 +59,6 @@ export const App: FC = () => {
 
         <Route path='*' element={<NotFound />} />
       </Routes>
-    </Router>
+    </>
   )
 }

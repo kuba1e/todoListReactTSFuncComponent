@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { Formik, Form } from 'formik'
+import { Formik, Form, FormikHelpers } from 'formik'
 import * as yup from 'yup'
 
 import { userRegistration, resetUserErrors } from '../../store/actions/user'
@@ -26,15 +26,26 @@ export const RegisterForm: FC = () => {
     navigate('/login', { replace: true })
   }
 
-  const handleSubmit = useCallback((values: FormValues) => {
-    const { email, password } = values
-    dispatch(
-      userRegistration({
-        email,
-        password
+  const handleSubmit = useCallback(
+    (values: FormValues, formikApi: FormikHelpers<FormValues>) => {
+      const { email, password } = values
+      const { resetForm } = formikApi
+      dispatch(
+        userRegistration({
+          email,
+          password
+        })
+      )
+
+      resetForm({
+        values: {
+          email: '',
+          password: ''
+        }
       })
-    )
-  }, [])
+    },
+    []
+  )
 
   const initialValues: FormValues = {
     email: '',
@@ -83,6 +94,7 @@ export const RegisterForm: FC = () => {
                 value={email}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                data-testid='email'
               />
               <p className='auth__form-input-helper'>
                 {errors.email && touched.email ? errors.email : ''}
@@ -103,6 +115,7 @@ export const RegisterForm: FC = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 type='password'
+                data-testid='password'
               />
               <p className='auth__form-input-helper'>
                 {errors.password && touched.password ? errors.password : ''}

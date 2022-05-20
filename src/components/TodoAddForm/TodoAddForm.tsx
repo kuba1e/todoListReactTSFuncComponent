@@ -47,7 +47,7 @@ export const TodoAddForm: FC = () => {
         const isChanged = errors.label && touched.label
 
         return (
-          <Form className='todo__form'>
+          <Form className='todo__form' data-testid='add-form'>
             <input
               className={`todo__form-input ${
                 isChanged ? 'todo__form-input--error' : ''

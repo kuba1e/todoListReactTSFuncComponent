@@ -64,6 +64,7 @@ export const TodoFooter: FC = () => {
                   value === filterValue ? 'filter-btn--checked' : ''
                 }`}
                 onClick={() => dispatch(setFilterValue(value))}
+                data-testid='filter-btn'
               >
                 {label}
               </Button>

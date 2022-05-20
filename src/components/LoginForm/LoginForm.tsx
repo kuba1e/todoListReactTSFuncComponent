@@ -83,6 +83,7 @@ export const LoginForm: FC = () => {
                 value={email}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                data-testid='email'
               />
               <p className='auth__form-input-helper'>
                 {errors.email && touched.email ? errors.email : ''}
@@ -103,6 +104,7 @@ export const LoginForm: FC = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 type='password'
+                data-testid='password'
               />
               <p className='auth__form-input-helper'>
                 {errors.password && touched.password ? errors.password : ''}

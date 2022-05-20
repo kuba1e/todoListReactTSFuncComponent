@@ -56,7 +56,7 @@ export const Navigation: FC = () => {
   return (
     <header className='header'>
       <div className='header__logo'>
-        <Link to='/'>
+        <Link to='/' data-testid='home-route'>
           <h5 className='header__logo-title'>Home</h5>
         </Link>
       </div>

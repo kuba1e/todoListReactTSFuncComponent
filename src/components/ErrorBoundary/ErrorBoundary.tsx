@@ -9,7 +9,7 @@ interface State {
 }
 
 interface Props {
-  children: ReactNode
+  children?: ReactNode
 }
 
 export default class ErrorBoundary extends Component<Props, State> {
@@ -24,6 +24,9 @@ export default class ErrorBoundary extends Component<Props, State> {
   public render() {
     const { error } = this.state
     const { children } = this.props
+    if (!children) {
+      return null
+    }
 
     const content = error ? <ErrorIndicator errorMessage={error} /> : children
 

@@ -1,3 +1,5 @@
+import { UnknownAction } from './generalTypes'
+
 export enum FilterValueActionType {
   ACTION_SET_FILTER_VALUE = 'ACTION_SET_FILTER_VALUE'
 }
@@ -10,3 +12,5 @@ export interface ISetFilterValueAction {
 export interface ITodosFilterValueReducer {
   filterValue: string
 }
+
+export type TodosFilterValueAction = ISetFilterValueAction | UnknownAction

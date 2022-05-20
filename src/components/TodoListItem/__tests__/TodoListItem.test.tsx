@@ -18,7 +18,22 @@ const onToggleDone = jest.fn()
 const onShowModal = jest.fn()
 
 describe('todo list item component', () => {
-  it('todo list item render', () => {
+  it('todo list item render without input', () => {
+    render(
+      <TodoListItem
+        todo={todo}
+        editedTodo={0}
+        onEditTodo={onEditTodo}
+        onSetEditedTodo={onSetEditedTodo}
+        onToggleDone={onToggleDone}
+        onShowModal={onShowModal}
+      />
+    )
+    expect(screen.getByRole('listitem')).toBeInTheDocument()
+    expect(screen.queryByRole('textbox')).toBeNull()
+  })
+
+  it('todo list item render with input', () => {
     render(
       <TodoListItem
         todo={todo}
@@ -30,31 +45,14 @@ describe('todo list item component', () => {
       />
     )
     expect(screen.getByRole('listitem')).toBeInTheDocument()
+    expect(screen.getByRole('textbox')).toBeInTheDocument()
   })
 
-  it('onSetEdited todo', () => {
+  it('show/hide delete button', () => {
     render(
       <TodoListItem
         todo={todo}
-        editedTodo={1}
-        onEditTodo={onEditTodo}
-        onSetEditedTodo={onSetEditedTodo}
-        onToggleDone={onToggleDone}
-        onShowModal={onShowModal}
-      />
-    )
-    expect(screen.getByRole('listitem')).toBeInTheDocument()
-
-    fireEvent.doubleClick(screen.getByRole('listitem'))
-
-    expect(onSetEditedTodo).toBeCalled()
-  })
-
-  it('show delete button', () => {
-    render(
-      <TodoListItem
-        todo={todo}
-        editedTodo={1}
+        editedTodo={0}
         onEditTodo={onEditTodo}
         onSetEditedTodo={onSetEditedTodo}
         onToggleDone={onToggleDone}
@@ -65,9 +63,34 @@ describe('todo list item component', () => {
 
     fireEvent.mouseEnter(screen.getByTestId('delete-btn'))
     expect(screen.getByTestId('delete-btn')).toHaveClass('delete-btn--active')
+
+    fireEvent.mouseLeave(screen.getByTestId('delete-btn'))
+    expect(screen.getByTestId('delete-btn')).not.toHaveClass(
+      'delete-btn--active'
+    )
   })
 
-  it('onShowModal', () => {
+  it('onShowModal handler', () => {
+    render(
+      <TodoListItem
+        todo={todo}
+        editedTodo={0}
+        onEditTodo={onEditTodo}
+        onSetEditedTodo={onSetEditedTodo}
+        onToggleDone={onToggleDone}
+        onShowModal={onShowModal}
+      />
+    )
+    expect(screen.getByRole('listitem')).toBeInTheDocument()
+
+    fireEvent.click(screen.getByTestId('delete-btn'))
+    expect(onShowModal).toBeCalled()
+
+    fireEvent.click(screen.getByTestId('edit-btn'))
+    expect(onShowModal).toBeCalled()
+  })
+
+  it('onEditTodo handler', () => {
     render(
       <TodoListItem
         todo={todo}
@@ -79,8 +102,46 @@ describe('todo list item component', () => {
       />
     )
     expect(screen.getByRole('listitem')).toBeInTheDocument()
+    expect(screen.getByRole('textbox')).toBeInTheDocument()
 
-    fireEvent.click(screen.getByTestId('delete-btn'))
-    expect(onShowModal).toBeCalled()
+    fireEvent.submit(screen.getByTestId('submit-form'))
+
+    expect(onEditTodo).toBeCalled()
+  })
+
+  it('onSetEditedTodo handler', () => {
+    render(
+      <TodoListItem
+        todo={todo}
+        editedTodo={0}
+        onEditTodo={onEditTodo}
+        onSetEditedTodo={onSetEditedTodo}
+        onToggleDone={onToggleDone}
+        onShowModal={onShowModal}
+      />
+    )
+    expect(screen.getByRole('listitem')).toBeInTheDocument()
+
+    expect(screen.queryByRole('textbox')).toBeNull()
+
+    fireEvent.doubleClick(screen.getByRole('listitem'))
+    expect(onSetEditedTodo).toBeCalled()
+  })
+
+  it('onToggleDone handler', () => {
+    render(
+      <TodoListItem
+        todo={todo}
+        editedTodo={0}
+        onEditTodo={onEditTodo}
+        onSetEditedTodo={onSetEditedTodo}
+        onToggleDone={onToggleDone}
+        onShowModal={onShowModal}
+      />
+    )
+    expect(screen.getByRole('listitem')).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('checkbox'))
+    expect(onToggleDone).toBeCalled()
   })
 })

@@ -90,6 +90,7 @@ export const TodoListItem: FC<TodoListItem> = (props) => {
       className='todo__list-item-edit-form'
       onSubmit={handleSubmit}
       onBlur={handleSubmit}
+      data-testid='submit-form'
     >
       <input
         className='todo__list-item-edit-input'
@@ -125,6 +126,7 @@ export const TodoListItem: FC<TodoListItem> = (props) => {
           <Button
             className={clsx('edit-btn', isButtonActive && 'edit-btn--active')}
             onClick={handleSetEditTodoActive}
+            data-testid='edit-btn'
           />
           <Button
             className={clsx(
