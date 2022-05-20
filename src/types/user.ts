@@ -1,4 +1,9 @@
-import { ICredentials, IUserData, IUserToUpdate } from './generalTypes'
+import {
+  ICredentials,
+  IUserData,
+  IUserToUpdate,
+  IUnknownAction
+} from './generalTypes'
 
 export enum UserActionType {
   ACTION_LOGIN_USER = 'ACTION_LOGIN_USER',
@@ -98,3 +103,4 @@ export type UserAction =
   | ISetAuthStatusAction
   | ISetRegistrationUserAction
   | IResetErrorsAction
+  | IUnknownAction

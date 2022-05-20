@@ -36,6 +36,11 @@ export const userReducer = (state = initialState, action: UserAction) => {
     case UserActionType.ACTION_FAILED_TO_LOGOUT_USER:
       return {
         ...state,
+        userData: {
+          id: '',
+          email: '',
+          isActivated: false
+        },
         logoutError: action.payload
       }
     case UserActionType.ACTION_USER_REGISTRATION:
@@ -67,7 +72,6 @@ export const userReducer = (state = initialState, action: UserAction) => {
         userData: action.payload
       }
     case UserActionType.ACTION_SET_AUTH_STATUS:
-      console.log(action)
       return {
         ...state,
         isAuth: action.payload

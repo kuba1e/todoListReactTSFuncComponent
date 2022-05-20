@@ -1,7 +1,7 @@
 import {
   WebsocketActionType,
   IWebsocketReducer,
-  ISetWebsocketConnection
+  WebsocketTypeAction
 } from '../../../types/websocket'
 
 const initialState: IWebsocketReducer = {
@@ -10,7 +10,7 @@ const initialState: IWebsocketReducer = {
 
 export const websocketReducer = (
   state = initialState,
-  action: ISetWebsocketConnection
+  action: WebsocketTypeAction
 ) => {
   switch (action.type) {
     case WebsocketActionType.ACTION_SET_WEBSOCKET_CONNECTION:

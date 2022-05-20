@@ -1,4 +1,4 @@
-import { INotification, UnknownAction } from './generalTypes'
+import { INotification, IUnknownAction } from './generalTypes'
 
 export enum NotificationsAtionType {
   ACTION_ADD_NOTIFICATION = 'ACTION_ADD_NOTIFICATION',
@@ -56,5 +56,5 @@ export type NotificationsAction =
   | IGetNotifications
   | IFetchedStatisticNotificationSuccessful
   | IFetchStatisticNotifications
-  | UnknownAction
+  | IUnknownAction
   | IFailedToFetchStaticticNotifications

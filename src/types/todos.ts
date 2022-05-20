@@ -1,4 +1,4 @@
-import { ITodo, UnknownAction } from './generalTypes'
+import { ITodo, IUnknownAction } from './generalTypes'
 
 export enum TodosActionType {
   ACTION_ADD_TO_DO = 'ACTION_ADD_TO_DO',
@@ -141,4 +141,4 @@ export type TodosAction =
   | IFailedToDeleteTodoAction
   | IFailedToDeleteCompletedTodoAction
   | IUpdateAllTodos
-  | UnknownAction
+  | IUnknownAction

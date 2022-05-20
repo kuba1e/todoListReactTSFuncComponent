@@ -9,7 +9,7 @@ import {
 } from '../../../actions/user'
 
 describe('test notification reducer', () => {
-  it('handle return initial state ', () => {
+  it('should handle return initial state ', () => {
     const initialState = {
       notifications: [],
       notificationsForStatistic: [],
@@ -22,7 +22,7 @@ describe('test notification reducer', () => {
     )
   })
 
-  it('handle notification being added to list', () => {
+  it('should handle notification  added to list', () => {
     const previousState = {
       notifications: [],
       notificationsForStatistic: [],
@@ -41,7 +41,7 @@ describe('test notification reducer', () => {
             order_num: 2
           },
           hidden: false,
-          date: new Date(),
+          date: new Date('2022 02 14'),
           id: 1
         }
       ],
@@ -62,14 +62,14 @@ describe('test notification reducer', () => {
             order_num: 2
           },
           hidden: false,
-          date: new Date(),
+          date: new Date('2022 02 14'),
           id: 1
         })
       )
     ).toEqual(nextState)
   })
 
-  it('handle notification being deleted from list', () => {
+  it('should handle notification  deleted from list', () => {
     const previousState = {
       notifications: [
         {
@@ -81,7 +81,7 @@ describe('test notification reducer', () => {
             order_num: 2
           },
           hidden: false,
-          date: new Date(),
+          date: new Date('2022 02 14'),
           id: 1
         }
       ],
@@ -101,7 +101,7 @@ describe('test notification reducer', () => {
             order_num: 2
           },
           hidden: true,
-          date: new Date(),
+          date: new Date('2022 02 14'),
           id: 1
         }
       ],
@@ -115,7 +115,7 @@ describe('test notification reducer', () => {
     )
   })
 
-  it('handle notification being deleted from empty ist', () => {
+  it('should handle notification  deleted from empty ist', () => {
     const previousState = {
       notifications: [],
       notificationsForStatistic: [],
@@ -135,7 +135,7 @@ describe('test notification reducer', () => {
     )
   })
 
-  it('handle notification being gotten to empty list', () => {
+  it('should handle notification  gotten to empty list', () => {
     const previousState = {
       notifications: [],
       notificationsForStatistic: [],
@@ -154,7 +154,7 @@ describe('test notification reducer', () => {
             order_num: 2
           },
           hidden: true,
-          date: new Date(),
+          date: new Date('2022 02 14'),
           id: 1
         }
       ],
@@ -176,7 +176,7 @@ describe('test notification reducer', () => {
               order_num: 2
             },
             hidden: true,
-            date: new Date(),
+            date: new Date('2022 02 14'),
             id: 1
           }
         ])
@@ -184,7 +184,7 @@ describe('test notification reducer', () => {
     ).toEqual(nextState)
   })
 
-  it('handle notification being gotten to list', () => {
+  it('should handle notification  gotten to list', () => {
     const previousState = {
       notifications: [
         {
@@ -196,7 +196,7 @@ describe('test notification reducer', () => {
             order_num: 2
           },
           hidden: true,
-          date: new Date(),
+          date: new Date('2022 02 14'),
           id: 1
         }
       ],
@@ -216,7 +216,7 @@ describe('test notification reducer', () => {
             order_num: 2
           },
           hidden: true,
-          date: new Date(),
+          date: new Date('2022 02 14'),
           id: 1
         },
         {
@@ -228,7 +228,7 @@ describe('test notification reducer', () => {
             order_num: 3
           },
           hidden: true,
-          date: new Date(),
+          date: new Date('2022 02 14'),
           id: 1
         }
       ],
@@ -250,7 +250,7 @@ describe('test notification reducer', () => {
               order_num: 2
             },
             hidden: true,
-            date: new Date(),
+            date: new Date('2022 02 14'),
             id: 1
           },
           {
@@ -262,7 +262,7 @@ describe('test notification reducer', () => {
               order_num: 3
             },
             hidden: true,
-            date: new Date(),
+            date: new Date('2022 02 14'),
             id: 1
           }
         ])
@@ -270,7 +270,7 @@ describe('test notification reducer', () => {
     ).toEqual(nextState)
   })
 
-  it('handle notifications being fetched', () => {
+  it('should handle notifications  fetched', () => {
     const previousState = {
       notifications: [],
       notificationsForStatistic: [],
@@ -290,7 +290,7 @@ describe('test notification reducer', () => {
     ).toEqual(nextState)
   })
 
-  it('handle notifications have been fetched successful', () => {
+  it('should handle notifications have been fetched successful', () => {
     const previousState = {
       notifications: [],
       notificationsForStatistic: [],
@@ -310,7 +310,7 @@ describe('test notification reducer', () => {
             order_num: 2
           },
           hidden: true,
-          date: new Date(),
+          date: new Date('2022 02 14'),
           id: 1
         }
       ],
@@ -331,7 +331,7 @@ describe('test notification reducer', () => {
               order_num: 2
             },
             hidden: true,
-            date: new Date(),
+            date: new Date('2022 02 14'),
             id: 1
           }
         ])
@@ -339,7 +339,7 @@ describe('test notification reducer', () => {
     ).toEqual(nextState)
   })
 
-  it('handle notifications have been fetched unsuccessful', () => {
+  it('should handle notifications have been fetched unsuccessful', () => {
     const previousState = {
       notifications: [],
       notificationsForStatistic: [],

@@ -56,7 +56,7 @@ export class InternalServerError implements ErrorResponse {
   constructor(public message: string, public status: number) {}
 }
 
-export interface UnknownAction {
+export interface IUnknownAction {
   type: ''
   payload: ''
 }

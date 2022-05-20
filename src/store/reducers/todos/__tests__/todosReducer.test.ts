@@ -24,7 +24,7 @@ describe('todos reducer', () => {
     )
   })
 
-  it('should handle a todo being added to empty list', () => {
+  it('should handle adding todo to empty list', () => {
     const previosState = { todosData: [], loading: 'idle', error: '' }
     const nextState = {
       todosData: [
@@ -52,7 +52,7 @@ describe('todos reducer', () => {
     ).toEqual(nextState)
   })
 
-  it('should handle a todo being added to s not empty list', () => {
+  it('should handle  adding todo to not empty list', () => {
     const previosState = {
       todosData: [
         {
@@ -96,7 +96,7 @@ describe('todos reducer', () => {
     })
   })
 
-  it('should handle todo being deleted from list', () => {
+  it('should handle deleting todo from list', () => {
     const previosState = {
       todosData: [
         {
@@ -115,7 +115,7 @@ describe('todos reducer', () => {
     expect(todosReducer(previosState, deleteTodo(1))).toEqual(nextState)
   })
 
-  it('should handle todo being deleted from empty list', () => {
+  it('should handle deleting todo from empty list', () => {
     const previosState = {
       todosData: [],
       loading: 'idle',
@@ -167,7 +167,7 @@ describe('todos reducer', () => {
     ).toEqual(nextState)
   })
 
-  it('should handle todo being edited from empty list', () => {
+  it('should handle editing todo from empty list', () => {
     const previosState = {
       todosData: [],
       loading: 'idle',
@@ -187,7 +187,7 @@ describe('todos reducer', () => {
     ).toEqual(previosState)
   })
 
-  it('should handle todos being updated from  list', () => {
+  it('should handle updating todo from  list', () => {
     const previosState = {
       todosData: [
         {
@@ -247,7 +247,7 @@ describe('todos reducer', () => {
     ).toEqual(nextState)
   })
 
-  it('should handle todos being toggled all from  list', () => {
+  it('should handle toggle all todos from  list', () => {
     const previosState = {
       todosData: [
         {
@@ -291,7 +291,7 @@ describe('todos reducer', () => {
     )
   })
 
-  it('should handle todos being toggled all from empty list', () => {
+  it('should handle toggle all todos from empty list', () => {
     const previosState = {
       todosData: [],
       loading: 'idle',
@@ -309,7 +309,7 @@ describe('todos reducer', () => {
     )
   })
 
-  it('should handle completed todos being cleared all from list', () => {
+  it('should handle clearing all completed todo from list', () => {
     const previosState = {
       todosData: [
         {
@@ -351,7 +351,7 @@ describe('todos reducer', () => {
     expect(todosReducer(previosState, clearCompleted())).toEqual(nextState)
   })
 
-  it('should handle todos being toggled all from empty list', () => {
+  it('should handle toggle all todos from empty list', () => {
     const previosState = {
       todosData: [],
       loading: 'idle',
@@ -367,7 +367,7 @@ describe('todos reducer', () => {
     expect(todosReducer(previosState, clearCompleted())).toEqual(nextState)
   })
 
-  it('should handle todos being fetched', () => {
+  it('should handle fetching todos', () => {
     const previosState = {
       todosData: [],
       loading: 'idle',
@@ -383,7 +383,7 @@ describe('todos reducer', () => {
     expect(todosReducer(previosState, fetchTodos())).toEqual(nextState)
   })
 
-  it('should handle todos have been fetched successful', () => {
+  it('should handle fetched todo successful', () => {
     const previosState = {
       todosData: [],
       loading: 'pending',
@@ -430,7 +430,7 @@ describe('todos reducer', () => {
     ).toEqual(nextState)
   })
 
-  it('should handle todos have been fetched unsuccessful', () => {
+  it('should handle fetched todo unsuccessful', () => {
     const previosState = {
       todosData: [],
       loading: 'pending',
@@ -446,7 +446,7 @@ describe('todos reducer', () => {
     expect(todosReducer(previosState, failedToFetch('404'))).toEqual(nextState)
   })
 
-  it('should handle todo has been updated unsuccessful', () => {
+  it('should handle updated todo unsuccessful', () => {
     const previosState = {
       todosData: [],
       loading: 'pending',
@@ -464,7 +464,7 @@ describe('todos reducer', () => {
     )
   })
 
-  it('should handle todo has been sent unsuccessful', () => {
+  it('should handle sent  todo unsuccessful', () => {
     const previosState = {
       todosData: [],
       loading: 'pending',
@@ -482,7 +482,7 @@ describe('todos reducer', () => {
     )
   })
 
-  it('should handle todos have been updated unsuccessful', () => {
+  it('should handle updated all todos unsuccessful', () => {
     const previosState = {
       todosData: [],
       loading: 'pending',
@@ -500,7 +500,7 @@ describe('todos reducer', () => {
     )
   })
 
-  it('should handle completed todos have been deleted unsuccessful', () => {
+  it('should handle deleted completed todo unsuccessful', () => {
     const previosState = {
       todosData: [],
       loading: 'pending',
