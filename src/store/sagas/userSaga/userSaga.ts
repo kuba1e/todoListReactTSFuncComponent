@@ -8,13 +8,13 @@ import {
 } from 'redux-saga/effects'
 
 import {
-  loginUser,
-  logoutUser,
-  userRegistration,
-  updateUserProfile,
-  checkAuth,
+  loginUserFunc,
+  logoutUserFunc,
+  userRegistrationFunc,
+  updateUserProfileFunc,
+  checkAuthFunc,
   fetchNotifications,
-  sendToDeleteNotification
+  sendToDeleteNotificationFunc
 } from '../../asyncFoo'
 
 import {
@@ -27,7 +27,6 @@ import {
   setRegistrationUser,
   getNotifications,
   deleteNotification,
-  setWebsocketConnection,
   fetchedStatisticNotificationsSuccessful,
   failedToFetchStatisticNotifications
 } from '../../actions/user'
@@ -43,15 +42,15 @@ import { NotificationsAtionType } from '../../../types/notifications'
 import { ISendToDeleteNotification } from '../../../types/notifications'
 
 import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
-import { IWebSocket } from '../../../websocket'
+import { websocket } from '../../store'
 
-type UserData = SagaReturnType<typeof loginUser>
-type UpdatedUser = SagaReturnType<typeof updateUserProfile>
-type Notifications = SagaReturnType<typeof fetchNotifications>
+export type UserData = SagaReturnType<typeof loginUserFunc>
+type UpdatedUser = SagaReturnType<typeof updateUserProfileFunc>
+export type Notifications = SagaReturnType<typeof fetchNotifications>
 
-function* loginUserWorker(websocket: IWebSocket, action: ILoginUserAction) {
+function* loginUserWorker(action: ILoginUserAction) {
   try {
-    const userData: UserData = yield call(loginUser, action.payload)
+    const userData: UserData = yield call(loginUserFunc, action.payload)
     yield put(getNotifications(userData.notifications))
     websocket.connectSocket()
     yield put(setUserData(userData.userInfo.user))
@@ -68,7 +67,7 @@ function* loginUserWorker(websocket: IWebSocket, action: ILoginUserAction) {
 
 function* logoutUserWorker() {
   try {
-    yield call(logoutUser)
+    yield call(logoutUserFunc)
     yield put(setAuthStatus(false))
     yield put(setUserData({ id: '', email: '', isActivated: false }))
   } catch (error) {
@@ -83,7 +82,7 @@ function* logoutUserWorker() {
 
 function* userRegistrationWorker(action: IUserRegistrationAction) {
   try {
-    yield call(userRegistration, action.payload)
+    yield call(userRegistrationFunc, action.payload)
     yield put(setRegistrationUser(true))
   } catch (error) {
     if (
@@ -98,7 +97,7 @@ function* userRegistrationWorker(action: IUserRegistrationAction) {
 function* updateUserProfileWorker(action: IUpdateUserAction) {
   try {
     const updatedUser: UpdatedUser = yield call(
-      updateUserProfile,
+      updateUserProfileFunc,
       action.payload
     )
     yield put(setUserData(updatedUser))
@@ -112,9 +111,9 @@ function* updateUserProfileWorker(action: IUpdateUserAction) {
   }
 }
 
-function* checkAuthWorker(websocket: IWebSocket) {
+function* checkAuthWorker() {
   try {
-    const userData: UserData = yield call(checkAuth)
+    const userData: UserData = yield call(checkAuthFunc)
 
     yield put(getNotifications(userData.notifications))
 
@@ -134,14 +133,14 @@ function* checkAuthWorker(websocket: IWebSocket) {
 
 function* sendToDeleteNotificationWorker(action: ISendToDeleteNotification) {
   try {
-    yield call(sendToDeleteNotification, action.payload)
+    yield call(sendToDeleteNotificationFunc, action.payload)
     yield put(deleteNotification(action.payload))
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
       error instanceof InternalServerError
     ) {
-      yield put(setWebsocketConnection(false))
+      yield put(failedToFetchStatisticNotifications(error.message))
     }
   }
 }
@@ -160,44 +159,44 @@ function* fetchStatisticNotificatiosWorker() {
   }
 }
 
-function* loginUserWatcher(websocket: IWebSocket) {
-  yield takeEvery(UserActionType.ACTION_LOGIN_USER, loginUserWorker, websocket)
+export function* loginUserWatcher() {
+  yield takeEvery(UserActionType.ACTION_LOGIN_USER, loginUserWorker)
 }
 
-function* checkAuthWatcher(websocket: IWebSocket) {
-  yield takeEvery(UserActionType.ACTION_CHECK_AUTH, checkAuthWorker, websocket)
+export function* checkAuthWatcher() {
+  yield takeEvery(UserActionType.ACTION_CHECK_AUTH, checkAuthWorker)
 }
 
-function* logoutUserWatcher() {
+export function* logoutUserWatcher() {
   yield takeEvery(UserActionType.ACTION_LOGOUT_USER, logoutUserWorker)
 }
 
-function* userRegistrationWatcher() {
+export function* userRegistrationWatcher() {
   yield takeEvery(
     UserActionType.ACTION_USER_REGISTRATION,
     userRegistrationWorker
   )
 }
 
-function* updateUserProfileWatcher() {
+export function* updateUserProfileWatcher() {
   yield takeEvery(UserActionType.ACTION_UPDATE_USER, updateUserProfileWorker)
 }
 
-function* sendToDeleteNotificationWatcher() {
+export function* sendToDeleteNotificationWatcher() {
   yield takeEvery(
     NotificationsAtionType.ACTION_SEND_TO_DELETE_NOTIFICATION,
     sendToDeleteNotificationWorker
   )
 }
 
-function* fetchStatisticNotifications() {
+export function* fetchStatisticNotificationsWatcher() {
   yield takeEvery(
     NotificationsAtionType.ACTION_FETCH_STATISTIC_NOTIFICATIONS,
     fetchStatisticNotificatiosWorker
   )
 }
 
-export default function* userSaga(websocket: IWebSocket) {
+export default function* userSaga() {
   const sagas = [
     loginUserWatcher,
     checkAuthWatcher,
@@ -205,14 +204,14 @@ export default function* userSaga(websocket: IWebSocket) {
     userRegistrationWatcher,
     updateUserProfileWatcher,
     sendToDeleteNotificationWatcher,
-    fetchStatisticNotifications
+    fetchStatisticNotificationsWatcher
   ]
 
   const retrySagas = sagas.map((saga) => {
     return spawn(function* () {
       while (true) {
         try {
-          yield call(saga, websocket)
+          yield call(saga)
           break
         } catch (error) {
           console.log(error)

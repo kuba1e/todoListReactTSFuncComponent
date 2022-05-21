@@ -10,6 +10,6 @@ const sagaMiddleware = createSagaMiddleware()
 
 export const store = createStore(rootReducer, applyMiddleware(sagaMiddleware))
 
-const websocket = new SetupWebSocket(store.dispatch)
+export const websocket = new SetupWebSocket(store.dispatch)
 
-sagaMiddleware.run(rootSaga, websocket)
+sagaMiddleware.run(rootSaga)

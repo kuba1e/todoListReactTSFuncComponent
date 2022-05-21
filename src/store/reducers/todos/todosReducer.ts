@@ -90,7 +90,6 @@ export const todosReducer = (
       return {
         ...state,
         loading: 'failed',
-
         error: action.payload
       }
     case TodosActionType.ACTION_FAILED_TO_DELETE_TODO:

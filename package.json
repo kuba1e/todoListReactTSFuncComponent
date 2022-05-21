@@ -46,6 +46,7 @@
     "postcss-loader": "^6.2.1",
     "prettier": "2.6.2",
     "react-test-renderer": "^18.1.0",
+    "redux-saga-test-plan": "^4.0.5",
     "sass": "^1.50.1",
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",

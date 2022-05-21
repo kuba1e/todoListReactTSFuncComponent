@@ -10,7 +10,7 @@ import {
 
 import { generateValue } from '../../helpers'
 
-export const loginUser = async (data: ICredentials) => {
+export const loginUserFunc = async (data: ICredentials) => {
   try {
     const response: { userInfo: IUser; notifications: INotification[] } =
       await callApi('/login', {
@@ -24,7 +24,7 @@ export const loginUser = async (data: ICredentials) => {
   }
 }
 
-export const userRegistration = async (data: ICredentials) => {
+export const userRegistrationFunc = async (data: ICredentials) => {
   try {
     const response: IUser = await callApi('/registration', {
       method: 'POST',
@@ -38,7 +38,7 @@ export const userRegistration = async (data: ICredentials) => {
   }
 }
 
-export const updateUserProfile = async (data: IUserToUpdate) => {
+export const updateUserProfileFunc = async (data: IUserToUpdate) => {
   try {
     const { id } = data
     const response: IUser = await callApi(`/profile/${id}`, {
@@ -52,7 +52,7 @@ export const updateUserProfile = async (data: IUserToUpdate) => {
   }
 }
 
-export const logoutUser = async () => {
+export const logoutUserFunc = async () => {
   try {
     await callApi('/logout', { method: 'POST' })
     localStorage.removeItem('token')
@@ -61,7 +61,7 @@ export const logoutUser = async () => {
   }
 }
 
-export const checkAuth = async () => {
+export const checkAuthFunc = async () => {
   try {
     const response: { userInfo: IUser; notificatios: INotification } =
       await callApi('/refresh')
@@ -72,7 +72,7 @@ export const checkAuth = async () => {
   }
 }
 
-export const fetchTodos = async (signal: AbortSignal) => {
+export const fetchTodosFunc = async (signal: AbortSignal) => {
   try {
     const response: ITodo[] = await callApi('/todos', { signal })
     return response
@@ -90,7 +90,7 @@ export const fetchNotifications = async () => {
   }
 }
 
-export const sendToAddTodo = async ([label, todosData]: Array<any>) => {
+export const sendToAddTodoFunc = async ([label, todosData]: Array<any>) => {
   try {
     const order_num = generateValue(todosData, 'order_num')
     const newTodo = { label, done: false, order_num }
@@ -105,7 +105,7 @@ export const sendToAddTodo = async ([label, todosData]: Array<any>) => {
   }
 }
 
-export const sendToUpdateTodo = async (todo: ITodo) => {
+export const sendToUpdateTodoFunc = async (todo: ITodo) => {
   try {
     const { id, ...todoData } = todo
     const response: { data: ITodo; notification: INotification } =
@@ -116,15 +116,16 @@ export const sendToUpdateTodo = async (todo: ITodo) => {
   }
 }
 
-export const sentToUpdateAllTodo = async (todos: ITodo[]) => {
+export const sendToUpdateAllTodoFunc = async (todos: ITodo[]) => {
   try {
-    await callApi('/todos', { method: 'PUT', data: { todos } })
+    const response = await callApi('/todos', { method: 'PUT', data: { todos } })
+    return response
   } catch (error) {
     throw error
   }
 }
 
-export const sendToDeleteTodo = async (id: number) => {
+export const sendToDeleteTodoFunc = async (id: number) => {
   try {
     const response: { data: ITodo; notification: INotification } =
       await callApi(`/todos/${id}`, { method: 'DELETE' })
@@ -134,7 +135,7 @@ export const sendToDeleteTodo = async (id: number) => {
   }
 }
 
-export const sendToDeleteNotification = async (id: number) => {
+export const sendToDeleteNotificationFunc = async (id: number) => {
   try {
     await callApi(`/notifications/${id}`, { method: 'DELETE' })
   } catch (error) {
@@ -142,7 +143,7 @@ export const sendToDeleteNotification = async (id: number) => {
   }
 }
 
-export const sendToDeleteCompletedTodo = async (todos: ITodo[]) => {
+export const sendToDeleteCompletedTodoFunc = async (todos: ITodo[]) => {
   try {
     const todosForDeleting = todos
       .filter((todo) => todo.done)

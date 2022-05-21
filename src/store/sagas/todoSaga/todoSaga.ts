@@ -17,15 +17,13 @@ import { Task } from 'redux-saga'
 
 import { TodosActionType } from '../../../types/todos'
 
-import { Notification } from '../../../helpers'
-
 import {
-  fetchTodos,
-  sendToAddTodo,
-  sendToUpdateTodo,
-  sentToUpdateAllTodo,
-  sendToDeleteTodo,
-  sendToDeleteCompletedTodo
+  fetchTodosFunc,
+  sendToAddTodoFunc,
+  sendToUpdateTodoFunc,
+  sendToUpdateAllTodoFunc,
+  sendToDeleteTodoFunc,
+  sendToDeleteCompletedTodoFunc
 } from '../../asyncFoo'
 
 import {
@@ -54,15 +52,15 @@ import { ErrorResponse, InternalServerError } from '../../../types/generalTypes'
 import { todosSelector } from '../../selectors'
 import { addNotification } from '../../actions/user'
 
-type Todos = SagaReturnType<typeof fetchTodos>
-type NewTodo = SagaReturnType<typeof sendToAddTodo>
-type UpdatedTodo = SagaReturnType<typeof sendToUpdateTodo>
+type Todos = SagaReturnType<typeof fetchTodosFunc>
+export type NewTodo = SagaReturnType<typeof sendToAddTodoFunc>
+type UpdatedTodo = SagaReturnType<typeof sendToUpdateTodoFunc>
 type TodosReducer = SagaReturnType<typeof todosSelector>
-type DeletedTodo = SagaReturnType<typeof sendToDeleteTodo>
+export type DeletedTodo = SagaReturnType<typeof sendToDeleteTodoFunc>
 
-function* fetchTodosWorker(signal: AbortSignal) {
+export function* fetchTodosWorker(signal: AbortSignal) {
   try {
-    const todos: Todos = yield call(fetchTodos, signal)
+    const todos: Todos = yield call(fetchTodosFunc, signal)
     yield put(successfulFetchedTodos(todos))
   } catch (error) {
     if (
@@ -77,20 +75,13 @@ function* fetchTodosWorker(signal: AbortSignal) {
 function* sendToAddTodoWorker(action: ISendToAddTodo) {
   try {
     const todos: TodosReducer = yield select(todosSelector)
-    const newTodo: NewTodo = yield call(sendToAddTodo, [
+    const newTodo: NewTodo = yield call(sendToAddTodoFunc, [
       action.payload,
       todos?.todosData
     ])
     yield put(addTodo(newTodo.data))
-    const { type, message, id, hidden, date } = newTodo.notification
-    const notificationMessage = new Notification(
-      type,
-      message,
-      id,
-      hidden,
-      date
-    )
-    yield put(addNotification(notificationMessage))
+
+    yield put(addNotification(newTodo.notification))
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
@@ -104,22 +95,13 @@ function* sendToAddTodoWorker(action: ISendToAddTodo) {
 function* sendToUpdateTodoWorker(action: ISendToUpdateTodo) {
   try {
     const updatedTodo: UpdatedTodo = yield call(
-      sendToUpdateTodo,
+      sendToUpdateTodoFunc,
       action.payload
     )
 
     yield put(editTodo(updatedTodo.data))
 
-    const { type, message, id, hidden, date } = updatedTodo.notification
-
-    const notificationMessage = new Notification(
-      type,
-      message,
-      id,
-      hidden,
-      date
-    )
-    yield put(addNotification(notificationMessage))
+    yield put(addNotification(updatedTodo.notification))
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
@@ -133,7 +115,7 @@ function* sendToUpdateTodoWorker(action: ISendToUpdateTodo) {
 function* sendToUpdateAllTodoWorker() {
   try {
     const { todosData }: TodosReducer = yield select(todosSelector)
-    yield call(sentToUpdateAllTodo, todosData)
+    yield call(sendToUpdateAllTodoFunc, todosData)
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
@@ -147,20 +129,12 @@ function* sendToUpdateAllTodoWorker() {
 function* sendToDeleteTodoWorker(action: ISendToDelete) {
   try {
     const deletedTodo: DeletedTodo = yield call(
-      sendToDeleteTodo,
+      sendToDeleteTodoFunc,
       action.payload
     )
     yield put(deleteTodo(action.payload))
 
-    const { type, message, id, hidden, date } = deletedTodo.notification
-    const notificationMessage = new Notification(
-      type,
-      message,
-      id,
-      hidden,
-      date
-    )
-    yield put(addNotification(notificationMessage))
+    yield put(addNotification(deletedTodo.notification))
   } catch (error) {
     if (
       error instanceof ErrorResponse ||
@@ -173,7 +147,7 @@ function* sendToDeleteTodoWorker(action: ISendToDelete) {
 
 function* sendToDeleteCompletedTodoWorker(action: ISendToDeleteCompletedTodos) {
   try {
-    yield call(sendToDeleteCompletedTodo, action.payload)
+    yield call(sendToDeleteCompletedTodoFunc, action.payload)
     yield put(clearCompleted())
   } catch (error) {
     if (
@@ -185,7 +159,7 @@ function* sendToDeleteCompletedTodoWorker(action: ISendToDeleteCompletedTodos) {
   }
 }
 
-function* fetchTodosWatcher(): Generator<StrictEffect, any, Task> {
+export function* fetchTodosWatcher(): Generator<StrictEffect, any, Task> {
   let task: Task | undefined
   let abortController = new AbortController()
   while (true) {
@@ -199,7 +173,7 @@ function* fetchTodosWatcher(): Generator<StrictEffect, any, Task> {
   }
 }
 
-function* updateTodoWatcher() {
+export function* updateTodoWatcher() {
   const channel: ActionPattern<ISendToUpdateTodo> = yield actionChannel(
     TodosActionType.ACTION_SEND_TO_UPDATE_TODO
   )
@@ -209,25 +183,25 @@ function* updateTodoWatcher() {
   }
 }
 
-function* sendToAddTodoWatcher() {
+export function* sendToAddTodoWatcher() {
   yield takeEvery(TodosActionType.ACTION_SEND_TO_ADD_TODO, sendToAddTodoWorker)
 }
 
-function* sendToUpdateAllTodoWatcher() {
+export function* sendToUpdateAllTodoWatcher() {
   yield takeEvery(
     TodosActionType.ACTION_SEND_TO_UPDATED_ALL_TODO,
     sendToUpdateAllTodoWorker
   )
 }
 
-function* sendToDeleteTodoWatcher() {
+export function* sendToDeleteTodoWatcher() {
   yield takeEvery(
     TodosActionType.ACTION_SEND_TO_DELETE_TODO,
     sendToDeleteTodoWorker
   )
 }
 
-function* sendToDeleteCompletedTodoWatcher() {
+export function* sendToDeleteCompletedTodoWatcher() {
   yield takeEvery(
     TodosActionType.ACTION_SEND_TO_DELETE_COMPLETED_TODOS,
     sendToDeleteCompletedTodoWorker

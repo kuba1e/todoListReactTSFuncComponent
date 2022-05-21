@@ -52,11 +52,19 @@ export async function callApi<T>(path: string, params?: Params): Promise<T> {
     }
 
     if (responseStatus === 4) {
-      throw new ErrorResponse(parsedResponse.message, response.status)
+      throw new ErrorResponse(
+        parsedResponse.message,
+        response.status,
+        'response error'
+      )
     }
 
     if (responseStatus === 5) {
-      throw new InternalServerError(parsedResponse.message, response.status)
+      throw new InternalServerError(
+        parsedResponse.message,
+        response.status,
+        'server error'
+      )
     }
 
     return parsedResponse.data

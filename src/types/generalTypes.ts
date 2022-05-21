@@ -49,11 +49,19 @@ export interface IStatistic {
 }
 
 export class ErrorResponse {
-  constructor(public message: string, public status: number) {}
+  constructor(
+    public message: string,
+    public status: number,
+    public name: string
+  ) {}
 }
 
 export class InternalServerError implements ErrorResponse {
-  constructor(public message: string, public status: number) {}
+  constructor(
+    public message: string,
+    public status: number,
+    public name: string
+  ) {}
 }
 
 export interface IUnknownAction {
