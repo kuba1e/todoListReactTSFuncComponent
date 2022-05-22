@@ -21,7 +21,7 @@ import {
   failedToDeleteTodo,
   failedToFetch,
   failedToSendToAddTodo,
-  failedToUpdateAllTodo,
+  //  failedToUpdateAllTodo,
   failedToUpdateTodo,
   fetchTodos,
   sendToAddTodo,
@@ -831,7 +831,7 @@ describe('test todos root saga', () => {
       .withReducer(todosReducer, initialState)
       .select(todosSelector)
       .provide([[matchers.call.fn(sendToUpdateAllTodoFunc), throwError(error)]])
-      .put(failedToUpdateAllTodo(error.message))
+      // .put(failedToUpdateAllTodo(error.message))
       .dispatch(sendToUpdateAllTodo())
       .silentRun()
 
@@ -850,8 +850,8 @@ describe('test todos root saga', () => {
           done: true
         }
       ],
-      loading: 'failed',
-      error: '404'
+      loading: 'idle',
+      error: ''
     })
   })
 

@@ -37,16 +37,16 @@ export interface ILoginUserAction {
   payload: ICredentials
 }
 
-interface IFailedToLoginAction {
+export interface IFailedToLoginAction {
   type: UserActionType.ACTION_FAILED_TO_LOGIN_USER
   payload: string
 }
 
-interface ILogoutUserAction {
+export interface ILogoutUserAction {
   type: UserActionType.ACTION_LOGOUT_USER
 }
 
-interface IFailedToLogoutUserAction {
+export interface IFailedToLogoutUserAction {
   type: UserActionType.ACTION_FAILED_TO_LOGOUT_USER
   payload: string
 }
@@ -56,7 +56,7 @@ export interface IUserRegistrationAction {
   payload: ICredentials
 }
 
-interface IFailedToRegisterUser {
+export interface IFailedToRegisterUser {
   type: UserActionType.ACTION_FAILED_TO_REGISTER_USER
   payload: string
 }
@@ -66,27 +66,27 @@ export interface IUpdateUserAction {
   payload: IUserToUpdate
 }
 
-interface IFailedToUpdateUserAction {
+export interface IFailedToUpdateUserAction {
   type: UserActionType.ACTION_FAILED_TO_UPDATE_USER
   payload: string
 }
 
-interface ISetUserDataAction {
+export interface ISetUserDataAction {
   type: UserActionType.ACTION_SET_USER_DATA
   payload: IUserData
 }
 
-interface ISetAuthStatusAction {
+export interface ISetAuthStatusAction {
   type: UserActionType.ACTION_SET_AUTH_STATUS
   payload: boolean
 }
 
-interface ISetRegistrationUserAction {
+export interface ISetRegistrationUserAction {
   type: UserActionType.ACTION_SET_REGISTRATION_USER
   payload: boolean
 }
 
-interface IResetErrorsAction {
+export interface IResetErrorsAction {
   type: UserActionType.ACTION_RESET_USERS_ERROR
 }
 

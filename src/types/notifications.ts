@@ -17,17 +17,17 @@ export interface INotificationReducer {
   error: string
 }
 
-interface IAddNotification {
+export interface IAddNotification {
   type: NotificationsAtionType.ACTION_ADD_NOTIFICATION
   payload: INotification
 }
 
-interface IDeleteNotification {
+export interface IDeleteNotification {
   type: NotificationsAtionType.ACTION_DELETE_NOTIFICATION
   payload: number
 }
 
-interface IGetNotifications {
+export interface IGetNotifications {
   type: NotificationsAtionType.ACTION_GET_NOTIFICATIONS
   payload: INotification[]
 }
