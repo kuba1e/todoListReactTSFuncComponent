@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState, FC } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import {
   DragDropContext,
   Draggable,
@@ -29,15 +28,17 @@ import { todosSelector, filterValueSelector } from '../../store/selectors'
 
 import { ITodo } from '../../types/generalTypes'
 
+import { useTypedSelector, useDispatchHook } from '../../hooks/useTypedSelector'
+
 export const TodoList: FC = () => {
   const [isConfirmModalActive, setConfirmModalActive] = useState(false)
   const [editedTodoActive, setEditedTodoActive] = useState(-1)
   const [id, setId] = useState(-1)
 
-  const { todosData, loading, error } = useSelector(todosSelector)
-  const { filterValue } = useSelector(filterValueSelector)
+  const { todosData, loading, error } = useTypedSelector(todosSelector)
+  const { filterValue } = useTypedSelector(filterValueSelector)
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatchHook()
 
   useEffect(() => {
     dispatch(fetchTodos())

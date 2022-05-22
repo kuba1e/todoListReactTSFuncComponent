@@ -992,7 +992,7 @@ describe('test todos root saga', () => {
         done: false
       },
       {
-        id: 1,
+        id: 2,
         label: 'updated',
         order_num: 2,
         done: true

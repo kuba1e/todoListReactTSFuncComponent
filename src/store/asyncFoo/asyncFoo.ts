@@ -26,12 +26,14 @@ export const loginUserFunc = async (data: ICredentials) => {
 
 export const userRegistrationFunc = async (data: ICredentials) => {
   try {
-    const response: IUser = await callApi('/registration', {
+    const response: { userInfo: IUser } = await callApi('/registration', {
       method: 'POST',
       data
     })
 
-    localStorage.setItem('token', JSON.stringify(response.accessToken))
+    console.log(response)
+
+    localStorage.setItem('token', JSON.stringify(response.userInfo.accessToken))
     return response
   } catch (error) {
     throw error
@@ -45,6 +47,7 @@ export const updateUserProfileFunc = async (data: IUserToUpdate) => {
       method: 'PUT',
       data
     })
+
     localStorage.setItem('token', JSON.stringify(response.accessToken))
     return response.user
   } catch (error) {

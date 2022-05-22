@@ -1,30 +1,51 @@
 import React from 'react'
-import { screen } from '@testing-library/react'
+import { screen, render, fireEvent } from '@testing-library/react'
+import { Provider } from 'react-redux'
 
 import { TodoList } from '../TodoList'
-import { renderWithContext } from '../../../helpers/testHelpers'
-import { act } from 'react-dom/test-utils'
-import * as api from '../../../store/asyncFoo'
 import store from '../../../store'
-import { fetchTodos } from '../../../store/actions/todos'
+import { act } from 'react-dom/test-utils'
 
-const getTodosSpy = jest.spyOn(api, 'fetchTodosFunc')
-getTodosSpy.mockResolvedValue([
-  {
-    id: 2,
-    label: 'updated',
-    order_num: 2,
-    done: true
-  }
-])
+import * as selector from '../../../hooks/useTypedSelector'
 
 describe('todo list component', () => {
+  const useTypedSelector = jest.spyOn(selector, 'useTypedSelector')
+  const useDispatchHook = jest.spyOn(selector, 'useDispatchHook')
+  useTypedSelector.mockReturnValueOnce({
+    todosData: [
+      {
+        id: 2,
+        label: 'test',
+        order_num: 2,
+        done: false
+      }
+    ],
+    loading: 'succeded',
+    error: '',
+    filterValue: 'all'
+  })
+
+  useDispatchHook.mockReturnValue(jest.fn())
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   it('todo list render', async () => {
-    const { debug } = renderWithContext(<TodoList />)
-    store.dispatch(fetchTodos())
-    await act(() => {
-      expect(screen.getAllByRole('list')).toBeInTheDocument()
-    })
+    const { debug } = await render(
+      <Provider store={store}>
+        <TodoList />
+      </Provider>
+    )
     debug()
+    await act(() => {
+      expect(screen.getByText('test')).toBeInTheDocument()
+    })
+
+    fireEvent.click(screen.getByTestId('delete-btn'))
+
+    await act(() => {
+      expect(useDispatchHook).toBeCalled()
+    })
   })
 })

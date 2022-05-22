@@ -6,5 +6,7 @@ module.exports = {
   setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
   moduleNameMapper: {
     '.(css|scss)$': '<rootDir>/config/CSSStub.js'
-  }
+  },
+  automock: false,
+  resetMocks: false
 }
