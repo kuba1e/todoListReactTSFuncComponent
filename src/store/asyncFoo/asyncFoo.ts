@@ -78,6 +78,7 @@ export const checkAuthFunc = async () => {
 export const fetchTodosFunc = async (signal: AbortSignal) => {
   try {
     const response: ITodo[] = await callApi('/todos', { signal })
+    console.log(response)
     return response
   } catch (error) {
     throw error

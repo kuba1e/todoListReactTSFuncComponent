@@ -28,17 +28,20 @@ import { todosSelector, filterValueSelector } from '../../store/selectors'
 
 import { ITodo } from '../../types/generalTypes'
 
-import { useTypedSelector, useDispatchHook } from '../../hooks/useTypedSelector'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 export const TodoList: FC = () => {
   const [isConfirmModalActive, setConfirmModalActive] = useState(false)
   const [editedTodoActive, setEditedTodoActive] = useState(-1)
   const [id, setId] = useState(-1)
 
-  const { todosData, loading, error } = useTypedSelector(todosSelector)
-  const { filterValue } = useTypedSelector(filterValueSelector)
+  const { todosData, loading, error } = useSelector(todosSelector)
+  const { filterValue } = useSelector(filterValueSelector)
 
-  const dispatch = useDispatchHook()
+  console.log(todosData, loading, filterValue)
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(fetchTodos())
