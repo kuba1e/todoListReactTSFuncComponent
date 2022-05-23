@@ -132,6 +132,8 @@ function* sendToDeleteTodoWorker(action: ISendToDelete) {
       sendToDeleteTodoFunc,
       action.payload
     )
+
+    console.log(deletedTodo)
     yield put(deleteTodo(action.payload))
 
     yield put(addNotification(deletedTodo.notification))
@@ -147,6 +149,8 @@ function* sendToDeleteTodoWorker(action: ISendToDelete) {
 
 function* sendToDeleteCompletedTodoWorker(action: ISendToDeleteCompletedTodos) {
   try {
+    console.log('clear completed success')
+
     yield call(sendToDeleteCompletedTodoFunc, action.payload)
     yield put(clearCompleted())
   } catch (error) {

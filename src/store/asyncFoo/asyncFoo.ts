@@ -78,7 +78,6 @@ export const checkAuthFunc = async () => {
 export const fetchTodosFunc = async (signal: AbortSignal) => {
   try {
     const response: ITodo[] = await callApi('/todos', { signal })
-    console.log(response)
     return response
   } catch (error) {
     throw error
@@ -122,7 +121,11 @@ export const sendToUpdateTodoFunc = async (todo: ITodo) => {
 
 export const sendToUpdateAllTodoFunc = async (todos: ITodo[]) => {
   try {
-    const response = await callApi('/todos', { method: 'PUT', data: { todos } })
+    const response: ITodo[] = await callApi('/todos', {
+      method: 'PUT',
+      data: { todos }
+    })
+    console.log('send to update all works')
     return response
   } catch (error) {
     throw error

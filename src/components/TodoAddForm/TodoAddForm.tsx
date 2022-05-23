@@ -60,6 +60,7 @@ export const TodoAddForm: FC = () => {
               }}
               value={values.label}
               name='label'
+              data-testid='add-form-input'
             />
             <p className='todo__form-error-message'>
               {isChanged ? errors.label : ''}

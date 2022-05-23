@@ -64,7 +64,7 @@ export const TodoFooter: FC = () => {
                   value === filterValue ? 'filter-btn--checked' : ''
                 }`}
                 onClick={() => dispatch(setFilterValue(value))}
-                data-testid='filter-btn'
+                data-testid={`filter-btn-${value}`}
               >
                 {label}
               </Button>
@@ -77,6 +77,7 @@ export const TodoFooter: FC = () => {
           getCompletedQuantity(todosData) ? 'clear-completed-btn--active' : ''
         }`}
         onClick={handleDeleteCompletedTodo}
+        data-testid='clear-completed'
       >
         Clear completed
       </Button>

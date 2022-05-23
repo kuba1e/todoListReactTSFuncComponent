@@ -38,6 +38,7 @@ const TodoHeader: FC<TodoHeader> = ({ todos, toggleAllDoneTodo }) => {
           isSelected ? 'select-all-btn--selected' : ''
         }`}
         onClick={handleSelectAll}
+        data-testid='toggle-all'
       />
       <TodoAddForm />
     </div>

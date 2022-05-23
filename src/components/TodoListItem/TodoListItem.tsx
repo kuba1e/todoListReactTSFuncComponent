@@ -97,6 +97,7 @@ export const TodoListItem: FC<TodoListItem> = (props) => {
         autoFocus
         value={inputValue}
         onChange={handleInputChange}
+        data-testid='edit-input'
       />
     </form>
   )
@@ -110,11 +111,14 @@ export const TodoListItem: FC<TodoListItem> = (props) => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onDoubleClick={handleSetEditTodoActive}
+        data-testid={`listitem-${todo.id}`}
       >
         <Checkbox
           className={clsx(isInputActive && 'checkbox--hide')}
           onChange={onCheckboxChange}
           checked={done}
+          inputTestId={`checkbox-${todo.id}`}
+          labelTestId={`checkbox-label-${todo.id}`}
         />
         {todoBody}
         <div
@@ -126,7 +130,7 @@ export const TodoListItem: FC<TodoListItem> = (props) => {
           <Button
             className={clsx('edit-btn', isButtonActive && 'edit-btn--active')}
             onClick={handleSetEditTodoActive}
-            data-testid='edit-btn'
+            data-testid={`edit-btn-${todo.id}`}
           />
           <Button
             className={clsx(
@@ -134,7 +138,7 @@ export const TodoListItem: FC<TodoListItem> = (props) => {
               isButtonActive && 'delete-btn--active'
             )}
             onClick={handleShowModal}
-            data-testid='delete-btn'
+            data-testid={`delete-btn-${todo.id}`}
           />
         </div>
       </li>

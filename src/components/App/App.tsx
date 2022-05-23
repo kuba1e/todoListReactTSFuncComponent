@@ -6,7 +6,6 @@ import ProtectedRoute from '../ProtectedRoute'
 import ErrorBoundary from '../ErrorBoundary'
 import Title from '../UI/Title'
 import TodoList from '../TodoList'
-import TodoFooter from '../TodoFooter'
 import RegisterForm from '../RegisterForm'
 import LoginForm from '../LoginForm'
 import NotFound from '../NotFound'
@@ -40,7 +39,6 @@ export const App: FC = () => {
                   <Title>todos</Title>
                   <div className='todo__inner'>
                     <TodoList />
-                    <TodoFooter />
                   </div>
                 </div>
               </ErrorBoundary>

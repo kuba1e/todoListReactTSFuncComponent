@@ -13,6 +13,7 @@ import TodoListItem from '../TodoListItem'
 import Loader from '../Loader'
 import TodoHeader from '../TodoHeader'
 import ErrorIndicator from '../ErrorIndicator'
+import TodoFooter from '../TodoFooter'
 
 import {
   sendToUpdateAllTodo,
@@ -195,6 +196,7 @@ export const TodoList: FC = () => {
                   loading === 'pending' ? 'todo__list--pending' : ''
                 }`}
                 ref={provided.innerRef}
+                data-testid='todo-list'
               >
                 {loader}
                 {todoElements}
@@ -204,6 +206,7 @@ export const TodoList: FC = () => {
           }}
         </Droppable>
       </DragDropContext>
+      <TodoFooter />
     </>
   )
 }
