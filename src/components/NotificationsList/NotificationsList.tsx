@@ -15,6 +15,8 @@ export const NotificationsList = () => {
 
   const [isActiveList, setActiveList] = useState(false)
 
+  console.log(notifications)
+
   useEffect(() => {
     document.addEventListener('click', handleHideList)
     return () => document.removeEventListener('click', handleHideList)
@@ -52,12 +54,8 @@ export const NotificationsList = () => {
   ) : null
 
   return (
-    <div
-      className='notifications'
-      onClick={handleShowList}
-      data-testid='notifications'
-    >
-      <div className='notifications__inner'>
+    <div className='notifications' onClick={handleShowList}>
+      <div className='notifications__inner' data-testid='notifications'>
         <div className='notifications__widget'>{countWidget}</div>
         <div className='notifications__messages'>
           <ul

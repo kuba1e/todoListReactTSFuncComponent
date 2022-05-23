@@ -1,6 +1,6 @@
 import React from 'react'
 import { Provider } from 'react-redux'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 
@@ -21,7 +21,7 @@ describe('render app component', () => {
     expect(screen.getByText(/todos/i)).toBeInTheDocument()
   })
 
-  it('Home route', () => {
+  it('Home route', async () => {
     const history = createMemoryHistory()
     history.push('/')
     render(
@@ -32,7 +32,9 @@ describe('render app component', () => {
       </Router>
     )
 
-    expect(screen.getByText(/todos/i)).toBeInTheDocument()
+    await act(() => {
+      expect(screen.getByText(/todos/i)).toBeInTheDocument()
+    })
   })
 
   it('Login route', async () => {

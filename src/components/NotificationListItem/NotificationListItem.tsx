@@ -51,6 +51,7 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
           `notifications__list-item--${type}`,
           isDeleting && 'notifications__list-item--deleting'
         )}
+        data-testid={`notific-list-item-${notification.id}`}
       >
         <div>
           <p className='notifications__list-item-title'>{TodosEvents[type]}</p>
@@ -58,7 +59,12 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
             {getShorterText(message.label, 20)}
           </p>
         </div>
-        <button onClick={handleRemoveNotification}>delete</button>
+        <button
+          onClick={handleRemoveNotification}
+          data-testid={`notific-delete-btn-${notification.id}`}
+        >
+          delete
+        </button>
       </li>
     </div>
   )

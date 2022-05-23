@@ -7,7 +7,12 @@ const onChange = jest.fn()
 describe('button component', () => {
   it('button render', () => {
     render(
-      <Checkbox onChange={onChange} checked={true}>
+      <Checkbox
+        onChange={onChange}
+        checked={true}
+        labelTestId='checkbox-label'
+        inputTestId='checkbox'
+      >
         test
       </Checkbox>
     )
@@ -16,7 +21,14 @@ describe('button component', () => {
   })
 
   it('onClick works', () => {
-    render(<Checkbox onChange={onChange} checked={true} />)
+    render(
+      <Checkbox
+        onChange={onChange}
+        checked={true}
+        labelTestId='checkbox-label'
+        inputTestId='checkbox'
+      />
+    )
 
     fireEvent.click(screen.getByTestId('checkbox-label'))
     expect(onChange).toBeCalledTimes(1)

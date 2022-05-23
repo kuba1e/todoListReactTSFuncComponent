@@ -144,6 +144,7 @@ export const sendToDeleteTodoFunc = async (id: number) => {
 
 export const sendToDeleteNotificationFunc = async (id: number) => {
   try {
+    console.log('notify-deleted')
     await callApi(`/notifications/${id}`, { method: 'DELETE' })
   } catch (error) {
     throw error

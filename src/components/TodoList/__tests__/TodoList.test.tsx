@@ -482,25 +482,6 @@ describe('todo list component', () => {
       ])
     )
 
-    const sendToUpdateAllTodoFunc = jest.spyOn(api, 'sendToUpdateAllTodoFunc')
-
-    sendToUpdateAllTodoFunc.mockReturnValue(
-      Promise.resolve([
-        {
-          id: 1,
-          label: 'test1',
-          order_num: 3,
-          done: true
-        },
-        {
-          id: 2,
-          label: 'test2',
-          order_num: 2,
-          done: true
-        }
-      ])
-    )
-
     const sendToDeleteCompletedTodoFunc = jest.spyOn(
       api,
       'sendToDeleteCompletedTodoFunc'
@@ -587,84 +568,6 @@ describe('todo list component', () => {
 
     await act(() => {
       expect(screen.queryAllByRole('checkbox')).toHaveLength(1)
-    })
-  })
-
-  it('should test drag and drop list item', async () => {
-    const fetchTodosFunc = jest.spyOn(api, 'fetchTodosFunc')
-    fetchTodosFunc.mockReturnValue(
-      Promise.resolve([
-        {
-          id: 1,
-          label: 'test1',
-          order_num: 1,
-          done: false
-        },
-        {
-          id: 2,
-          label: 'test2',
-          order_num: 2,
-          done: false
-        }
-      ])
-    )
-
-    const sendToUpdateAllTodoFunc = jest.spyOn(api, 'sendToUpdateAllTodoFunc')
-
-    sendToUpdateAllTodoFunc.mockReturnValueOnce(
-      Promise.resolve([
-        {
-          id: 1,
-          label: 'test1',
-          order_num: 3,
-          done: false
-        },
-        {
-          id: 2,
-          label: 'test2',
-          order_num: 2,
-          done: false
-        }
-      ])
-    )
-
-    await act(() => {
-      render(
-        <Provider store={store}>
-          <TodoList />
-        </Provider>
-      )
-    })
-
-    screen.debug()
-
-    await act(() => {
-      expect(screen.queryAllByRole('checkbox')).toHaveLength(2)
-    })
-
-    await act(() => {
-      fireEvent.drag(screen.getByTestId('listitem-1'))
-    })
-
-    await act(() => {
-      fireEvent.drop(screen.getByTestId('listitem-2'))
-    })
-
-    await act(() => {
-      expect(store.getState().todos.todosData.todosData).toEqual([
-        {
-          id: 1,
-          label: 'test1',
-          order_num: 3,
-          done: false
-        },
-        {
-          id: 2,
-          label: 'test2',
-          order_num: 2,
-          done: false
-        }
-      ])
     })
   })
 })

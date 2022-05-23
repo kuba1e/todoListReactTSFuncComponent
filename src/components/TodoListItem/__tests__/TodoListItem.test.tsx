@@ -61,11 +61,11 @@ describe('todo list item component', () => {
     )
     expect(screen.getByRole('listitem')).toBeInTheDocument()
 
-    fireEvent.mouseEnter(screen.getByTestId('delete-btn'))
-    expect(screen.getByTestId('delete-btn')).toHaveClass('delete-btn--active')
+    fireEvent.mouseEnter(screen.getByTestId('delete-btn-1'))
+    expect(screen.getByTestId('delete-btn-1')).toHaveClass('delete-btn--active')
 
-    fireEvent.mouseLeave(screen.getByTestId('delete-btn'))
-    expect(screen.getByTestId('delete-btn')).not.toHaveClass(
+    fireEvent.mouseLeave(screen.getByTestId('delete-btn-1'))
+    expect(screen.getByTestId('delete-btn-1')).not.toHaveClass(
       'delete-btn--active'
     )
   })
@@ -83,10 +83,10 @@ describe('todo list item component', () => {
     )
     expect(screen.getByRole('listitem')).toBeInTheDocument()
 
-    fireEvent.click(screen.getByTestId('delete-btn'))
+    fireEvent.click(screen.getByTestId('delete-btn-1'))
     expect(onShowModal).toBeCalled()
 
-    fireEvent.click(screen.getByTestId('edit-btn'))
+    fireEvent.click(screen.getByTestId('edit-btn-1'))
     expect(onShowModal).toBeCalled()
   })
 

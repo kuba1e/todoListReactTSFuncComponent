@@ -4,11 +4,42 @@ import { Provider } from 'react-redux'
 
 import TodoHeader from '../TodoHeader'
 import store from '../../../store'
+import { ITodo } from 'types/generalTypes'
+
+const doneTodos: ITodo[] = [
+  {
+    id: 1,
+    label: 'test1',
+    order_num: 1,
+    done: true
+  },
+  {
+    id: 1,
+    label: 'test2',
+    order_num: 2,
+    done: true
+  }
+]
+
+const todoTodos: ITodo[] = [
+  {
+    id: 1,
+    label: 'test1',
+    order_num: 1,
+    done: false
+  },
+  {
+    id: 1,
+    label: 'test2',
+    order_num: 2,
+    done: false
+  }
+]
 
 const toggleAllDoneTodo = jest.fn()
 
-describe('render todo header component', () => {
-  it('render todo header', () => {
+describe(' test render todo header component', () => {
+  it('should test render todo header', () => {
     render(
       <Provider store={store}>
         <TodoHeader todos={[]} toggleAllDoneTodo={toggleAllDoneTodo} />
@@ -21,10 +52,10 @@ describe('render todo header component', () => {
     )
   })
 
-  it('toggleAllDoneTodo header', () => {
+  it('should handle toggleAllDoneTodo', () => {
     render(
       <Provider store={store}>
-        <TodoHeader todos={[]} toggleAllDoneTodo={toggleAllDoneTodo} />
+        <TodoHeader todos={todoTodos} toggleAllDoneTodo={toggleAllDoneTodo} />
       </Provider>
     )
 
@@ -33,41 +64,22 @@ describe('render todo header component', () => {
     fireEvent.click(screen.getByRole('button'))
 
     expect(toggleAllDoneTodo).toBeCalled()
+
+    expect(screen.getByTestId('toggle-all')).toHaveClass(
+      'select-all-btn--selected'
+    )
   })
 
-  it('Toggle button does not have classname', () => {
+  it('should has classname with all done todos', () => {
     render(
       <Provider store={store}>
-        <TodoHeader todos={[]} toggleAllDoneTodo={toggleAllDoneTodo} />
+        <TodoHeader todos={doneTodos} toggleAllDoneTodo={toggleAllDoneTodo} />
       </Provider>
     )
 
     expect(screen.getByTestId('todo-header')).toBeInTheDocument()
-
-    fireEvent.click(screen.getByRole('button'))
-
-    expect(toggleAllDoneTodo).toBeCalled()
-  })
-
-  it('Toggle button has classname', () => {
-    render(
-      <Provider store={store}>
-        <TodoHeader
-          todos={[
-            {
-              id: 1,
-              done: true,
-              label: 'test',
-              order_num: 1
-            }
-          ]}
-          toggleAllDoneTodo={toggleAllDoneTodo}
-        />
-      </Provider>
+    expect(screen.getByTestId('toggle-all')).toHaveClass(
+      'select-all-btn--selected'
     )
-
-    expect(screen.getByTestId('todo-header')).toBeInTheDocument()
-
-    expect(screen.getByRole('button')).toHaveClass('select-all-btn--selected')
   })
 })

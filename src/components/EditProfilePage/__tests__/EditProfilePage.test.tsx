@@ -2,8 +2,11 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { render, screen, act, fireEvent } from '@testing-library/react'
 
-import store from '../../../store'
 import { EditProfilePage } from '../EditProfilePage'
+
+import store from '../../../store'
+import { setUserData, setAuthStatus } from '../../../store/actions/user'
+import * as api from '../../../store/asyncFoo'
 
 describe('render editprofile page component', () => {
   it('render edit profile page', () => {
@@ -20,7 +23,7 @@ describe('render editprofile page component', () => {
     })
   })
 
-  it('onChange inputs edit profile page', async () => {
+  it('on change inputs edit profile page', async () => {
     render(
       <Provider store={store}>
         <EditProfilePage />
@@ -63,7 +66,7 @@ describe('render editprofile page component', () => {
     })
   })
 
-  it('Form validation password/email', async () => {
+  it('form validation password/email', async () => {
     render(
       <Provider store={store}>
         <EditProfilePage />
@@ -109,7 +112,7 @@ describe('render editprofile page component', () => {
     })
   })
 
-  it('Form submit validation', async () => {
+  it('form submit validation', async () => {
     render(
       <Provider store={store}>
         <EditProfilePage />
@@ -136,6 +139,92 @@ describe('render editprofile page component', () => {
       expect(screen.getByTestId('current-password')).toHaveClass(
         'auth__form-input--error'
       )
+    })
+  })
+
+  it('should test send to update user data', async () => {
+    const updateUserProfileFunc = jest.spyOn(api, 'updateUserProfileFunc')
+
+    updateUserProfileFunc.mockReturnValue(
+      Promise.resolve({
+        email: 'test123456@gmail.com',
+        id: '1',
+        isActivated: true
+      })
+    )
+
+    store.dispatch(
+      setUserData({
+        id: '1',
+        email: 'test@gmail.com',
+        isActivated: true
+      })
+    )
+
+    store.dispatch(setAuthStatus(true))
+
+    render(
+      <Provider store={store}>
+        <EditProfilePage />
+      </Provider>
+    )
+
+    expect(screen.getByTestId('confirm-password')).toBeInTheDocument()
+    expect(screen.getByTestId('email')).toBeInTheDocument()
+    expect(screen.getByTestId('current-password')).toBeInTheDocument()
+    expect(screen.getByTestId('new-password')).toBeInTheDocument()
+
+    await act(() => {
+      fireEvent.change(screen.getByTestId('email'), {
+        target: { value: 'test123456@gmail.com' }
+      })
+      fireEvent.change(screen.getByTestId('current-password'), {
+        target: { value: 'test123456' }
+      })
+      fireEvent.change(screen.getByTestId('new-password'), {
+        target: { value: 'test1234567' }
+      })
+      fireEvent.change(screen.getByTestId('confirm-password'), {
+        target: { value: 'test1234567' }
+      })
+    })
+
+    await act(() => {
+      expect(screen.getByTestId('email')).toHaveDisplayValue(
+        'test123456@gmail.com'
+      )
+      expect(screen.getByTestId('current-password')).toHaveDisplayValue(
+        'test123456'
+      )
+      expect(screen.getByTestId('new-password')).toHaveDisplayValue(
+        'test1234567'
+      )
+      expect(screen.getByTestId('confirm-password')).toHaveDisplayValue(
+        'test1234567'
+      )
+    })
+
+    await act(() => {
+      fireEvent.click(screen.getByText(/save/i))
+    })
+
+    await act(() => {
+      expect(updateUserProfileFunc).toBeCalledWith({
+        email: 'test123456@gmail.com',
+        id: '1',
+        oldPassword: 'test123456',
+        newPassword: 'test1234567'
+      })
+    })
+
+    await act(() => {
+      screen.debug()
+      expect(screen.getByTestId('form')).toHaveFormValues({
+        email: 'test123456@gmail.com',
+        oldPassword: '',
+        newPassword: '',
+        newPasswordConfirm: ''
+      })
     })
   })
 })
